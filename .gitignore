@@ -3,3 +3,5 @@ node_modules/
 Thumbs.db
 *.log
 servidor/datos/
+servidor/datos/usuarios.json
+servidor/datos/bitacora.log

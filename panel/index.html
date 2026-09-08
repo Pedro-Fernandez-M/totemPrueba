@@ -1,0 +1,1328 @@
+<title>Panel del Tótem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ============ tokens ============ */
+:root{
+  --bg:#F1F4EE; --surface:#FFFFFF; --surface-2:#F7F9F4;
+  --ink:#16211B; --ink-2:#5A655B; --ink-3:#8B968B;
+  --line:#DCE2D6; --line-2:#C6CEBF;
+  --accent:#14503C; --accent-ink:#FFFFFF; --accent-soft:#E2EBE3;
+  --gold:#8C5F0E; --gold-soft:#F7EBD3;
+  --agua:#245E7C; --agua-soft:#DFEDF4;
+  --clay:#8E3F1F; --clay-soft:#F8E4DB;
+  --sombra:0 14px 34px -20px rgba(14,40,28,.45);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1210; --surface:#171C16; --surface-2:#1D231C;
+    --ink:#E9EEE4; --ink-2:#A2AEA1; --ink-3:#78837A;
+    --line:#2A312A; --line-2:#3B433B;
+    --accent:#79C69C; --accent-ink:#0B1710; --accent-soft:#1C2B23;
+    --gold:#E0AE55; --gold-soft:#2C2416;
+    --agua:#7FBDDA; --agua-soft:#16262E;
+    --clay:#DD8560; --clay-soft:#2E1B13;
+    --sombra:0 14px 34px -20px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1210; --surface:#171C16; --surface-2:#1D231C;
+  --ink:#E9EEE4; --ink-2:#A2AEA1; --ink-3:#78837A;
+  --line:#2A312A; --line-2:#3B433B;
+  --accent:#79C69C; --accent-ink:#0B1710; --accent-soft:#1C2B23;
+  --gold:#E0AE55; --gold-soft:#2C2416;
+  --agua:#7FBDDA; --agua-soft:#16262E;
+  --clay:#DD8560; --clay-soft:#2E1B13;
+  --sombra:0 14px 34px -20px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Source Sans 3",-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Bitter",Georgia,serif;margin:0;text-wrap:balance}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+/* ============ barra superior ============ */
+.bar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:18px;
+  padding:0 22px;height:66px;background:var(--surface);border-bottom:1px solid var(--line)}
+.marca{display:flex;align-items:center;gap:12px;min-width:0}
+.marca .esc{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--gold);display:grid;place-items:center;flex:none}
+.marca .esc svg{width:18px;height:18px}
+.marca b{font-family:"Bitter",serif;font-size:16px;font-weight:700;white-space:nowrap}
+.marca span{display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3)}
+.bar .sp{flex:1}
+
+.conex{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+  border:1px solid var(--line-2);font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-2)}
+.conex .luz{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.conex.viva .luz{background:#2E9E6B}
+
+.quien{display:flex;align-items:center;gap:10px}
+.quien select{padding:7px 10px;border-radius:8px;border:1px solid var(--line-2);background:var(--surface-2)}
+.tema{width:36px;height:36px;border-radius:9px;border:1px solid var(--line-2);background:transparent;cursor:pointer;font-size:15px}
+
+.btn{border:1px solid var(--line-2);background:var(--surface-2);border-radius:9px;padding:9px 16px;
+  cursor:pointer;font-weight:600;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.pri:disabled{opacity:.4;cursor:default}
+.btn.peligro{color:var(--clay);border-color:var(--clay)}
+.btn.chico{padding:6px 12px;font-size:13.5px;border-radius:7px}
+.btn .cont{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:8px;
+  border-radius:999px;background:rgba(255,255,255,.22);font-family:"IBM Plex Mono",monospace;font-size:11.5px}
+
+/* ============ estructura ============ */
+.app{display:grid;grid-template-columns:216px minmax(0,1fr);min-height:calc(100vh - 66px)}
+.side{border-right:1px solid var(--line);padding:18px 12px;background:var(--surface);
+  position:sticky;top:66px;height:calc(100vh - 66px);overflow:auto}
+.side h5{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 8px;padding:0 10px}
+.side h5:not(:first-child){margin-top:22px}
+.side a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;
+  color:var(--ink-2);text-decoration:none;font-weight:600;font-size:14.5px}
+.side a:hover{background:var(--surface-2);color:var(--ink)}
+.side a[aria-current="true"]{background:var(--accent-soft);color:var(--ink)}
+.side a .n{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3)}
+.side a svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+.main{padding:26px 30px 70px;max-width:1080px}
+.vista{display:none}
+.vista.on{display:block}
+.cab{display:flex;align-items:flex-start;gap:18px;margin-bottom:22px}
+.cab h2{font-size:26px;font-weight:800;letter-spacing:-.015em}
+.cab p{margin:6px 0 0;color:var(--ink-2);max-width:62ch}
+.cab .sp{flex:1}
+
+/* ============ aviso de modo ============ */
+.modo{display:flex;gap:12px;align-items:flex-start;padding:13px 16px;border-radius:10px;margin-bottom:22px;
+  background:var(--gold-soft);border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);font-size:14px}
+.modo b{display:block;margin-bottom:2px}
+.modo svg{width:18px;height:18px;flex:none;margin-top:2px;stroke:var(--gold);fill:none;stroke-width:1.8}
+
+/* ============ zona de subida ============ */
+.soltar{border:2px dashed var(--line-2);border-radius:14px;padding:34px 24px;text-align:center;
+  background:var(--surface-2);cursor:pointer;transition:border-color .18s,background .18s;margin-bottom:24px}
+.soltar:hover,.soltar.encima{border-color:var(--accent);background:var(--accent-soft)}
+.soltar .ico{width:46px;height:46px;margin:0 auto 12px;stroke:var(--accent);fill:none;stroke-width:1.5;
+  stroke-linecap:round;stroke-linejoin:round}
+.soltar b{display:block;font-size:17px;font-family:"Bitter",serif}
+.soltar span{display:block;color:var(--ink-2);font-size:14px;margin-top:5px}
+
+/* ============ tabla de documentos ============ */
+.filtros{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filtros button{padding:7px 14px;border-radius:999px;border:1px solid var(--line-2);background:transparent;
+  cursor:pointer;font-size:13.5px;color:var(--ink-2)}
+.filtros button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+
+.lista{display:flex;flex-direction:column;gap:10px}
+.item{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:16px;align-items:center;
+  padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.item.pend{border-left:3px solid var(--gold)}
+.tapa{width:54px;height:70px;border-radius:4px;border:1px solid var(--line-2);background:var(--surface-2);
+  overflow:hidden;display:grid;place-items:center}
+.tapa canvas,.tapa img{width:100%;height:100%;object-fit:cover;display:block}
+.tapa span{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-3)}
+.item .tit{font-weight:700;font-size:15.5px;line-height:1.25;margin-bottom:3px}
+.item .des{color:var(--ink-2);font-size:13.5px;line-height:1.35;margin-bottom:7px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:"IBM Plex Mono",monospace;
+  font-size:11.5px;color:var(--ink-3)}
+.item .acc{display:flex;gap:6px;align-items:center}
+
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:500}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.pub{background:var(--accent-soft);color:var(--accent)}
+.chip.pend{background:var(--gold-soft);color:var(--gold)}
+.chip.vis{background:var(--agua-soft);color:var(--agua)}
+.chip.est{background:var(--clay-soft);color:var(--clay)}
+.chip.venc{background:var(--surface-2);color:var(--ink-3)}
+.chip.sin::before{display:none}
+
+.vacio{padding:52px 20px;text-align:center;color:var(--ink-3);border:1px dashed var(--line-2);border-radius:12px}
+
+/* ============ formularios ============ */
+.campo{margin-bottom:16px}
+.campo label{display:block;font-size:13px;font-weight:600;margin-bottom:5px}
+.campo .ayuda{font-size:12.5px;color:var(--ink-3);margin:4px 0 0}
+.campo input,.campo textarea,.campo select{width:100%;padding:10px 12px;border-radius:9px;
+  border:1px solid var(--line-2);background:var(--surface-2)}
+.campo textarea{resize:vertical;min-height:74px;line-height:1.45}
+.campo input:focus,.campo textarea:focus,.campo select:focus{border-color:var(--accent);outline:none;background:var(--surface)}
+.fila{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.check{display:flex;align-items:center;gap:9px;font-size:14px;cursor:pointer}
+.check input{width:auto}
+.cuenta{float:right;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);font-weight:400}
+.cuenta.mal{color:var(--clay)}
+
+/* ============ tarjetas de sección ============ */
+.bloque{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:16px}
+.bloque > h3{font-size:16px;margin-bottom:4px}
+.bloque > .sub{color:var(--ink-2);font-size:13.5px;margin:0 0 16px}
+
+/* ============ versiones ============ */
+.ver{display:flex;gap:16px;align-items:center;padding:14px 16px;background:var(--surface);
+  border:1px solid var(--line);border-radius:11px;margin-bottom:9px}
+.ver .v{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:14px;min-width:130px}
+.ver .d{flex:1;color:var(--ink-2);font-size:13.5px}
+.ver.activa{border-color:var(--accent);background:var(--accent-soft)}
+
+/* ============ modales ============ */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(10,22,16,.55);display:none;
+  align-items:center;justify-content:center;padding:26px;backdrop-filter:blur(2px)}
+.modal.on{display:flex}
+.caja{background:var(--surface);border-radius:16px;box-shadow:var(--sombra);width:min(660px,100%);
+  max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
+.caja.ancha{width:min(520px,100%)}
+.caja-top{display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.caja-top h3{font-size:18px;flex:1}
+.caja-cuerpo{padding:22px;overflow:auto}
+.caja-pie{display:flex;gap:10px;justify-content:flex-end;padding:16px 22px;border-top:1px solid var(--line);
+  background:var(--surface-2)}
+.cerrar{width:34px;height:34px;border-radius:8px;border:1px solid var(--line-2);background:transparent;
+  cursor:pointer;font-size:18px;line-height:1}
+
+/* ============ vista previa del totem ============ */
+.previo{background:#07201A;border-radius:10px;overflow:hidden;box-shadow:var(--sombra)}
+.tot{width:1080px;height:1920px;transform-origin:top left;background:#07201A;color:#F2F6EC;
+  display:flex;flex-direction:column;font-family:"Source Sans 3",sans-serif;position:relative}
+.tot::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 60% at 50% 0%, rgba(23,101,74,.55), transparent 70%);opacity:.5}
+.tot .t-top{position:relative;height:150px;flex:none;display:flex;align-items:center;gap:26px;padding:0 46px;
+  border-bottom:1px solid rgba(242,246,236,.14)}
+.tot .t-top .cr{width:82px;height:82px;border-radius:50%;border:2px solid #E4AF4E;flex:none;
+  background:radial-gradient(circle at 40% 30%,#17654A,#0C3327)}
+.tot .t-top b{font-family:"Bitter",serif;font-size:34px;font-weight:700;display:block}
+.tot .t-top span{font-family:"IBM Plex Mono",monospace;font-size:15px;letter-spacing:.16em;
+  text-transform:uppercase;color:#89998A;display:block;margin-top:5px}
+.tot .t-cuerpo{position:relative;flex:1;min-height:0;padding:52px 46px 34px;overflow:hidden}
+.tot .k{font-family:"IBM Plex Mono",monospace;font-size:17px;letter-spacing:.22em;text-transform:uppercase;
+  color:#E4AF4E;margin-bottom:14px}
+.tot .h{font-family:"Bitter",serif;font-size:62px;font-weight:800;line-height:1.02;letter-spacing:-.02em}
+.tot .s{font-size:23px;color:#BFCDBC;margin-top:16px;max-width:44ch;line-height:1.45}
+.tot .cps{display:flex;gap:12px;margin:26px 0 24px}
+.tot .cps span{padding:16px 26px;border-radius:999px;border:1px solid rgba(242,246,236,.28);
+  font-size:23px;font-weight:600;color:#BFCDBC}
+.tot .cps span.on{background:#E4AF4E;border-color:#E4AF4E;color:#20180A}
+.tot .dl{display:flex;flex-direction:column;gap:16px}
+.tot .d{display:flex;gap:24px;align-items:flex-start;padding:26px 28px;border-radius:14px;
+  background:rgba(242,246,236,.055);border:1px solid rgba(242,246,236,.14)}
+.tot .d.dest{border-color:rgba(228,175,78,.5);background:rgba(228,175,78,.07)}
+.tot .d .ic{flex:none;width:72px;height:90px;border-radius:6px;border:2px solid #E4AF4E;
+  background:rgba(228,175,78,.10);display:grid;place-items:end center;padding-bottom:10px;
+  font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;color:#E4AF4E}
+.tot .d .th{font-family:"Bitter",serif;font-size:28px;font-weight:700;line-height:1.15;margin-bottom:8px}
+.tot .d .tp{font-size:20px;color:#BFCDBC;line-height:1.4;margin-bottom:12px}
+.tot .d .tm{font-family:"IBM Plex Mono",monospace;font-size:15px;color:#89998A}
+.tot .d .tm i{color:#E4AF4E;font-style:normal}
+.tot .t-nav{flex:none;height:212px;display:flex;border-top:1px solid rgba(242,246,236,.28);background:rgba(6,26,21,.96)}
+.tot .t-nav i{flex:1;display:grid;place-items:center;font-size:21px;font-weight:600;color:#89998A;
+  font-style:normal;border-right:1px solid rgba(242,246,236,.14)}
+.tot .t-nav i.on{color:#E4AF4E;background:linear-gradient(180deg,rgba(228,175,78,.14),transparent)}
+.tot .aviso{position:absolute;left:0;right:0;top:0;height:74px;display:flex;align-items:center;gap:20px;
+  padding:0 46px;background:rgba(228,175,78,.07);border-bottom:1px solid rgba(242,246,236,.14);
+  font-size:25px;color:#F3D08A}
+.tot .aviso b{font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.16em;text-transform:uppercase;
+  color:#20180A;background:#E4AF4E;padding:6px 12px;border-radius:99px}
+
+.previo-pie{display:flex;align-items:center;gap:10px;margin-top:12px;font-family:"IBM Plex Mono",monospace;
+  font-size:11.5px;color:var(--ink-3)}
+
+/* ============ aviso flotante ============ */
+.tostada{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);z-index:80;
+  background:var(--ink);color:var(--bg);padding:13px 20px;border-radius:11px;font-weight:600;font-size:14px;
+  box-shadow:var(--sombra);opacity:0;transition:transform .25s,opacity .25s;pointer-events:none}
+.tostada.on{transform:translate(-50%,0);opacity:1}
+
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;display:flex;gap:6px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}
+  .side h5{display:none}
+  .side a{white-space:nowrap}
+  .main{padding:20px 16px 60px}
+  .fila{grid-template-columns:1fr}
+  .item{grid-template-columns:44px minmax(0,1fr);gap:12px}
+  .item .acc{grid-column:1/-1;justify-content:flex-end}
+}
+</style>
+
+<header class="bar">
+  <div class="marca">
+    <div class="esc">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#8C5F0E" stroke-width="2.4" stroke-linecap="round">
+        <path d="M24 42V16"/><path d="M24 22c-6-1-9-5-9-11 6 0 9 4 9 11z"/><path d="M24 30c6-1 9-5 9-11-6 0-9 4-9 11z"/>
+      </svg>
+    </div>
+    <div>
+      <b>Panel del Tótem</b>
+      <span>Marta Martínez Cruz</span>
+    </div>
+  </div>
+
+  <div class="conex" id="conex"><span class="luz"></span><span id="conexTxt">—</span></div>
+  <div class="sp"></div>
+
+  <div class="quien">
+    <select id="rol" aria-label="Rol de quien está usando el panel">
+      <option value="profesor">Prof. Carolina Muñoz — Profesora</option>
+      <option value="encargado">Marcela Ibáñez — Encargada UTP</option>
+    </select>
+    <button class="tema" id="btnTema" aria-label="Cambiar tema">◐</button>
+    <button class="btn pri" id="btnPublicar">Publicar<span class="cont" id="cont">0</span></button>
+  </div>
+</header>
+
+<div class="app">
+  <nav class="side" id="side">
+    <h5>Contenido</h5>
+    <a data-v="v-docs" aria-current="true">
+      <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+      Documentos <span class="n" id="nDocs">0</span></a>
+    <a data-v="v-avisos">
+      <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9z"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      Avisos <span class="n" id="nAvisos">0</span></a>
+    <a data-v="v-textos">
+      <svg viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+      Textos del tótem</a>
+
+    <h5>Operación</h5>
+    <a data-v="v-versiones">
+      <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 8v4l3 2"/></svg>
+      Versiones</a>
+    <a data-v="v-totem">
+      <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+      El tótem</a>
+  </nav>
+
+  <main class="main">
+
+    <!-- ============ DOCUMENTOS ============ -->
+    <section class="vista on" id="v-docs">
+      <div class="cab">
+        <div>
+          <h2>Documentos</h2>
+          <p>Lo que se puede leer en el tótem. Arrastre un PDF para agregarlo; el título y el número
+             de páginas se completan solos.</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn" id="btnVerDocs">Ver en el tótem</button>
+      </div>
+
+      <div class="modo" id="cartelModo"></div>
+
+      <div class="soltar" id="soltar" role="button" tabindex="0">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+        <b>Arrastre el PDF aquí</b>
+        <span>o haga clic para buscarlo en su computador · máximo 10 MB</span>
+      </div>
+      <input type="file" id="archivo" accept="application/pdf" hidden>
+
+      <div class="filtros" id="filtros"></div>
+      <div class="lista" id="listaDocs"></div>
+    </section>
+
+    <!-- ============ AVISOS ============ -->
+    <section class="vista" id="v-avisos">
+      <div class="cab">
+        <div>
+          <h2>Avisos</h2>
+          <p>Aparecen en la pantalla de inicio del tótem. Se muestran solos entre las fechas que
+             usted indique y desaparecen al vencer, sin que nadie tenga que acordarse.</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn pri" id="btnNuevoAviso">Nuevo aviso</button>
+      </div>
+      <div class="lista" id="listaAvisos"></div>
+    </section>
+
+    <!-- ============ TEXTOS ============ -->
+    <section class="vista" id="v-textos">
+      <div class="cab">
+        <div>
+          <h2>Textos del tótem</h2>
+          <p>Los títulos y bajadas de cada pantalla, y las cifras que van rotando en el inicio.</p>
+        </div>
+      </div>
+      <div id="editTextos"></div>
+    </section>
+
+    <!-- ============ VERSIONES ============ -->
+    <section class="vista" id="v-versiones">
+      <div class="cab">
+        <div>
+          <h2>Versiones</h2>
+          <p>Cada publicación queda guardada. Si algo salió mal, se vuelve a la anterior sin llamar
+             a nadie.</p>
+        </div>
+      </div>
+      <div id="listaVersiones"></div>
+    </section>
+
+    <!-- ============ EL TÓTEM ============ -->
+    <section class="vista" id="v-totem">
+      <div class="cab">
+        <div>
+          <h2>El tótem</h2>
+          <p>Estado del equipo instalado en el portón principal.</p>
+        </div>
+      </div>
+      <div class="bloque" id="estadoTotem"></div>
+      <div class="bloque">
+        <h3>Cómo llegar a este panel</h3>
+        <p class="sub">Desde cualquier computador o teléfono conectado a la red del liceo.</p>
+        <div class="campo">
+          <label>Dirección del panel</label>
+          <input class="mono" value="http://192.168.1.50:4300" readonly>
+          <p class="ayuda">Conviene pegar un aviso con esta dirección en la sala de profesores.
+             No necesita internet: basta con estar en la red del liceo.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ modal: ficha del documento ============ -->
+<div class="modal" id="mDoc">
+  <div class="caja">
+    <div class="caja-top">
+      <h3 id="mDocTit">Datos del documento</h3>
+      <button class="cerrar" data-cerrar>×</button>
+    </div>
+    <div class="caja-cuerpo">
+      <div class="campo">
+        <label for="fTitulo">Título <span class="cuenta" id="cTitulo"></span></label>
+        <input id="fTitulo" maxlength="80" placeholder="Especialidad Agropecuaria: ficha para apoderados">
+        <p class="ayuda">Es lo que se lee grande en el tótem. Que se entienda de una pasada.</p>
+      </div>
+      <div class="campo">
+        <label for="fDesc">De qué se trata <span class="cuenta" id="cDesc"></span></label>
+        <textarea id="fDesc" maxlength="160" placeholder="Una o dos líneas: qué va a encontrar quien lo abra."></textarea>
+      </div>
+      <div class="fila">
+        <div class="campo">
+          <label for="fCat">Para quién es</label>
+          <select id="fCat">
+            <option value="visitas">Para visitas</option>
+            <option value="estudiantes">Para estudiantes</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="fFecha">Fecha del documento</label>
+          <input type="date" id="fFecha">
+        </div>
+      </div>
+      <div class="fila">
+        <div class="campo">
+          <label for="fAutor">Quién lo hizo</label>
+          <input id="fAutor" placeholder="Prof. Carolina Muñoz">
+        </div>
+        <div class="campo">
+          <label for="fCargo">Cargo o módulo</label>
+          <input id="fCargo" placeholder="Módulo Producción de leche">
+        </div>
+      </div>
+      <div class="campo">
+        <label class="check"><input type="checkbox" id="fDest"> Destacarlo en la lista del tótem</label>
+        <p class="ayuda">Los destacados salen con borde dorado. Úselo con dos o tres, no con todos.</p>
+      </div>
+      <div class="campo" id="cajaArchivo"></div>
+    </div>
+    <div class="caja-pie">
+      <button class="btn" data-cerrar>Cancelar</button>
+      <button class="btn pri" id="btnGuardarDoc">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ modal: aviso ============ -->
+<div class="modal" id="mAviso">
+  <div class="caja ancha">
+    <div class="caja-top"><h3>Aviso en la pantalla de inicio</h3><button class="cerrar" data-cerrar>×</button></div>
+    <div class="caja-cuerpo">
+      <div class="campo">
+        <label for="aTexto">Texto <span class="cuenta" id="cAviso"></span></label>
+        <textarea id="aTexto" maxlength="110" placeholder="Puertas abiertas: sábado 10 de octubre, 10:00 a 14:00"></textarea>
+        <p class="ayuda">Una sola frase. Se lee de lejos y de paso.</p>
+      </div>
+      <div class="fila">
+        <div class="campo"><label for="aDesde">Se muestra desde</label><input type="date" id="aDesde"></div>
+        <div class="campo"><label for="aHasta">y hasta</label><input type="date" id="aHasta"></div>
+      </div>
+    </div>
+    <div class="caja-pie">
+      <button class="btn" data-cerrar>Cancelar</button>
+      <button class="btn pri" id="btnGuardarAviso">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ modal: publicar ============ -->
+<div class="modal" id="mPub">
+  <div class="caja ancha">
+    <div class="caja-top"><h3>Publicar al tótem</h3><button class="cerrar" data-cerrar>×</button></div>
+    <div class="caja-cuerpo" id="pubCuerpo"></div>
+    <div class="caja-pie">
+      <button class="btn" data-cerrar>Todavía no</button>
+      <button class="btn pri" id="btnConfirmarPub">Publicar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ modal: vista previa ============ -->
+<div class="modal" id="mPrev">
+  <div class="caja" style="width:auto;background:transparent;box-shadow:none">
+    <div class="previo" id="previoCaja"></div>
+    <div class="previo-pie">
+      <span>Así se ve en el tótem · 1080 × 1920</span>
+      <div class="sp" style="flex:1"></div>
+      <button class="btn chico" data-cerrar>Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ modal: entrar ============ -->
+<div class="modal" id="mEntrar">
+  <div class="caja ancha">
+    <div class="caja-top"><h3>Entrar al panel</h3></div>
+    <div class="caja-cuerpo">
+      <p style="margin:0 0 18px;color:var(--ink-2)">Use el usuario que le entregó Inspectoría.</p>
+      <div class="campo"><label for="eUsr">Usuario</label><input id="eUsr" autocomplete="username"></div>
+      <div class="campo"><label for="eCla">Clave</label><input type="password" id="eCla" autocomplete="current-password"></div>
+      <p id="eError" style="color:var(--clay);font-size:13.5px;margin:0;display:none"></p>
+    </div>
+    <div class="caja-pie">
+      <button class="btn" data-cerrar>Cancelar</button>
+      <button class="btn pri" id="btnEntrar">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="tostada" id="tostada"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s == null ? "" : s).replace(/[<>&]/g, function(c){
+    return c === "<" ? "&lt;" : c === ">" ? "&gt;" : "&amp;"; }); };
+  var hoy = function(){ return new Date().toISOString().slice(0,10); };
+  var MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  var fecha = function(f){
+    if(!f) return "";
+    var p = String(f).split("-");
+    return p.length === 3 ? (+p[2]) + " " + MESES[+p[1]-1] + " " + p[0] : f;
+  };
+
+  /* ============ estado ============ */
+  var SERVIDOR = "";            // mismo origen cuando el panel lo sirve el totem
+  var enLinea = false;          // hay servidor respondiendo
+  var rol = "profesor";
+  var D = null;                 // contenido publicado
+  var B = null;                 // borrador de trabajo
+  var versiones = [];
+  var filtro = "todos";
+  var editando = null;
+  var editandoAviso = null;
+  var archivoNuevo = null;      // {nombre, bytes, paginas, tapa}
+
+  var USUARIOS = {
+    profesor:  { nombre: "Prof. Carolina Muñoz",  cargo: "Módulo Producción de leche", puedePublicar: false },
+    encargado: { nombre: "Marcela Ibáñez",        cargo: "Encargada UTP",              puedePublicar: true  }
+  };
+
+  /* ============ contenido inicial ============ */
+  var SEMILLA = {
+    version: "2026.09.07-1",
+    avisos: [
+      { id:"av1", texto:"Puertas abiertas: sábado 10 de octubre, 10:00 a 14:00", desde:"2026-09-01", hasta:"2026-10-10" },
+      { id:"av2", texto:"Postulaciones a 1° medio abiertas en el Sistema de Admisión Escolar", desde:"2026-08-15", hasta:"2026-10-31" }
+    ],
+    atractor: {
+      lead: "Desde 1958 formando en el campo",
+      cta: "Toque la pantalla para recorrer el liceo",
+      cifras: [
+        { valor:"90", unidad:"ha", texto:"El predio completo es la sala de clases" },
+        { valor:"12", unidad:"ha", texto:"Riega el pivote central, día y noche" },
+        { valor:"1958", unidad:"", texto:"El año en que abrió la primera escuela agrícola de mujeres de Chile" },
+        { valor:"380", unidad:"", texto:"Estudiantes del Maule, muchos de ellos internos" },
+        { valor:"3", unidad:"", texto:"Invernaderos de tecnología israelí en producción" }
+      ]
+    },
+    pantallas: {
+      liceo:  { kicker:"Nuestra historia", titulo:"La primera escuela agrícola de mujeres de Chile",
+                bajada:"Marta Martínez Cruz abrió las puertas en 1958 con un puñado de alumnas y un potrero. Hoy son 90 hectáreas y 380 estudiantes." },
+      agro:   { kicker:"La especialidad", titulo:"Técnico de Nivel Medio en Agropecuaria",
+                bajada:"Formación diferenciada en 3° y 4° medio. Se aprende cultivando, ordeñando y arreglando la máquina que se echó a perder." },
+      campo:  { kicker:"Plano del predio · 90 hectáreas", titulo:"El campo, punto por punto",
+                bajada:"Toque un número para ver qué se hace ahí." },
+      documentos: { kicker:"Material del liceo", titulo:"Documentos para leer aquí mismo",
+                bajada:"Lo que suben los profesores. Toque uno para leerlo en la pantalla; el QR se lo lleva al teléfono.",
+                categorias:[{id:"todos",nombre:"Todos"},{id:"visitas",nombre:"Para visitas"},{id:"estudiantes",nombre:"Para estudiantes"}],
+                items:[
+                  { id:"ficha-agropecuaria", titulo:"Especialidad Agropecuaria: ficha para apoderados",
+                    descripcion:"Qué se aprende, dónde se aprende, práctica profesional y preguntas frecuentes.",
+                    categoria:"visitas", autor:"Prof. Rodrigo Salas", cargo:"Jefe de Especialidad",
+                    fecha:"2026-08-20", paginas:2, destacado:true, estado:"publicado",
+                    archivo:"contenido/documentos/ficha-especialidad-agropecuaria.pdf" },
+                  { id:"calendario-admision", titulo:"Calendario de admisión 2027",
+                    descripcion:"Fechas del SAE, puertas abiertas, matrícula y documentos que hay que traer.",
+                    categoria:"visitas", autor:"Dirección", cargo:"",
+                    fecha:"2026-08-18", paginas:1, destacado:true, estado:"publicado",
+                    archivo:"contenido/documentos/calendario-admision-2027.pdf" },
+                  { id:"guia-ordena", titulo:"Guía de práctica: ordeña higiénica",
+                    descripcion:"Protocolo paso a paso, registro de producción y señales de mastitis. Módulo 08, 4° Pecuaria.",
+                    categoria:"estudiantes", autor:"Prof. Carolina Muñoz", cargo:"Módulo Producción de leche",
+                    fecha:"2026-09-01", paginas:2, destacado:false, estado:"publicado",
+                    archivo:"contenido/documentos/guia-ordena-higienica.pdf" },
+                  { id:"control-biologico", titulo:"Cartilla: control biológico de plagas",
+                    descripcion:"Los tres tipos de control, qué criamos en el laboratorio y la rutina semanal.",
+                    categoria:"estudiantes", autor:"Prof. Inés Vergara", cargo:"Laboratorio de Control Biológico",
+                    fecha:"2026-08-28", paginas:2, destacado:false, estado:"publicado",
+                    archivo:"contenido/documentos/cartilla-control-biologico.pdf" }
+                ] },
+      visita: { kicker:"Admisión y visitas", titulo:"Venga a conocer el campo",
+                bajada:"Postulaciones a 1° medio por el Sistema de Admisión Escolar. Las visitas guiadas se agendan por teléfono." }
+    }
+  };
+
+  /* ============ guardado local ============ */
+  function leer(k, d){
+    try { var v = localStorage.getItem("panel:" + k); return v ? JSON.parse(v) : d; }
+    catch(e){ return d; }
+  }
+  function escribir(k, v){
+    try { localStorage.setItem("panel:" + k, JSON.stringify(v)); } catch(e){}
+  }
+  var clon = function(o){ return JSON.parse(JSON.stringify(o)); };
+
+  /* archivos PDF del borrador: van a IndexedDB porque no caben en localStorage */
+  var bd = null;
+  function abrirBD(){
+    return new Promise(function(ok){
+      if(bd) return ok(bd);
+      var r = indexedDB.open("panel-totem", 1);
+      r.onupgradeneeded = function(){ r.result.createObjectStore("pdf"); };
+      r.onsuccess = function(){ bd = r.result; ok(bd); };
+      r.onerror = function(){ ok(null); };
+    });
+  }
+  function guardarPdf(id, bytes){
+    return abrirBD().then(function(b){
+      if(!b) return;
+      return new Promise(function(ok){
+        var t = b.transaction("pdf", "readwrite");
+        t.objectStore("pdf").put(bytes, id);
+        t.oncomplete = ok; t.onerror = ok;
+      });
+    });
+  }
+  function borrarPdf(id){
+    return abrirBD().then(function(b){
+      if(!b) return;
+      var t = b.transaction("pdf", "readwrite");
+      t.objectStore("pdf").delete(id);
+    });
+  }
+
+  /* ============ arranque ============ */
+  function iniciar(){
+    D = leer("publicado", null) || clon(SEMILLA);
+    B = leer("borrador", null) || clon(D);
+    versiones = leer("versiones", null) || [
+      { version: D.version, fecha: "2026-09-07T09:00", quien: "Marcela Ibáñez", nota: "Carga inicial del tótem", activa: true }
+    ];
+    rol = leer("rol", "profesor");
+    $("rol").value = rol;
+
+    var t = leer("tema", null);
+    if(t) document.documentElement.setAttribute("data-theme", t);
+
+    probarServidor();
+    pintarModo();
+    pintarFiltros();
+    pintarDocs();
+    pintarAvisos();
+    pintarTextos();
+    pintarVersiones();
+    pintarEstado();
+    contar();
+  }
+
+  function probarServidor(){
+    var c = $("conex");
+    fetch("/api/estado", { cache:"no-store", credentials:"same-origin" })
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(e){
+        enLinea = true;
+        c.classList.add("viva");
+        $("conexTxt").textContent = (e.equipo || "TOTEM-MMC-01") + " · conectado";
+        $("rol").style.display = "none";
+        if(e.sesion) aplicarSesion(e.sesion);
+        else $("mEntrar").classList.add("on");
+        pintarModo();
+        return fetch("/api/contenido", { cache:"no-store" }).then(function(r){ return r.json(); });
+      })
+      .then(function(cont){
+        if(!cont) return;
+        D = cont;
+        if(!leer("borrador", null)) B = clon(D);
+        escribir("publicado", D);
+        pintarDocs(); pintarAvisos(); pintarTextos(); pintarEstado(); contar();
+        return fetch("/api/versiones").then(function(r){ return r.json(); });
+      })
+      .then(function(vs){
+        if(!vs || !vs.length) return;
+        versiones = vs.map(function(v, i){
+          return { version:v.version, fecha:(v.generado||"").slice(0,16).replace("T"," "),
+                   quien:v.quien, nota:v.nota || "Sin nota", activa:false, remota:true };
+        });
+        versiones.unshift({ version:D.version, fecha:(D.generado||"").slice(0,16).replace("T"," "),
+                            quien:D.publicadoPor || "—", nota:D.nota || "Versión en el tótem", activa:true });
+        pintarVersiones();
+      })
+      .catch(function(){
+        if(enLinea) return;
+        enLinea = false;
+        c.classList.remove("viva");
+        $("conexTxt").textContent = "Sin servidor · modo demostración";
+      });
+  }
+
+  function aplicarSesion(s){
+    USUARIOS[s.rol] = { nombre:s.nombre, cargo:s.cargo || "", puedePublicar: s.rol === "encargado" };
+    rol = s.rol;
+    var q = document.querySelector(".quien");
+    var et = document.getElementById("quienSoy");
+    if(!et){
+      et = document.createElement("span");
+      et.id = "quienSoy";
+      et.style.cssText = "font-size:13.5px;color:var(--ink-2);font-weight:600";
+      q.insertBefore(et, q.firstChild);
+    }
+    et.textContent = s.nombre + " · " + (s.rol === "encargado" ? "puede publicar" : "profesor");
+    contar(); pintarDocs();
+  }
+
+  $("btnEntrar").addEventListener("click", function(){
+    var err = $("eError");
+    err.style.display = "none";
+    fetch("/api/entrar", {
+      method:"POST", credentials:"same-origin",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ usuario: $("eUsr").value.trim(), clave: $("eCla").value })
+    }).then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(x){
+        if(!x.ok){ err.textContent = x.j.error || "No se pudo entrar"; err.style.display = "block"; return; }
+        $("mEntrar").classList.remove("on");
+        $("eCla").value = "";
+        aplicarSesion(x.j);
+        aviso("Bienvenida, " + x.j.nombre);
+      })
+      .catch(function(){ err.textContent = "El servidor no responde"; err.style.display = "block"; });
+  });
+  $("eCla").addEventListener("keydown", function(e){ if(e.key === "Enter") $("btnEntrar").click(); });
+
+  function pintarModo(){
+    var c = $("cartelModo");
+    if(enLinea){ c.style.display = "none"; return; }
+    c.style.display = "flex";
+    c.innerHTML =
+      '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>' +
+      "<div><b>Modo demostración</b>Este panel no está conectado al tótem, así que todo lo que haga " +
+      "queda guardado solo en este navegador. Sirve para probarlo completo: suba un PDF, publique, " +
+      "vuelva atrás. Instalado en el liceo, publica al tótem de verdad.</div>";
+  }
+
+  /* ============ navegación ============ */
+  Array.prototype.forEach.call($("side").querySelectorAll("a"), function(a){
+    a.addEventListener("click", function(){
+      Array.prototype.forEach.call($("side").querySelectorAll("a"), function(o){ o.removeAttribute("aria-current"); });
+      a.setAttribute("aria-current", "true");
+      Array.prototype.forEach.call(document.querySelectorAll(".vista"), function(v){
+        v.classList.toggle("on", v.id === a.dataset.v);
+      });
+      window.scrollTo(0, 0);
+    });
+  });
+
+  $("rol").addEventListener("change", function(){
+    rol = $("rol").value; escribir("rol", rol);
+    contar(); pintarDocs();
+    aviso(rol === "encargado" ? "Ahora puede aprobar y publicar" : "Como profesora, lo que suba queda pendiente de aprobación");
+  });
+
+  $("btnTema").addEventListener("click", function(){
+    var actual = document.documentElement.getAttribute("data-theme");
+    var nuevo = actual === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", nuevo);
+    escribir("tema", nuevo);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-cerrar]"), function(b){
+    b.addEventListener("click", function(){
+      Array.prototype.forEach.call(document.querySelectorAll(".modal"), function(m){ m.classList.remove("on"); });
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".modal"), function(m){
+    m.addEventListener("click", function(e){ if(e.target === m) m.classList.remove("on"); });
+  });
+  addEventListener("keydown", function(e){
+    if(e.key === "Escape")
+      Array.prototype.forEach.call(document.querySelectorAll(".modal"), function(m){ m.classList.remove("on"); });
+  });
+
+  function aviso(t){
+    var el = $("tostada");
+    el.textContent = t; el.classList.add("on");
+    clearTimeout(el._t);
+    el._t = setTimeout(function(){ el.classList.remove("on"); }, 2600);
+  }
+
+  /* ============ subida de PDF ============ */
+  var zona = $("soltar"), input = $("archivo");
+  zona.addEventListener("click", function(){ input.click(); });
+  zona.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); input.click(); } });
+  ["dragenter","dragover"].forEach(function(ev){
+    zona.addEventListener(ev, function(e){ e.preventDefault(); zona.classList.add("encima"); });
+  });
+  ["dragleave","drop"].forEach(function(ev){
+    zona.addEventListener(ev, function(e){ e.preventDefault(); zona.classList.remove("encima"); });
+  });
+  zona.addEventListener("drop", function(e){
+    if(e.dataTransfer.files && e.dataTransfer.files[0]) tomarArchivo(e.dataTransfer.files[0]);
+  });
+  input.addEventListener("change", function(){ if(input.files[0]) tomarArchivo(input.files[0]); input.value = ""; });
+
+  function tomarArchivo(f){
+    if(f.type !== "application/pdf" && !/\.pdf$/i.test(f.name)){
+      aviso("Solo se aceptan archivos PDF"); return;
+    }
+    if(f.size > 10 * 1024 * 1024){
+      aviso("El archivo pesa " + (f.size/1048576).toFixed(1) + " MB. El máximo son 10 MB."); return;
+    }
+    f.arrayBuffer().then(function(ab){
+      var bytes = new Uint8Array(ab);
+      archivoNuevo = { nombre: f.name, bytes: bytes, tamano: f.size, paginas: null, tapa: null };
+      return leerPdf(bytes);
+    }).then(function(info){
+      if(info){ archivoNuevo.paginas = info.paginas; archivoNuevo.tapa = info.tapa; }
+      abrirFicha(null, archivoNuevo, f.name);
+    }).catch(function(){
+      abrirFicha(null, archivoNuevo, f.name);
+    });
+  }
+
+  /* lee páginas, título interno y dibuja la portada */
+  function leerPdf(bytes){
+    if(typeof pdfjsLib === "undefined") return Promise.resolve(null);
+    try {
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    } catch(e){}
+    return pdfjsLib.getDocument({ data: bytes.slice(0) }).promise.then(function(doc){
+      var res = { paginas: doc.numPages, tapa: null, titulo: null };
+      return doc.getMetadata().then(function(m){
+        if(m && m.info && m.info.Title) res.titulo = m.info.Title;
+      }).catch(function(){}).then(function(){
+        return doc.getPage(1);
+      }).then(function(p){
+        var v = p.getViewport({ scale: 108 / p.getViewport({scale:1}).width });
+        var cv = document.createElement("canvas");
+        cv.width = v.width; cv.height = v.height;
+        return p.render({ canvasContext: cv.getContext("2d"), viewport: v }).promise.then(function(){
+          res.tapa = cv.toDataURL("image/jpeg", .72);
+          return res;
+        });
+      });
+    }).catch(function(){ return null; });
+  }
+
+  /* ============ ficha del documento ============ */
+  function abrirFicha(doc, archivo, nombreArchivo){
+    editando = doc;
+    archivoNuevo = archivo || null;
+    $("mDocTit").textContent = doc ? "Editar documento" : "Nuevo documento";
+    var u = USUARIOS[rol];
+
+    $("fTitulo").value = doc ? doc.titulo : sugerirTitulo(nombreArchivo);
+    $("fDesc").value   = doc ? doc.descripcion : "";
+    $("fCat").value    = doc ? doc.categoria : "visitas";
+    $("fFecha").value  = doc ? doc.fecha : hoy();
+    $("fAutor").value  = doc ? doc.autor : u.nombre;
+    $("fCargo").value  = doc ? doc.cargo : u.cargo;
+    $("fDest").checked = doc ? !!doc.destacado : false;
+
+    var caja = $("cajaArchivo");
+    if(archivoNuevo){
+      caja.innerHTML =
+        '<label>Archivo</label>' +
+        '<div style="display:flex;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2)">' +
+        (archivoNuevo.tapa ? '<img src="' + archivoNuevo.tapa + '" style="width:48px;height:62px;object-fit:cover;border-radius:3px;border:1px solid var(--line-2)">'
+                           : '<div class="tapa"><span>PDF</span></div>') +
+        '<div><b>' + esc(archivoNuevo.nombre) + "</b>" +
+        '<div class="mono" style="font-size:12px;color:var(--ink-3);margin-top:3px">' +
+        (archivoNuevo.paginas ? archivoNuevo.paginas + " pág. · " : "") +
+        (archivoNuevo.tamano/1024).toFixed(0) + " KB</div></div></div>";
+    } else {
+      caja.innerHTML = '<label>Archivo</label><p class="ayuda">Se mantiene el PDF que ya estaba cargado. ' +
+                       'Para cambiarlo, borre el documento y suba el nuevo.</p>';
+    }
+    contarLetras();
+    $("mDoc").classList.add("on");
+    setTimeout(function(){ $("fTitulo").focus(); }, 60);
+  }
+
+  function sugerirTitulo(n){
+    if(!n) return "";
+    var s = n.replace(/\.pdf$/i, "").replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function contarLetras(){
+    var t = $("fTitulo").value.length, d = $("fDesc").value.length;
+    $("cTitulo").textContent = t + " / 80";
+    $("cTitulo").className = "cuenta" + (t > 70 ? " mal" : "");
+    $("cDesc").textContent = d + " / 160";
+    $("cDesc").className = "cuenta" + (d > 145 ? " mal" : "");
+  }
+  $("fTitulo").addEventListener("input", contarLetras);
+  $("fDesc").addEventListener("input", contarLetras);
+  $("aTexto").addEventListener("input", function(){
+    var n = $("aTexto").value.length;
+    $("cAviso").textContent = n + " / 110";
+    $("cAviso").className = "cuenta" + (n > 95 ? " mal" : "");
+  });
+
+  $("btnGuardarDoc").addEventListener("click", function(){
+    var titulo = $("fTitulo").value.trim();
+    if(!titulo){ aviso("Falta el título"); $("fTitulo").focus(); return; }
+    var items = B.pantallas.documentos.items;
+    var u = USUARIOS[rol];
+
+    if(editando){
+      editando.titulo = titulo;
+      editando.descripcion = $("fDesc").value.trim();
+      editando.categoria = $("fCat").value;
+      editando.fecha = $("fFecha").value;
+      editando.autor = $("fAutor").value.trim();
+      editando.cargo = $("fCargo").value.trim();
+      editando.destacado = $("fDest").checked;
+      if(editando.estado === "publicado") editando.estado = u.puedePublicar ? "aprobado" : "pendiente";
+      aviso("Cambios guardados en el borrador");
+    } else {
+      var id = "doc-" + Date.now().toString(36);
+      var nuevo = {
+        id: id, titulo: titulo, descripcion: $("fDesc").value.trim(),
+        categoria: $("fCat").value, fecha: $("fFecha").value,
+        autor: $("fAutor").value.trim(), cargo: $("fCargo").value.trim(),
+        destacado: $("fDest").checked,
+        paginas: archivoNuevo && archivoNuevo.paginas ? archivoNuevo.paginas : 1,
+        tapa: archivoNuevo ? archivoNuevo.tapa : null,
+        archivo: "contenido/documentos/" + id + ".pdf",
+        estado: u.puedePublicar ? "aprobado" : "pendiente",
+        subidoPor: u.nombre
+      };
+      items.unshift(nuevo);
+      if(archivoNuevo){
+        guardarPdf(id, archivoNuevo.bytes);
+        if(enLinea) subirAlServidor(id, archivoNuevo.bytes);
+      }
+      aviso(u.puedePublicar ? "Documento agregado al borrador" : "Enviado para que lo revise el encargado");
+    }
+    archivoNuevo = null;
+    guardarBorrador();
+    $("mDoc").classList.remove("on");
+    pintarDocs(); contar();
+  });
+
+  function guardarBorrador(){ escribir("borrador", B); }
+
+  function subirAlServidor(id, bytes){
+    fetch("/api/documento?id=" + encodeURIComponent(id), {
+      method:"POST", credentials:"same-origin",
+      headers:{ "Content-Type":"application/pdf" },
+      body: bytes
+    }).then(function(r){
+      if(r.status === 401){ $("mEntrar").classList.add("on"); aviso("Hay que entrar para subir el archivo"); return; }
+      if(!r.ok) return r.json().then(function(j){ aviso(j.error || "No se pudo subir el archivo"); });
+      aviso("Archivo guardado en el tótem");
+    }).catch(function(){ aviso("No se pudo subir: el servidor no responde"); });
+  }
+
+  /* ============ lista de documentos ============ */
+  function pintarFiltros(){
+    var cats = [
+      { id:"todos", nombre:"Todos" },
+      { id:"visitas", nombre:"Para visitas" },
+      { id:"estudiantes", nombre:"Para estudiantes" },
+      { id:"pendiente", nombre:"Pendientes de aprobar" }
+    ];
+    $("filtros").innerHTML = cats.map(function(c){
+      return '<button data-f="' + c.id + '" aria-pressed="' + (c.id === filtro) + '">' + c.nombre + "</button>";
+    }).join("");
+    Array.prototype.forEach.call($("filtros").children, function(b){
+      b.addEventListener("click", function(){ filtro = b.dataset.f; pintarFiltros(); pintarDocs(); });
+    });
+  }
+
+  function pintarDocs(){
+    var items = B.pantallas.documentos.items;
+    $("nDocs").textContent = items.length;
+    var vis = items.filter(function(d){
+      if(filtro === "todos") return true;
+      if(filtro === "pendiente") return d.estado === "pendiente";
+      return d.categoria === filtro;
+    });
+    if(!vis.length){
+      $("listaDocs").innerHTML = '<div class="vacio">No hay documentos que mostrar con este filtro.</div>';
+      return;
+    }
+    var u = USUARIOS[rol];
+    $("listaDocs").innerHTML = vis.map(function(d){
+      var estado = d.estado === "pendiente" ? '<span class="chip pend">Pendiente</span>'
+                 : d.estado === "aprobado"  ? '<span class="chip pend">Sin publicar</span>'
+                 : '<span class="chip pub">En el tótem</span>';
+      var publico = d.categoria === "visitas" ? '<span class="chip vis">Visitas</span>'
+                                              : '<span class="chip est">Estudiantes</span>';
+      return '<div class="item' + (d.estado === "pendiente" ? " pend" : "") + '" data-id="' + d.id + '">' +
+        '<div class="tapa">' + (d.tapa ? '<img src="' + d.tapa + '" alt="">' : "<span>PDF</span>") + "</div>" +
+        "<div><div class=\"tit\">" + esc(d.titulo) + "</div>" +
+        '<div class="des">' + esc(d.descripcion || "Sin descripción") + "</div>" +
+        '<div class="meta">' + estado + publico +
+          "<span>" + esc(d.autor || "—") + "</span>" +
+          "<span>" + (d.paginas || "?") + " pág.</span>" +
+          "<span>" + fecha(d.fecha) + "</span>" +
+        "</div></div>" +
+        '<div class="acc">' +
+          (d.estado === "pendiente" && u.puedePublicar
+            ? '<button class="btn chico pri" data-acc="aprobar">Aprobar</button>' : "") +
+          '<button class="btn chico" data-acc="editar">Editar</button>' +
+          '<button class="btn chico peligro" data-acc="borrar">Borrar</button>' +
+        "</div></div>";
+    }).join("");
+
+    Array.prototype.forEach.call($("listaDocs").querySelectorAll(".item"), function(el){
+      var d = items.filter(function(x){ return x.id === el.dataset.id; })[0];
+      Array.prototype.forEach.call(el.querySelectorAll("[data-acc]"), function(b){
+        b.addEventListener("click", function(){
+          var a = b.dataset.acc;
+          if(a === "editar") abrirFicha(d, null);
+          if(a === "aprobar"){ d.estado = "aprobado"; guardarBorrador(); pintarDocs(); contar(); aviso("Aprobado. Falta publicarlo."); }
+          if(a === "borrar"){
+            if(!confirm("¿Borrar “" + d.titulo + "”?\n\nSe quita del borrador. El tótem lo dejará de mostrar cuando publique.")) return;
+            B.pantallas.documentos.items = items.filter(function(x){ return x.id !== d.id; });
+            borrarPdf(d.id);
+            if(enLinea) fetch("/api/documento?id=" + encodeURIComponent(d.id),
+              { method:"DELETE", credentials:"same-origin" }).catch(function(){});
+            guardarBorrador(); pintarDocs(); contar(); aviso("Borrado del borrador");
+          }
+        });
+      });
+    });
+  }
+
+  /* ============ avisos ============ */
+  function estadoAviso(a){
+    var h = hoy();
+    if(a.desde && a.desde > h) return { txt:"Programado", cls:"pend" };
+    if(a.hasta && a.hasta < h) return { txt:"Vencido", cls:"venc" };
+    return { txt:"En pantalla", cls:"pub" };
+  }
+  function pintarAvisos(){
+    var avs = B.avisos || [];
+    $("nAvisos").textContent = avs.filter(function(a){ return estadoAviso(a).txt === "En pantalla"; }).length;
+    if(!avs.length){
+      $("listaAvisos").innerHTML = '<div class="vacio">No hay avisos. La pantalla de inicio se muestra sin la franja dorada.</div>';
+      return;
+    }
+    $("listaAvisos").innerHTML = avs.map(function(a){
+      var e = estadoAviso(a);
+      return '<div class="item" data-id="' + a.id + '" style="grid-template-columns:minmax(0,1fr) auto">' +
+        '<div><div class="tit">' + esc(a.texto) + "</div>" +
+        '<div class="meta" style="margin-top:6px"><span class="chip ' + e.cls + '">' + e.txt + "</span>" +
+        "<span>" + fecha(a.desde) + " → " + fecha(a.hasta) + "</span></div></div>" +
+        '<div class="acc"><button class="btn chico" data-acc="editar">Editar</button>' +
+        '<button class="btn chico peligro" data-acc="borrar">Borrar</button></div></div>';
+    }).join("");
+    Array.prototype.forEach.call($("listaAvisos").querySelectorAll(".item"), function(el){
+      var a = avs.filter(function(x){ return x.id === el.dataset.id; })[0];
+      Array.prototype.forEach.call(el.querySelectorAll("[data-acc]"), function(b){
+        b.addEventListener("click", function(){
+          if(b.dataset.acc === "editar") abrirAviso(a);
+          else {
+            B.avisos = avs.filter(function(x){ return x.id !== a.id; });
+            guardarBorrador(); pintarAvisos(); contar(); aviso("Aviso borrado");
+          }
+        });
+      });
+    });
+  }
+  function abrirAviso(a){
+    editandoAviso = a || null;
+    $("aTexto").value = a ? a.texto : "";
+    $("aDesde").value = a ? a.desde : hoy();
+    $("aHasta").value = a ? a.hasta : "";
+    $("cAviso").textContent = (a ? a.texto.length : 0) + " / 110";
+    $("mAviso").classList.add("on");
+    setTimeout(function(){ $("aTexto").focus(); }, 60);
+  }
+  $("btnNuevoAviso").addEventListener("click", function(){ abrirAviso(null); });
+  $("btnGuardarAviso").addEventListener("click", function(){
+    var t = $("aTexto").value.trim();
+    if(!t){ aviso("Falta el texto del aviso"); return; }
+    if($("aHasta").value && $("aDesde").value && $("aHasta").value < $("aDesde").value){
+      aviso("La fecha de término es anterior a la de inicio"); return;
+    }
+    if(editandoAviso){
+      editandoAviso.texto = t; editandoAviso.desde = $("aDesde").value; editandoAviso.hasta = $("aHasta").value;
+    } else {
+      B.avisos.push({ id:"av-" + Date.now().toString(36), texto:t, desde:$("aDesde").value, hasta:$("aHasta").value });
+    }
+    guardarBorrador(); $("mAviso").classList.remove("on"); pintarAvisos(); contar();
+    aviso("Aviso guardado en el borrador");
+  });
+
+  /* ============ textos ============ */
+  var PANTALLAS = [
+    { k:"documentos", n:"Documentos" }, { k:"liceo", n:"El Liceo" }, { k:"agro", n:"Agropecuaria" },
+    { k:"campo", n:"El Campo" }, { k:"visita", n:"Visítanos" }
+  ];
+  function pintarTextos(){
+    var h = '<div class="bloque"><h3>Pantalla de inicio</h3>' +
+      '<p class="sub">La frase de arriba, la invitación a tocar y las cifras que van rotando.</p>' +
+      '<div class="campo"><label>Frase superior</label><input data-t="atractor.lead" value="' + esc(B.atractor.lead) + '"></div>' +
+      '<div class="campo"><label>Invitación a tocar</label><input data-t="atractor.cta" value="' + esc(B.atractor.cta) + '"></div>' +
+      "<label style=\"font-size:13px;font-weight:600;display:block;margin:18px 0 8px\">Cifras que rotan</label>";
+    B.atractor.cifras.forEach(function(c, i){
+      h += '<div class="fila" style="grid-template-columns:90px 70px 1fr;margin-bottom:10px">' +
+        '<input data-t="cifra.' + i + '.valor" value="' + esc(c.valor) + '" aria-label="Número">' +
+        '<input data-t="cifra.' + i + '.unidad" value="' + esc(c.unidad) + '" aria-label="Unidad">' +
+        '<input data-t="cifra.' + i + '.texto" value="' + esc(c.texto) + '" aria-label="Texto"></div>';
+    });
+    h += "</div>";
+    PANTALLAS.forEach(function(p){
+      var s = B.pantallas[p.k];
+      h += '<div class="bloque"><h3>' + p.n + "</h3>" +
+        '<div class="campo"><label>Rótulo pequeño</label><input data-t="' + p.k + '.kicker" value="' + esc(s.kicker) + '"></div>' +
+        '<div class="campo"><label>Título</label><input data-t="' + p.k + '.titulo" value="' + esc(s.titulo) + '"></div>' +
+        '<div class="campo"><label>Bajada</label><textarea data-t="' + p.k + '.bajada">' + esc(s.bajada) + "</textarea></div></div>";
+    });
+    $("editTextos").innerHTML = h;
+    Array.prototype.forEach.call($("editTextos").querySelectorAll("[data-t]"), function(el){
+      el.addEventListener("input", function(){
+        var r = el.dataset.t.split(".");
+        if(r[0] === "atractor") B.atractor[r[1]] = el.value;
+        else if(r[0] === "cifra") B.atractor.cifras[+r[1]][r[2]] = el.value;
+        else B.pantallas[r[0]][r[1]] = el.value;
+        guardarBorrador(); contar();
+      });
+    });
+  }
+
+  /* ============ cambios pendientes ============ */
+  function cambios(){
+    var lista = [];
+    var pubDocs = D.pantallas.documentos.items, borDocs = B.pantallas.documentos.items;
+    borDocs.forEach(function(d){
+      var v = pubDocs.filter(function(x){ return x.id === d.id; })[0];
+      if(!v) lista.push({ t:"Documento nuevo: " + d.titulo, pend: d.estado === "pendiente" });
+      else if(JSON.stringify(v) !== JSON.stringify(d))
+        lista.push({ t:"Documento editado: " + d.titulo, pend: d.estado === "pendiente" });
+    });
+    pubDocs.forEach(function(d){
+      if(!borDocs.some(function(x){ return x.id === d.id; }))
+        lista.push({ t:"Documento borrado: " + d.titulo, pend:false });
+    });
+    if(JSON.stringify(D.avisos) !== JSON.stringify(B.avisos)) lista.push({ t:"Cambios en los avisos", pend:false });
+    if(JSON.stringify(D.atractor) !== JSON.stringify(B.atractor)) lista.push({ t:"Cambios en la pantalla de inicio", pend:false });
+    PANTALLAS.forEach(function(p){
+      var a = clon(D.pantallas[p.k]), b = clon(B.pantallas[p.k]);
+      delete a.items; delete b.items;
+      if(JSON.stringify(a) !== JSON.stringify(b)) lista.push({ t:"Textos de " + p.n, pend:false });
+    });
+    return lista;
+  }
+  function contar(){
+    var n = cambios().length;
+    $("cont").textContent = n;
+    $("btnPublicar").disabled = n === 0;
+  }
+
+  /* ============ publicar ============ */
+  $("btnPublicar").addEventListener("click", function(){
+    var l = cambios(), u = USUARIOS[rol];
+    var pendientes = l.filter(function(x){ return x.pend; }).length;
+    var h = "";
+
+    if(!u.puedePublicar){
+      h = '<div class="modo" style="margin:0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/>' +
+          '<path d="M12 8v5M12 16.5v.01"/></svg><div><b>Usted no publica directamente</b>' +
+          "Sus cambios quedan esperando a que Marcela Ibáñez, encargada UTP, los revise. " +
+          "Es una pantalla en el portón del liceo: la ve todo el que llega.</div></div>";
+    }
+    h += '<p style="margin:' + (u.puedePublicar ? "0" : "16px") + ' 0 12px;color:var(--ink-2)">' +
+         "Se van a aplicar " + l.length + (l.length === 1 ? " cambio:" : " cambios:") + "</p><ul style=\"margin:0;padding-left:20px;line-height:1.9\">";
+    l.forEach(function(x){ h += "<li>" + esc(x.t) + (x.pend ? ' <span class="chip pend">Pendiente</span>' : "") + "</li>"; });
+    h += "</ul>";
+
+    if(pendientes && u.puedePublicar){
+      h += '<p style="margin-top:16px;color:var(--clay)"><b>' + pendientes + " sin aprobar.</b> " +
+           "Apruébelos en la lista antes de publicar, o se van a ir así como están.</p>";
+    }
+    if(u.puedePublicar){
+      h += '<div class="campo" style="margin-top:20px"><label for="pNota">Nota de esta versión</label>' +
+           '<input id="pNota" placeholder="Qué cambió, en pocas palabras"></div>';
+    }
+    $("pubCuerpo").innerHTML = h;
+    $("btnConfirmarPub").textContent = u.puedePublicar ? "Publicar al tótem" : "Enviar a revisión";
+    $("mPub").classList.add("on");
+  });
+
+  $("btnConfirmarPub").addEventListener("click", function(){
+    var u = USUARIOS[rol];
+    if(!u.puedePublicar){
+      $("mPub").classList.remove("on");
+      aviso("Enviado. Marcela Ibáñez lo va a revisar.");
+      return;
+    }
+    var nota = ($("pNota") && $("pNota").value.trim()) || "Sin nota";
+    B.pantallas.documentos.items.forEach(function(d){ d.estado = "publicado"; });
+
+    if(enLinea){
+      fetch("/api/publicar", {
+        method:"POST", credentials:"same-origin",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ contenido: B, nota: nota })
+      }).then(function(r){ return r.json().then(function(j){ return { ok:r.ok, s:r.status, j:j }; }); })
+        .then(function(x){
+          if(x.s === 401){ $("mEntrar").classList.add("on"); aviso("Hay que entrar para publicar"); return; }
+          if(!x.ok){ aviso(x.j.error || "No se pudo publicar"); return; }
+          B.version = x.j.version;
+          D = clon(B);
+          escribir("publicado", D); guardarBorrador();
+          $("mPub").classList.remove("on");
+          pintarDocs(); pintarEstado(); contar(); probarServidor();
+          aviso("Publicado como v" + x.j.version + ". El tótem lo toma en menos de un minuto.");
+        })
+        .catch(function(){ aviso("El servidor no responde"); });
+      return;
+    }
+
+    var hoyS = hoy().replace(/-/g, ".");
+    var mismos = versiones.filter(function(v){ return v.version.indexOf(hoyS) === 0; }).length;
+    B.version = hoyS + "-" + (mismos + 1);
+
+    versiones.forEach(function(v){ v.activa = false; });
+    versiones.unshift({
+      version: B.version,
+      fecha: new Date().toISOString().slice(0, 16).replace("T", " "),
+      quien: u.nombre, nota: nota, activa: true,
+      contenido: clon(B)
+    });
+    if(versiones.length > 12) versiones = versiones.slice(0, 12);
+
+    D = clon(B);
+    escribir("publicado", D); escribir("versiones", versiones); guardarBorrador();
+    $("mPub").classList.remove("on");
+    pintarDocs(); pintarVersiones(); contar();
+    aviso(enLinea ? "Publicado. El tótem lo toma en menos de un minuto."
+                  : "Publicado como v" + B.version + " (modo demostración)");
+  });
+
+  /* ============ versiones ============ */
+  function pintarVersiones(){
+    $("listaVersiones").innerHTML = versiones.map(function(v, i){
+      return '<div class="ver' + (v.activa ? " activa" : "") + '">' +
+        '<span class="v">v' + v.version + "</span>" +
+        '<span class="d"><b>' + esc(v.nota) + "</b><br>" +
+        '<span class="mono" style="font-size:12px;color:var(--ink-3)">' + v.fecha + " · " + esc(v.quien) + "</span></span>" +
+        (v.activa ? '<span class="chip pub">En el tótem</span>'
+                  : (v.contenido ? '<button class="btn chico" data-rest="' + i + '">Restaurar</button>' : "")) +
+        "</div>";
+    }).join("");
+    Array.prototype.forEach.call($("listaVersiones").querySelectorAll("[data-rest]"), function(b){
+      b.addEventListener("click", function(){
+        var v = versiones[+b.dataset.rest];
+        if(!confirm("¿Volver a la versión v" + v.version + "?\n\n" + v.nota +
+                    "\n\nEl tótem va a mostrar ese contenido.")) return;
+        if(v.remota){
+          fetch("/api/restaurar", {
+            method:"POST", credentials:"same-origin",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ version: v.version })
+          }).then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+            .then(function(x){
+              if(!x.ok){ aviso(x.j.error || "No se pudo restaurar"); return; }
+              localStorage.removeItem("panel:borrador");
+              aviso("Restaurada la versión v" + v.version);
+              probarServidor();
+            }).catch(function(){ aviso("El servidor no responde"); });
+          return;
+        }
+        B = clon(v.contenido); D = clon(v.contenido);
+        versiones.forEach(function(x){ x.activa = false; }); v.activa = true;
+        escribir("publicado", D); escribir("versiones", versiones); guardarBorrador();
+        pintarDocs(); pintarAvisos(); pintarTextos(); pintarVersiones(); contar();
+        aviso("Restaurada la versión v" + v.version);
+      });
+    });
+  }
+
+  /* ============ estado del tótem ============ */
+  function pintarEstado(){
+    var filas = [
+      ["Equipo", "TOTEM-MMC-01 · Portón principal"],
+      ["Versión mostrando", "v" + D.version],
+      ["Última consulta", enLinea ? "hace 4 minutos" : "sin conexión al equipo"],
+      ["Documentos en pantalla", D.pantallas.documentos.items.length],
+      ["Avisos vigentes", (D.avisos || []).filter(function(a){ return estadoAviso(a).txt === "En pantalla"; }).length]
+    ];
+    $("estadoTotem").innerHTML = "<h3>Estado</h3><p class=\"sub\">Lo que el tótem está mostrando ahora.</p>" +
+      '<div style="display:grid;grid-template-columns:auto 1fr;gap:0 20px">' +
+      filas.map(function(f){
+        return '<div class="mono" style="font-size:12px;color:var(--ink-3);padding:10px 0;border-top:1px solid var(--line)">' +
+               f[0] + '</div><div style="padding:10px 0;border-top:1px solid var(--line)">' + f[1] + "</div>";
+      }).join("") + "</div>";
+  }
+
+  /* ============ vista previa ============ */
+  $("btnVerDocs").addEventListener("click", function(){
+    var S = B.pantallas.documentos;
+    var items = S.items.filter(function(d){ return d.estado !== "pendiente"; });
+    var h = '<div class="tot" id="totPrev">' +
+      '<div class="t-top"><div class="cr"></div><div><b>Liceo Agrícola Marta Martínez Cruz</b>' +
+      "<span>Yerbas Buenas · Región del Maule</span></div></div>" +
+      '<div class="t-cuerpo"><div class="k">' + esc(S.kicker) + '</div><div class="h">' + esc(S.titulo) + "</div>" +
+      '<div class="s">' + esc(S.bajada) + "</div>" +
+      '<div class="cps"><span class="on">Todos</span><span>Para visitas</span><span>Para estudiantes</span></div>' +
+      '<div class="dl">' +
+      items.slice(0, 4).map(function(d){
+        return '<div class="d' + (d.destacado ? " dest" : "") + '"><div class="ic">PDF</div><div>' +
+          '<div class="th">' + esc(d.titulo) + "</div>" +
+          '<div class="tp">' + esc(d.descripcion) + "</div>" +
+          '<div class="tm"><i>' + esc(d.autor) + (d.cargo ? " · " + esc(d.cargo) : "") + "</i>   " +
+          (d.paginas || "?") + " pág.   " + fecha(d.fecha) + "</div></div></div>";
+      }).join("") + "</div></div>" +
+      '<div class="t-nav"><i>Inicio</i><i>El Liceo</i><i>Agropecuaria</i><i>El Campo</i>' +
+      '<i class="on">Documentos</i><i>Visítanos</i></div></div>';
+    $("previoCaja").innerHTML = h;
+    $("mPrev").classList.add("on");
+    var s = Math.min((innerHeight - 150) / 1920, 420 / 1080);
+    var t = $("totPrev");
+    t.style.transform = "scale(" + s + ")";
+    $("previoCaja").style.width = Math.round(1080 * s) + "px";
+    $("previoCaja").style.height = Math.round(1920 * s) + "px";
+  });
+
+  iniciar();
+})();
+</script>
