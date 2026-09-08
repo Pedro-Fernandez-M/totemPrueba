@@ -1,0 +1,1242 @@
+<title>Tótem Marta Martínez Cruz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --night:#07201A; --deep:#0C3327; --green:#12503B; --green-2:#17654A;
+  --bone:#F2F6EC; --bone-2:#BFCDBC; --bone-3:#89998A;
+  --gold:#E4AF4E; --gold-2:#F3D08A; --water:#5AA9CC; --clay:#C96A3C;
+  --line:rgba(242,246,236,.14); --line-2:rgba(242,246,236,.28);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{font-family:"Source Sans 3",-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Bitter",Georgia,serif;margin:0;text-wrap:balance}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important}}
+
+/* ===== lienzo del totem: 1080x1920 escalado al monitor ===== */
+#app{
+  position:absolute;top:0;left:0;width:1080px;height:1920px;transform-origin:top left;
+  background:var(--night);color:var(--bone);display:flex;flex-direction:column;overflow:hidden;
+  user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;
+}
+#app::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(23,101,74,.55), transparent 70%),
+    repeating-linear-gradient(96deg, rgba(242,246,236,.028) 0 2px, transparent 2px 46px);
+}
+
+/* ===== barra superior ===== */
+.top{
+  position:relative;z-index:2;height:150px;flex:none;display:flex;align-items:center;gap:26px;padding:0 46px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(7,32,26,.9),rgba(7,32,26,.4));
+}
+.crest{width:82px;height:82px;flex:none;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;
+  background:radial-gradient(circle at 40% 30%,var(--green-2),var(--deep))}
+.crest svg{width:44px;height:44px}
+.top .name{flex:1;min-width:0}
+.top .name b{display:block;font-family:"Bitter",serif;font-weight:700;font-size:34px;line-height:1.12;letter-spacing:-.01em}
+.top .name span{display:block;font-family:"IBM Plex Mono",monospace;font-size:15px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--bone-3);margin-top:5px}
+.bicent{flex:none;padding:9px 16px;border:1px solid var(--gold);border-radius:999px;
+  font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+
+/* ===== cuerpo ===== */
+.body{position:relative;z-index:1;flex:1;min-height:0}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;padding:52px 46px 34px;overflow:hidden}
+.screen.on{display:flex;animation:rise .45s cubic-bezier(.2,.7,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+.head{margin-bottom:34px;flex:none}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:17px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.title{font-size:62px;font-weight:800;line-height:1.02;letter-spacing:-.02em}
+.sub{font-size:25px;color:var(--bone-2);margin-top:16px;max-width:36ch;line-height:1.45}
+.scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:6px;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{width:8px}
+.scroll::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:99px}
+
+/* ===== atractor ===== */
+#sc-inicio{padding:0;justify-content:flex-end}
+.art{position:absolute;inset:0;overflow:hidden}
+.art canvas{width:100%;height:100%;display:block}
+.art::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(7,32,26,.15) 0%,rgba(7,32,26,.55) 46%,rgba(7,32,26,.97) 88%)}
+.attract{position:relative;z-index:2;padding:0 52px 54px}
+.lead{font-family:"IBM Plex Mono",monospace;font-size:19px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+.rot{min-height:330px;display:flex;flex-direction:column;justify-content:flex-end}
+.rot-n{font-family:"Bitter",serif;font-weight:800;font-size:150px;line-height:.88;letter-spacing:-.045em}
+.rot-n small{font-size:56px;letter-spacing:-.02em}
+.rot-t{font-size:34px;color:var(--bone-2);margin-top:20px;max-width:24ch;line-height:1.25}
+.dots{display:flex;gap:9px;margin-top:30px}
+.dots i{width:34px;height:4px;background:var(--line-2);border-radius:99px;transition:background .3s}
+.dots i.on{background:var(--gold)}
+.cue{margin-top:44px;display:inline-flex;align-items:center;gap:18px;padding:22px 38px;
+  border:2px solid var(--gold);border-radius:999px;font-size:29px;font-weight:600;color:var(--gold-2);
+  animation:breathe 2.6s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:translateY(0);box-shadow:0 0 0 0 rgba(228,175,78,.28)}50%{transform:translateY(-6px);box-shadow:0 0 0 16px rgba(228,175,78,0)}}
+.cue svg{width:34px;height:34px}
+.avisos{position:relative;z-index:2;margin:0 0 26px;height:74px;overflow:hidden;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(228,175,78,.07)}
+.avisos .av{position:absolute;inset:0;display:flex;align-items:center;gap:20px;padding:0 52px;
+  font-size:25px;color:var(--gold-2);opacity:0;transition:opacity .5s}
+.avisos .av.on{opacity:1}
+.avisos .av b{font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.16em;text-transform:uppercase;
+  color:#20180A;background:var(--gold);padding:6px 12px;border-radius:99px;flex:none}
+
+/* ===== piezas comunes ===== */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:rgba(242,246,236,.055);border:1px solid var(--line);border-radius:14px;padding:26px 28px}
+.card h4{font-size:27px;font-weight:700;margin-bottom:10px;line-height:1.15}
+.card p{margin:0;font-size:21px;color:var(--bone-2);line-height:1.42}
+.fig{border-left:3px solid var(--gold);padding:6px 0 6px 20px}
+.fig b{display:block;font-family:"Bitter",serif;font-size:52px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.fig b small{font-size:26px}
+.fig span{display:block;font-size:19px;color:var(--bone-3);margin-top:8px;line-height:1.3}
+
+.tl{list-style:none;margin:0;padding:0 0 0 34px;position:relative}
+.tl::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:2px;background:var(--line-2)}
+.tl li{position:relative;padding:0 0 30px}
+.tl li::before{content:"";position:absolute;left:-33px;top:12px;width:16px;height:16px;border-radius:50%;
+  background:var(--night);border:3px solid var(--gold)}
+.tl li.minor::before{border-color:var(--bone-3);width:12px;height:12px;left:-31px;top:14px}
+.tl .yr{font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600;color:var(--gold);letter-spacing:.04em}
+.tl .ev{font-size:23px;color:var(--bone-2);line-height:1.4;margin-top:4px}
+.tl .ev b{color:var(--bone);font-weight:600}
+
+.tabs{display:flex;gap:12px;margin-bottom:22px}
+.tabs button{flex:1;padding:20px 14px;border-radius:12px;cursor:pointer;border:1px solid var(--line-2);
+  background:transparent;color:var(--bone-2);font-size:25px;font-weight:600;transition:background .2s,color .2s,border-color .2s}
+.tabs button[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#20180A}
+.mods{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.mods li{display:flex;gap:18px;align-items:baseline;padding:15px 20px;background:rgba(242,246,236,.05);border-radius:10px;font-size:22px}
+.mods .n{font-family:"IBM Plex Mono",monospace;font-size:17px;color:var(--gold);flex:none;width:34px}
+.mods .m{color:var(--bone);line-height:1.3}
+.mods .tg{margin-left:auto;flex:none;font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--bone-3);border:1px solid var(--line-2);padding:4px 10px;border-radius:99px}
+.bul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.bul li{position:relative;padding-left:34px;font-size:22px;color:var(--bone-2);line-height:1.4}
+.bul li::before{content:"";position:absolute;left:2px;top:11px;width:14px;height:14px;border:2px solid var(--water);border-radius:3px;transform:rotate(45deg)}
+
+/* ===== mapa ===== */
+#sc-campo{padding-bottom:0}
+.map{flex:1;min-height:0;position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0A2A21}
+.map svg{width:100%;height:100%;display:block}
+.map-label{fill:rgba(242,246,236,.5);font-family:"IBM Plex Mono",monospace;font-size:16px;letter-spacing:.1em;text-transform:uppercase}
+.hot{cursor:pointer}
+.hot .halo{fill:rgba(228,175,78,.16)}
+.hot .pin{fill:var(--gold);stroke:#20180A;stroke-width:2}
+.hot .num{fill:#20180A;font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600;text-anchor:middle}
+.hot.sel .pin{fill:var(--bone)}
+.hot.sel .halo{fill:rgba(242,246,236,.22)}
+.legend{position:absolute;left:20px;bottom:20px;display:flex;align-items:center;gap:14px;
+  background:rgba(7,32,26,.82);border:1px solid var(--line);border-radius:10px;padding:12px 16px;
+  font-family:"IBM Plex Mono",monospace;font-size:15px;color:var(--bone-3);letter-spacing:.06em}
+.legend .bar{width:74px;height:6px;border-top:2px solid var(--bone-3);border-left:2px solid var(--bone-3);border-right:2px solid var(--bone-3)}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:5;
+  background:linear-gradient(180deg,rgba(12,51,39,.97),rgba(7,32,26,.99));border-top:2px solid var(--gold);
+  padding:32px 40px 36px;transform:translateY(101%);transition:transform .32s cubic-bezier(.2,.7,.3,1);
+  max-height:62%;overflow-y:auto}
+.sheet.open{transform:translateY(0)}
+.sheet-top{display:flex;align-items:flex-start;gap:20px;margin-bottom:14px}
+.sheet-n{flex:none;width:56px;height:56px;border-radius:50%;background:var(--gold);color:#20180A;display:grid;place-items:center;
+  font-family:"IBM Plex Mono",monospace;font-size:25px;font-weight:600}
+.sheet h4{font-size:38px;font-weight:800;line-height:1.08;flex:1}
+.sheet-x{flex:none;width:56px;height:56px;border-radius:50%;cursor:pointer;background:transparent;
+  border:1px solid var(--line-2);color:var(--bone-2);font-size:28px;line-height:1}
+.sheet p{font-size:23px;color:var(--bone-2);line-height:1.45;margin:0 0 18px}
+.facts{display:flex;flex-wrap:wrap;gap:10px}
+.facts span{font-family:"IBM Plex Mono",monospace;font-size:16px;letter-spacing:.06em;
+  border:1px solid var(--line-2);border-radius:99px;padding:7px 14px;color:var(--bone)}
+
+/* ===== visita ===== */
+.qr{width:290px;height:290px;background:var(--bone);padding:14px;border-radius:8px;flex:none;
+  display:grid;grid-template-columns:repeat(25,1fr);grid-template-rows:repeat(25,1fr)}
+.qr i{display:block}
+.qr i.k{background:#07201A}
+.contact{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+.contact li{display:flex;gap:16px;align-items:baseline;font-size:23px;line-height:1.35}
+.contact .lab{font-family:"IBM Plex Mono",monospace;font-size:15px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--bone-3);flex:none;width:140px;padding-top:4px}
+.contact .val{color:var(--bone)}
+.contact .val.mono{font-family:"IBM Plex Mono",monospace;font-size:21px}
+
+/* ===== navegacion ===== */
+.nav{position:relative;z-index:3;flex:none;height:212px;display:flex;border-top:1px solid var(--line-2);background:rgba(6,26,21,.96)}
+.nav button{position:relative;flex:1;border:0;background:transparent;cursor:pointer;color:var(--bone-3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;padding:6px 4px 0;
+  font-size:21px;font-weight:600;border-right:1px solid var(--line);transition:color .2s,background .2s;
+  line-height:1.15;text-align:center}
+.nav button:last-child{border-right:0}
+.nav button svg{width:46px;height:46px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav button[aria-current="true"]{color:var(--gold);background:linear-gradient(180deg,rgba(228,175,78,.14),transparent)}
+.nav button[aria-current="true"]::before{content:"";position:absolute;top:0;width:20%;height:4px;background:var(--gold)}
+
+/* ===== franja de estado ===== */
+.status{position:relative;z-index:3;flex:none;height:70px;display:flex;align-items:center;gap:26px;padding:0 46px;
+  background:#051914;border-top:1px solid var(--line);cursor:pointer;
+  font-family:"IBM Plex Mono",monospace;font-size:17px;color:var(--bone-3);letter-spacing:.05em}
+.status .dot{width:9px;height:9px;border-radius:50%;background:#3E9E70;box-shadow:0 0 8px #3E9E70;flex:none}
+.status .dot.off{background:var(--clay);box-shadow:0 0 8px var(--clay)}
+.status .sp{margin-left:auto}
+.status .fs{border:1px solid var(--line-2);background:transparent;color:var(--bone-3);border-radius:6px;
+  padding:4px 10px;font-family:inherit;font-size:15px;cursor:pointer}
+
+/* ===== panel tecnico ===== */
+.tech{position:absolute;inset:0;z-index:9;background:rgba(4,16,13,.975);padding:56px 52px;
+  display:none;flex-direction:column;gap:24px;font-family:"IBM Plex Mono",monospace}
+.tech.open{display:flex}
+.tech h4{font-family:"IBM Plex Mono",monospace;font-size:24px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.tech table{width:100%;border-collapse:collapse;font-size:20px}
+.tech td{padding:13px 0;border-bottom:1px solid var(--line);color:var(--bone-2)}
+.tech td:last-child{text-align:right;color:var(--bone);font-variant-numeric:tabular-nums}
+.tech .log{background:#020D0A;border:1px solid var(--line);border-radius:8px;padding:20px;font-size:17px;
+  line-height:1.85;color:var(--bone-3);flex:1;overflow:auto;white-space:pre-wrap}
+.tech .log b{color:#7BD0A3;font-weight:400}
+.tech .log u{color:var(--gold);text-decoration:none}
+.tech .btns{display:flex;gap:14px}
+.tech .btns button{flex:1;padding:20px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:19px;
+  letter-spacing:.08em;background:transparent;border:1px solid var(--line-2);color:var(--bone)}
+.tech .btns button.pri{background:var(--gold);border-color:var(--gold);color:#20180A;font-weight:600}
+
+/* ===== documentos ===== */
+.chips{display:flex;gap:12px;margin-bottom:24px;flex:none}
+.chips button{padding:16px 26px;border-radius:999px;cursor:pointer;border:1px solid var(--line-2);
+  background:transparent;color:var(--bone-2);font-size:23px;font-weight:600;transition:.2s}
+.chips button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#20180A}
+.docs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+.doc{display:flex;gap:24px;align-items:flex-start;padding:26px 28px;cursor:pointer;text-align:left;width:100%;
+  background:rgba(242,246,236,.055);border:1px solid var(--line);border-radius:14px;color:inherit;
+  font-family:inherit;transition:background .2s,border-color .2s}
+.doc:active{background:rgba(228,175,78,.12);border-color:var(--gold)}
+.doc.dest{border-color:rgba(228,175,78,.5);background:rgba(228,175,78,.07)}
+.doc-ico{flex:none;width:72px;height:90px;border-radius:6px;border:2px solid var(--gold);position:relative;
+  background:rgba(228,175,78,.10);display:grid;place-items:end center;padding-bottom:10px}
+.doc-ico::before{content:"";position:absolute;top:0;right:0;border-width:0 20px 20px 0;border-style:solid;
+  border-color:transparent var(--night) transparent transparent}
+.doc-ico span{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;color:var(--gold);letter-spacing:.08em}
+.doc-txt{flex:1;min-width:0}
+.doc-txt .h{display:block;font-family:"Bitter",serif;font-size:28px;font-weight:700;line-height:1.15;margin-bottom:8px}
+.doc-txt .p{display:block;margin:0 0 12px;font-size:20px;color:var(--bone-2);line-height:1.4}
+.doc-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:"IBM Plex Mono",monospace;
+  font-size:15px;color:var(--bone-3);letter-spacing:.04em}
+.doc-meta .aut{color:var(--gold)}
+.doc-go{flex:none;align-self:center;width:56px;height:56px;border-radius:50%;border:1px solid var(--line-2);
+  display:grid;place-items:center;color:var(--bone-2);font-size:26px}
+.docs-vacio{padding:60px 0;text-align:center;color:var(--bone-3);font-size:24px}
+
+/* ===== lector de PDF ===== */
+.lector{position:absolute;inset:0;z-index:8;background:var(--night);display:none;flex-direction:column}
+.lector.open{display:flex}
+.lec-top{flex:none;display:flex;align-items:center;gap:22px;padding:26px 40px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(12,51,39,.9),rgba(7,32,26,.5))}
+.lec-top .t{flex:1;min-width:0}
+.lec-top .t b{display:block;font-family:"Bitter",serif;font-size:32px;font-weight:700;line-height:1.15}
+.lec-top .t span{display:block;font-family:"IBM Plex Mono",monospace;font-size:16px;color:var(--gold);margin-top:6px;letter-spacing:.06em}
+.lec-x{flex:none;width:76px;height:76px;border-radius:50%;cursor:pointer;background:transparent;
+  border:1px solid var(--line-2);color:var(--bone-2);font-size:36px;line-height:1}
+.lec-doc{flex:1;min-height:0;overflow:auto;background:#061A15;padding:26px;display:flex;justify-content:center;align-items:flex-start}
+.lec-doc canvas{background:#fff;border-radius:3px;box-shadow:0 18px 50px -18px rgba(0,0,0,.8);display:block;max-width:100%}
+.lec-doc embed{width:100%;height:100%;border:0;background:#fff;border-radius:3px}
+.lec-cargando{color:var(--bone-3);font-family:"IBM Plex Mono",monospace;font-size:22px;padding:80px 0;text-align:center}
+.lec-bar{flex:none;display:flex;align-items:center;gap:14px;padding:22px 34px;border-top:1px solid var(--line-2);background:rgba(6,26,21,.96)}
+.lec-bar button{height:96px;border-radius:12px;cursor:pointer;border:1px solid var(--line-2);background:transparent;
+  color:var(--bone);font-family:inherit;font-size:24px;font-weight:600;padding:0 30px;display:flex;align-items:center;gap:12px}
+.lec-bar button:disabled{opacity:.32}
+.lec-bar button.pri{background:var(--gold);border-color:var(--gold);color:#20180A}
+.lec-pag{font-family:"IBM Plex Mono",monospace;font-size:24px;color:var(--bone-2);min-width:150px;text-align:center;
+  font-variant-numeric:tabular-nums}
+.lec-bar .sp{flex:1}
+.lec-qr{position:absolute;right:34px;bottom:150px;z-index:3;background:var(--bone);padding:16px;border-radius:12px;
+  display:none;box-shadow:0 20px 50px -14px rgba(0,0,0,.7)}
+.lec-qr.open{display:block}
+.lec-qr .grid{width:250px;height:250px;display:grid}
+.lec-qr .grid i{display:block}
+.lec-qr .grid i.k{background:#07201A}
+.lec-qr p{margin:12px 0 0;font-size:16px;color:#14201A;text-align:center;max-width:250px;line-height:1.35}
+</style>
+
+<div id="app">
+
+  <div class="top">
+    <div class="crest" aria-hidden="true">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#E4AF4E" stroke-width="2" stroke-linecap="round">
+        <path d="M24 42V16"/>
+        <path d="M24 22c-6-1-9-5-9-11 6 0 9 4 9 11z" fill="rgba(228,175,78,.25)"/>
+        <path d="M24 30c6-1 9-5 9-11-6 0-9 4-9 11z" fill="rgba(228,175,78,.25)"/>
+        <path d="M10 42h28"/>
+      </svg>
+    </div>
+    <div class="name"><b id="cNombre">—</b><span id="cUbic">—</span></div>
+    <div class="bicent" id="cInsignia">—</div>
+  </div>
+
+  <div class="body">
+
+    <!-- ATRACTOR -->
+    <section class="screen on" id="sc-inicio">
+      <div class="art"><canvas id="art"></canvas></div>
+      <div class="avisos" id="avisos"></div>
+      <div class="attract">
+        <div class="lead" id="aLead">—</div>
+        <div class="rot">
+          <div class="rot-n" id="rotN">—</div>
+          <div class="rot-t" id="rotT">—</div>
+        </div>
+        <div class="dots" id="dots"></div>
+        <div class="cue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11V6a2 2 0 1 1 4 0v9"/>
+            <path d="M13 12a2 2 0 1 1 4 0v4a5 5 0 0 1-5 5h-1.5a5 5 0 0 1-4.2-2.3L4 15.5a1.8 1.8 0 0 1 2.7-2.3L9 15"/>
+          </svg>
+          <span id="aCta">—</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- EL LICEO -->
+    <section class="screen" id="sc-liceo">
+      <div class="head">
+        <div class="kicker" id="lKicker"></div>
+        <h2 class="title" id="lTitulo"></h2>
+        <p class="sub" id="lBajada"></p>
+      </div>
+      <div class="scroll">
+        <div class="g3" id="lFiguras" style="margin-bottom:34px"></div>
+        <ol class="tl" id="lHitos"></ol>
+        <div class="g2" id="lTarjetas" style="margin-top:14px"></div>
+      </div>
+    </section>
+
+    <!-- AGROPECUARIA -->
+    <section class="screen" id="sc-agro">
+      <div class="head">
+        <div class="kicker" id="gKicker"></div>
+        <h2 class="title" id="gTitulo"></h2>
+        <p class="sub" id="gBajada"></p>
+      </div>
+      <div class="scroll">
+        <div class="tabs" id="gTabs" role="tablist"></div>
+        <ul class="mods" id="gMods"></ul>
+        <h4 id="gPerfilT" style="font-size:29px;margin:34px 0 18px"></h4>
+        <ul class="bul" id="gPerfil"></ul>
+        <div class="g3" id="gFiguras" style="margin-top:38px"></div>
+        <div class="g2" id="gTarjetas" style="margin-top:24px"></div>
+      </div>
+    </section>
+
+    <!-- EL CAMPO -->
+    <section class="screen" id="sc-campo">
+      <div class="head" style="margin-bottom:22px">
+        <div class="kicker" id="mKicker"></div>
+        <h2 class="title" id="mTitulo"></h2>
+        <p class="sub" id="mBajada" style="font-size:23px"></p>
+      </div>
+      <div class="map" id="mapWrap">
+        <div id="planoHost"></div>
+        <div class="legend"><span class="bar"></span> <span id="mEscala"></span></div>
+        <div class="sheet" id="sheet">
+          <div class="sheet-top">
+            <div class="sheet-n" id="shN">1</div>
+            <h4 id="shT">—</h4>
+            <button class="sheet-x" id="shX" aria-label="Cerrar">×</button>
+          </div>
+          <p id="shP">—</p>
+          <div class="facts" id="shF"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOCUMENTOS -->
+    <section class="screen" id="sc-docs">
+      <div class="head" style="margin-bottom:26px">
+        <div class="kicker" id="dKicker"></div>
+        <h2 class="title" id="dTitulo"></h2>
+        <p class="sub" id="dBajada" style="font-size:23px;max-width:44ch"></p>
+      </div>
+      <div class="chips" id="dChips"></div>
+      <div class="scroll"><ul class="docs" id="dLista"></ul></div>
+    </section>
+
+    <!-- LECTOR DE PDF -->
+    <div class="lector" id="lector">
+      <div class="lec-top">
+        <div class="t"><b id="lecT">—</b><span id="lecA">—</span></div>
+        <button class="lec-x" id="lecX" aria-label="Cerrar el documento">×</button>
+      </div>
+      <div class="lec-doc" id="lecDoc"></div>
+      <div class="lec-qr" id="lecQr">
+        <div class="grid" id="lecQrG"></div>
+        <p>Escanee para leerlo en su teléfono</p>
+      </div>
+      <div class="lec-bar">
+        <button id="lecPrev">‹ Anterior</button>
+        <span class="lec-pag" id="lecPag">— / —</span>
+        <button id="lecNext">Siguiente ›</button>
+        <span class="sp"></span>
+        <button id="lecZoom">Ampliar</button>
+        <button id="lecQrBtn" class="pri">Llevármelo</button>
+      </div>
+    </div>
+
+    <!-- VISÍTANOS -->
+    <section class="screen" id="sc-visita">
+      <div class="head">
+        <div class="kicker" id="vKicker"></div>
+        <h2 class="title" id="vTitulo"></h2>
+        <p class="sub" id="vBajada"></p>
+      </div>
+      <div class="scroll">
+        <div style="display:flex;gap:34px;align-items:flex-start;margin-bottom:34px">
+          <div class="qr" id="qr" aria-label="Código QR"></div>
+          <div>
+            <h4 id="vQrT" style="font-size:30px;margin-bottom:12px"></h4>
+            <p id="vQrP" style="font-size:22px;color:var(--bone-2);line-height:1.45;margin:0 0 18px"></p>
+            <div class="facts" id="vQrE"></div>
+          </div>
+        </div>
+        <ul class="contact" id="vContacto"></ul>
+        <div class="g2" id="vTarjetas" style="margin-top:32px"></div>
+      </div>
+    </section>
+
+    <!-- PANEL TÉCNICO -->
+    <div class="tech" id="tech">
+      <h4>Estado del tótem</h4>
+      <table>
+        <tr><td>Equipo</td><td id="tEquipo">—</td></tr>
+        <tr><td>Versión de contenido</td><td id="tVer">—</td></tr>
+        <tr><td>Origen del contenido</td><td id="tOrigen">—</td></tr>
+        <tr><td>Última sincronización</td><td id="tSync">—</td></tr>
+        <tr><td>Conexión</td><td id="tConn">—</td></tr>
+        <tr><td>Encendido continuo</td><td id="tUp">—</td></tr>
+        <tr><td>Toques en esta sesión</td><td id="tToques">0</td></tr>
+      </table>
+      <div class="log" id="tLog"></div>
+      <div class="btns">
+        <button class="pri" id="btnSync">Buscar actualización</button>
+        <button id="btnBack">Volver al tótem</button>
+      </div>
+    </div>
+
+  </div>
+
+  <nav class="nav" id="nav">
+    <button data-go="sc-inicio" aria-current="true">
+      <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>Inicio</button>
+    <button data-go="sc-liceo">
+      <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M10 21v-6h4v6"/></svg>El Liceo</button>
+    <button data-go="sc-agro">
+      <svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M12 13c-5 0-7-3-7-8 5 0 7 3 7 8z"/><path d="M12 17c5 0 7-3 7-8-5 0-7 3-7 8z"/></svg>Agropecuaria</button>
+    <button data-go="sc-campo">
+      <svg viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>El Campo</button>
+    <button data-go="sc-docs">
+      <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>Documentos</button>
+    <button data-go="sc-visita">
+      <svg viewBox="0 0 24 24"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Visítanos</button>
+  </nav>
+
+  <div class="status" id="status">
+    <span class="dot" id="dot"></span>
+    <span id="sTxt">—</span>
+    <span class="sp" id="clock">--:--</span>
+    <button class="fs" id="btnFs" title="Pantalla completa">⛶</button>
+  </div>
+
+</div>
+
+<!-- copia local del contenido: el totem arranca con esto aunque no haya red ni servidor -->
+<script type="application/json" id="contenido-local">
+{
+  "version": "2026.09.07-1",
+  "liceo": { "nombre": "Liceo Agrícola Marta Martínez Cruz", "ubicacionCorta": "Yerbas Buenas · Región del Maule", "insignia": "Bicentenario" },
+  "config": { "idleSegundos": 45, "rotacionSegundos": 5, "sincronizarCadaMinutos": 30, "servidor": "http://localhost:4300", "urlPublica": "https://www.martamartinezcruz.cl/", "equipo": "TOTEM-MMC-01 · Portón principal", "temperaturaComuna": "18 °C" },
+  "avisos": [
+    { "texto": "Puertas abiertas: sábado 10 de octubre, 10:00 a 14:00", "desde": "2026-09-01", "hasta": "2026-10-10" },
+    { "texto": "Postulaciones a 1° medio abiertas en el Sistema de Admisión Escolar", "desde": "2026-08-15", "hasta": "2026-10-31" }
+  ],
+  "atractor": {
+    "lead": "Desde 1958 formando en el campo",
+    "cta": "Toque la pantalla para recorrer el liceo",
+    "cifras": [
+      { "valor": "90", "unidad": "ha", "texto": "El predio completo es la sala de clases" },
+      { "valor": "12", "unidad": "ha", "texto": "Riega el pivote central, día y noche" },
+      { "valor": "1958", "unidad": "", "texto": "El año en que abrió la primera escuela agrícola de mujeres de Chile" },
+      { "valor": "380", "unidad": "", "texto": "Estudiantes del Maule, muchos de ellos internos" },
+      { "valor": "3", "unidad": "", "texto": "Invernaderos de tecnología israelí en producción" }
+    ]
+  },
+  "pantallas": {
+    "liceo": {
+      "kicker": "Nuestra historia",
+      "titulo": "La primera escuela agrícola de mujeres de Chile",
+      "bajada": "Marta Martínez Cruz abrió las puertas en 1958 con un puñado de alumnas y un potrero. Hoy son 90 hectáreas y 380 estudiantes.",
+      "figuras": [
+        { "valor": "1958", "texto": "Primeras clases" },
+        { "valor": "380", "texto": "Estudiantes hoy" },
+        { "valor": "68", "texto": "Años formando" }
+      ],
+      "hitos": [
+        { "anio": "1958 — 1960", "destacado": true, "texto": "Inician las actividades y se funda oficialmente la <b>primera escuela agrícola femenina del país</b>, dirigida por Marta Martínez Cruz." },
+        { "anio": "1965", "destacado": false, "texto": "Egresan las <b>primeras 22 alumnas</b> como Prácticas Agrícolas." },
+        { "anio": "1966 — 1967", "destacado": false, "texto": "El liceo asciende a grado superior y titula a las <b>primeras siete Técnicas Agrícolas</b>." },
+        { "anio": "1970", "destacado": false, "texto": "Se abren las menciones de <b>ganadería e industrias agropecuarias</b>." },
+        { "anio": "1976 — 1978", "destacado": true, "texto": "Gran remodelación: pabellones, internado y plantas productivas. En 1978 obtiene <b>clasificación “A”</b>." },
+        { "anio": "1993", "destacado": true, "texto": "Pasa a la red <b>SNA Educa — CODESSER</b>, de la Sociedad Nacional de Agricultura." },
+        { "anio": "2021", "destacado": false, "texto": "Es reconocido como <b>Liceo Bicentenario</b> de excelencia." },
+        { "anio": "2024", "destacado": false, "texto": "Convenio con <b>INDAP</b>: prácticas en predios de agricultura familiar campesina." },
+        { "anio": "2026", "destacado": true, "texto": "Referente nacional en <b>control biológico de plagas</b>; recibe delegaciones de otros liceos y de INACAP." }
+      ],
+      "tarjetas": [
+        { "titulo": "Internado", "texto": "140 camas para estudiantes de comunas rurales del Maule. Alimentación, cuidado nocturno y talleres vespertinos." },
+        { "titulo": "Club de Huasos escolar", "texto": "Nuestras colleras compiten en el circuito de <b>rodeos escolares</b>. Entrenan en la medialuna del predio." }
+      ]
+    },
+    "agro": {
+      "kicker": "La especialidad",
+      "titulo": "Técnico de Nivel Medio en Agropecuaria",
+      "bajada": "Formación diferenciada en 3° y 4° medio. Se aprende cultivando, ordeñando y arreglando la máquina que se echó a perder.",
+      "modulosComunes": [
+        { "n": "01", "nombre": "Manejo de suelo y residuos" },
+        { "n": "02", "nombre": "Manejo de técnicas de riego" },
+        { "n": "03", "nombre": "Técnicas de reproducción vegetal" },
+        { "n": "04", "nombre": "Alimentación y pesaje pecuario" },
+        { "n": "05", "nombre": "Control de plagas y enfermedades" },
+        { "n": "06", "nombre": "Emprendimiento y empleabilidad" }
+      ],
+      "menciones": [
+        { "id": "agricultura", "nombre": "Mención Agricultura", "modulos": [
+          { "n": "07", "nombre": "Manejo y conducción de cultivos" },
+          { "n": "08", "nombre": "Cosecha y poscosecha vegetal" },
+          { "n": "09", "nombre": "Operación de maquinaria agrícola" } ] },
+        { "id": "pecuaria", "nombre": "Mención Pecuaria", "modulos": [
+          { "n": "07", "nombre": "Manejo sanitario del ganado" },
+          { "n": "08", "nombre": "Producción y ordeña de leche" },
+          { "n": "09", "nombre": "Reproducción y crianza animal" } ] }
+      ],
+      "perfilTitulo": "Al titularse, la o el estudiante puede…",
+      "perfil": [
+        "Establecer y manejar cultivos y praderas según plan de fertilización y riego.",
+        "Operar y mantener tractor, implementos de labranza y equipos de riego tecnificado.",
+        "Aplicar control biológico y monitoreo de plagas con criterio de manejo integrado.",
+        "Manejar el rebaño lechero: alimentación, ordeña higiénica, registros y sanidad.",
+        "Llevar costos, registros prediales y formular un proyecto de emprendimiento rural."
+      ],
+      "figuras": [
+        { "valor": "240", "unidad": "h", "texto": "Práctica profesional" },
+        { "valor": "96", "unidad": "%", "texto": "Titulación oportuna" },
+        { "valor": "2", "unidad": "", "texto": "Menciones" }
+      ],
+      "tarjetas": [
+        { "titulo": "Después del liceo", "texto": "Agronomía, Medicina Veterinaria, Ingeniería Agrícola o trabajo directo en huertos, packings y lecherías del Maule. Convenio de continuidad con INACAP y Santo Tomás." },
+        { "titulo": "Dual con la industria", "texto": "Cuarto medio alterna liceo y empresa: viveros, packing de cerezas, planta lechera y predios de agricultura familiar campesina vía INDAP." }
+      ]
+    },
+    "campo": {
+      "kicker": "Plano del predio · 90 hectáreas",
+      "titulo": "El campo, punto por punto",
+      "bajada": "Toque un número para ver qué se hace ahí.",
+      "escala": "0 — 200 metros",
+      "puntos": [
+        { "n": 1, "x": 185, "y": 641, "titulo": "Aulas y laboratorios", "texto": "Seis salas, laboratorio de ciencias y sala de computación. Aquí parten las mañanas antes de salir al campo.", "datos": ["6 salas","Biblioteca","Sala de enlaces"] },
+        { "n": 2, "x": 185, "y": 747, "titulo": "Internado", "texto": "140 camas para estudiantes que vienen de comunas rurales del Maule. Comedor, duchas y estudio vespertino.", "datos": ["140 camas","Comedor 200 personas","Damas y varones"] },
+        { "n": 3, "x": 565, "y": 646, "titulo": "Lechería", "texto": "Sala de ordeña mecánica con estanque de frío. Los cuartos medios llevan el registro diario de producción de cada vaca.", "datos": ["38 vacas en ordeña","2 ordeñas al día","Estanque 1 500 L"] },
+        { "n": 4, "x": 582, "y": 761, "titulo": "Establo y corrales", "texto": "Bovinos de carne y leche, ovinos y una crianza de cerdos. Alimentación, sanidad y manejo del rebaño se practican aquí todo el año.", "datos": ["Bovinos","Ovinos","Porcinos"] },
+        { "n": 5, "x": 800, "y": 720, "titulo": "Medialuna y pesebrera", "texto": "Cancha reglamentaria donde entrenan las colleras del Club de Huasos escolar, que compiten en el circuito de rodeos escolares.", "datos": ["9 caballos","Rodeo escolar","Cancha reglamentaria"] },
+        { "n": 6, "x": 720, "y": 290, "titulo": "Pivote central", "texto": "Riego por aspersión sobre praderas y maíz forrajero. Los estudiantes programan la lámina de agua según el balance hídrico de la semana.", "datos": ["Cubre 12 ha","Riego por aspersión","Programación semanal"] },
+        { "n": 7, "x": 200, "y": 441, "titulo": "Invernaderos israelíes", "texto": "Tres módulos con control de temperatura, fertirriego por goteo y ventilación cenital. Hortalizas de hoja, tomate y almácigos.", "datos": ["3 módulos","Fertirriego","Producción todo el año"] },
+        { "n": 8, "x": 360, "y": 635, "titulo": "Laboratorio de Control Biológico", "texto": "Cría de insectos benéficos para controlar plagas sin pesticidas. Es el sello del liceo: vienen delegaciones de otros liceos y de INACAP a capacitarse.", "datos": ["Cría de benéficos","Manejo integrado","Referente nacional"] },
+        { "n": 9, "x": 555, "y": 583, "titulo": "Sala de riego tecnificado", "texto": "Cabezal de filtrado, inyección de fertilizantes y programación por sectores. Desde aquí se maneja el goteo de frutales e invernaderos.", "datos": ["Cabezal de filtros","Fertirriego","Control por sectores"] },
+        { "n": 10, "x": 375, "y": 744, "titulo": "Galpón de maquinaria", "texto": "Tractores, arado, rastra, sembradora, fumigadora y carro forrajero, todos propios. Mantención básica y operación segura se enseñan aquí.", "datos": ["3 tractores","Implementos de labranza","Taller de mantención"] },
+        { "n": 11, "x": 198, "y": 208, "titulo": "Huerto de frutales", "texto": "Cerezos, arándanos y manzanos en producción. Poda, raleo y cosecha son evaluación práctica en primavera y verano.", "datos": ["Cerezo","Arándano","Manzano"] },
+        { "n": 12, "x": 425, "y": 300, "titulo": "Praderas y potreros", "texto": "Pastoreo rotativo con cerco eléctrico. Se mide carga animal y se hace ensilaje para el invierno.", "datos": ["Pastoreo rotativo","Ensilaje","Cerco eléctrico"] }
+      ]
+    },
+    "documentos": {
+      "kicker": "Material del liceo",
+      "titulo": "Documentos para leer aquí mismo",
+      "bajada": "Lo que suben los profesores. Toque uno para leerlo en la pantalla; el QR se lo lleva al teléfono.",
+      "categorias": [
+        { "id": "todos", "nombre": "Todos" },
+        { "id": "visitas", "nombre": "Para visitas" },
+        { "id": "estudiantes", "nombre": "Para estudiantes" }
+      ],
+      "items": [
+        { "id": "ficha-agropecuaria", "titulo": "Especialidad Agropecuaria: ficha para apoderados",
+          "descripcion": "Qué se aprende, dónde se aprende, práctica profesional y preguntas frecuentes.",
+          "categoria": "visitas", "autor": "Prof. Rodrigo Salas", "cargo": "Jefe de Especialidad",
+          "fecha": "2026-08-20", "paginas": 2, "destacado": true,
+          "archivo": "contenido/documentos/ficha-especialidad-agropecuaria.pdf" },
+        { "id": "calendario-admision", "titulo": "Calendario de admisión 2027",
+          "descripcion": "Fechas del SAE, puertas abiertas, matrícula y documentos que hay que traer.",
+          "categoria": "visitas", "autor": "Dirección", "cargo": "",
+          "fecha": "2026-08-18", "paginas": 1, "destacado": true,
+          "archivo": "contenido/documentos/calendario-admision-2027.pdf" },
+        { "id": "guia-ordena", "titulo": "Guía de práctica: ordeña higiénica",
+          "descripcion": "Protocolo paso a paso, registro de producción y señales de mastitis. Módulo 08, 4° Pecuaria.",
+          "categoria": "estudiantes", "autor": "Prof. Carolina Muñoz", "cargo": "Módulo Producción de leche",
+          "fecha": "2026-09-01", "paginas": 2, "destacado": false,
+          "archivo": "contenido/documentos/guia-ordena-higienica.pdf" },
+        { "id": "control-biologico", "titulo": "Cartilla: control biológico de plagas",
+          "descripcion": "Los tres tipos de control, qué criamos en el laboratorio y la rutina semanal.",
+          "categoria": "estudiantes", "autor": "Prof. Inés Vergara", "cargo": "Laboratorio de Control Biológico",
+          "fecha": "2026-08-28", "paginas": 2, "destacado": false,
+          "archivo": "contenido/documentos/cartilla-control-biologico.pdf" }
+      ]
+    },
+    "visita": {
+      "kicker": "Admisión y visitas",
+      "titulo": "Venga a conocer el campo",
+      "bajada": "Postulaciones a 1° medio por el Sistema de Admisión Escolar. Las visitas guiadas se agendan por teléfono.",
+      "qrTitulo": "Llévese la información",
+      "qrTexto": "Escanee con la cámara del teléfono para abrir el sitio del liceo, el calendario de admisión y el mapa para llegar.",
+      "qrEtiquetas": ["martamartinezcruz.cl", "@lammc_oficial"],
+      "contacto": [
+        { "etiqueta": "Dirección", "valor": "Camino Abranquil km 1 s/n, Yerbas Buenas, Región del Maule" },
+        { "etiqueta": "Teléfono", "valor": "73 239 0030 · +56 9 6170 5002", "mono": true },
+        { "etiqueta": "Correo", "valor": "bicentenariomartamcruz@snaeduca.cl" },
+        { "etiqueta": "Sostenedor", "valor": "SNA Educa — CODESSER" },
+        { "etiqueta": "Cómo llegar", "valor": "Desde Linares, 12 km por la ruta a Yerbas Buenas. Recorrido rural 1 y 3 paran en el portón." }
+      ],
+      "tarjetas": [
+        { "titulo": "Puertas abiertas", "texto": "Segundo sábado de octubre y noviembre, 10:00 a 14:00. Recorrido por lechería, invernaderos y laboratorio con estudiantes de 4° medio como guías." },
+        { "titulo": "Internado", "texto": "Cupos para estudiantes de comunas rurales. Consulte requisitos en Inspectoría o al teléfono del liceo." }
+      ]
+    }
+  }
+}
+</script>
+
+<!-- copia embebida de los PDF: la genera scripts/hacer-pdfs.js, permite leerlos sin servidor -->
+<!--DOCS-INICIO-->
+<script type="application/json" id="docs-embebidos">
+{"ficha-agropecuaria":"JVBERi0xLjQKMSAwIG9iago8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFI+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlL1BhZ2VzL0tpZHNbNSAwIFIgNyAwIFJdL0NvdW50IDI+PgplbmRvYmoKMyAwIG9iago8PC9UeXBlL0ZvbnQvU3VidHlwZS9UeXBlMS9CYXNlRm9udC9IZWx2ZXRpY2EvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nPj4KZW5kb2JqCjQgMCBvYmoKPDwvVHlwZS9Gb250L1N1YnR5cGUvVHlwZTEvQmFzZUZvbnQvSGVsdmV0aWNhLUJvbGQvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nPj4KZW5kb2JqCjUgMCBvYmoKPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9NZWRpYUJveFswIDAgNTk1IDg0Ml0vUmVzb3VyY2VzPDwvRm9udDw8L0YxIDMgMCBSL0YyIDQgMCBSPj4+Pi9Db250ZW50cyA2IDAgUj4+CmVuZG9iago2IDAgb2JqCjw8L0xlbmd0aCAyMDE0Pj4Kc3RyZWFtCkJUIC9GMiAyMiBUZiAwLjA1IDAuMjAgMC4xNiByZyA2MiA3NzQgVGQgKEVzcGVjaWFsaWRhZCBBZ3JvcGVjdWFyaWEpIFRqIEVUCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA3MjggVGQgKEZpY2hhIGluZm9ybWF0aXZhIHBhcmEgYXBvZGVyYWRvcyB5IHZpc2l0YXMpIFRqIEVUCjAuODAgMC44MiAwLjc4IFJHIDEgdyA2MiA3MTQgbSA1MzMgNzE0IGwgUwpCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNjkyIFRkIChMYSBlc3BlY2lhbGlkYWQgQWdyb3BlY3VhcmlhIGZvcm1hIFTpY25pY29zIGRlIE5pdmVsIE1lZGlvIGNhcGFjZXMgZGUgdHJhYmFqYXIgZW4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA2NzYgVGQgKHByb2R1Y2Np824gYWdy7WNvbGEgeSBnYW5hZGVyYS4gU2UgY3Vyc2EgZW4gM7AgeSA0sCBtZWRpbyBjb21vIGZvcm1hY2nzbiBkaWZlcmVuY2lhZGEpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA2NjAgVGQgKHTpY25pY28tcHJvZmVzaW9uYWwsIGNvbiBtZW5jaW9uZXMgZW4gQWdyaWN1bHR1cmEgeSBlbiBQZWN1YXJpYS4pIFRqIEVUCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA2MTggVGQgKFF16SBhcHJlbmRlIHN1IGhpam8gbyBoaWphKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTk2IFRkICgtIE1hbmVqbyBkZSBzdWVsbywgZmVydGlsaXphY2nzbiB5IHJpZWdvIHRlY25pZmljYWRvLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDU4MCBUZCAoLSBFc3RhYmxlY2ltaWVudG8geSBjb25kdWNjafNuIGRlIGN1bHRpdm9zLCBwcmFkZXJhcyB5IGZydXRhbGVzLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDU2NCBUZCAoLSBBbGltZW50YWNp824sIHNhbmlkYWQgeSBtYW5lam8gZGVsIHJlYmHxbyBsZWNoZXJvIHkgZGUgY2FybmUuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTQ4IFRkICgtIENvbnRyb2wgYmlvbPNnaWNvIGRlIHBsYWdhcyB5IG1hbmVqbyBpbnRlZ3JhZG8uKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTMyIFRkICgtIE9wZXJhY2nzbiBzZWd1cmEgZGUgdHJhY3RvciBlIGltcGxlbWVudG9zIGRlIGxhYnJhbnphLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDUxNiBUZCAoLSBDb3N0b3MsIHJlZ2lzdHJvcyBwcmVkaWFsZXMgeSBmb3JtdWxhY2nzbiBkZSB1biBlbXByZW5kaW1pZW50by4pIFRqIEVUCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA0NzQgVGQgKETzbmRlIHNlIGFwcmVuZGUpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA0NTIgVGQgKEVsIGxpY2VvIGN1ZW50YSBjb24gOTAgaGVjdOFyZWFzIGRlIGNhbXBvIHByb2R1Y3Rpdm86IHBpdm90ZSBjZW50cmFsLCB0cmVzIGludmVybmFkZXJvcywpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA0MzYgVGQgKHNhbGEgZGUgcmllZ28gdGVjbmlmaWNhZG8sIGxlY2hlcu1hIGNvbiBvcmRl8WEgbWVj4W5pY2EsIGVzdGFibG9zLCBtZWRpYWx1bmEsIGdhbHDzbiBkZSkgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDQyMCBUZCAobWFxdWluYXJpYSBwcm9waWEsIGh1ZXJ0byBkZSBmcnV0YWxlcyB5IGVsIExhYm9yYXRvcmlvIGRlIENvbnRyb2wgQmlvbPNnaWNvLCBzZWxsbyBkZWwpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA0MDQgVGQgKGVzdGFibGVjaW1pZW50by4pIFRqIEVUCkJUIC9GMSA4IFRmIDAuNDUgMC40OCAwLjQ1IHJnIDYyIDQyIFRkIChQcm9mLiBSb2RyaWdvIFNhbGFzIC0gSmVmZSBkZSBFc3BlY2lhbGlkYWQgIHwgIExpY2VvIEFncu1jb2xhIE1hcnRhIE1hcnTtbmV6IENydXogIHwgIGRvY3VtZW50byBkZSBtYXF1ZXRhKSBUaiBFVAplbmRzdHJlYW0KZW5kb2JqCjcgMCBvYmoKPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9NZWRpYUJveFswIDAgNTk1IDg0Ml0vUmVzb3VyY2VzPDwvRm9udDw8L0YxIDMgMCBSL0YyIDQgMCBSPj4+Pi9Db250ZW50cyA4IDAgUj4+CmVuZG9iago4IDAgb2JqCjw8L0xlbmd0aCAxOTY0Pj4Kc3RyZWFtCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA3NjggVGQgKFBy4WN0aWNhIHByb2Zlc2lvbmFsKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNzQ2IFRkIChMYSBwcuFjdGljYSBwcm9mZXNpb25hbCBlcyBkZSAyNDAgaG9yYXMgeSBzZSByZWFsaXphIGVuIGVtcHJlc2FzIGRlbCBydWJybzogdml2ZXJvcywpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA3MzAgVGQgKHBhY2tpbmcgZGUgY2VyZXphcywgcGxhbnRhcyBsZWNoZXJhcyB5IHByZWRpb3MgZGUgYWdyaWN1bHR1cmEgZmFtaWxpYXIgY2FtcGVzaW5hIGEpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA3MTQgVGQgKHRyYXbpcyBkZWwgY29udmVuaW8gY29uIElOREFQLiBFbCBsaWNlbyBhc2lnbmEgdW4gcHJvZmVzb3IgdHV0b3IgcXVlIHZpc2l0YSBhbCkgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDY5OCBUZCAoZXN0dWRpYW50ZSBlbiB0ZXJyZW5vLikgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDY1NiBUZCAoRGVzcHXpcyBkZWwgbGljZW8pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA2MzQgVGQgKEVsIHTtdHVsbyBkZSBU6WNuaWNvIGRlIE5pdmVsIE1lZGlvIGVuIEFncm9wZWN1YXJpYSBwZXJtaXRlIHRyYWJhamFyIGRlIGlubWVkaWF0byBvKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNjE4IFRkIChjb250aW51YXIgZXN0dWRpb3MgZW4gQWdyb25vbe1hLCBNZWRpY2luYSBWZXRlcmluYXJpYSBvIEluZ2VuaWVy7WEgQWdy7WNvbGEuIEV4aXN0ZW4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA2MDIgVGQgKGNvbnZlbmlvcyBkZSBjb250aW51aWRhZCBkZSBlc3R1ZGlvcyBjb24gSU5BQ0FQIHkgU2FudG8gVG9t4XMuKSBUaiBFVApCVCAvRjIgMTMgVGYgMC41NSAwLjQyIDAuMTAgcmcgNjIgNTYwIFRkIChQcmVndW50YXMgZnJlY3VlbnRlcykgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDUzOCBUZCAov05lY2VzaXRhIGV4cGVyaWVuY2lhIHByZXZpYSBlbiBlbCBjYW1wbz8gTm8uIExhIGZvcm1hY2nzbiBwYXJ0ZSBkZXNkZSBjZXJvIGVuIDOwIG1lZGlvLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDUwOCBUZCAov0hheSBpbnRlcm5hZG8/IFPtLCBjb24gMTQwIGNhbWFzIHBhcmEgZXN0dWRpYW50ZXMgZGUgY29tdW5hcyBydXJhbGVzIGRlbCBNYXVsZSwgY29uKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNDkyIFRkIChhbGltZW50YWNp824sIGN1aWRhZG8gbm9jdHVybm8geSBlc3R1ZGlvIHZlc3BlcnRpbm8uKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNDYyIFRkICi/UXXpIHJvcGEgbmVjZXNpdGE/IE92ZXJvbCwgYm90YXMgZGUgZ29tYSB5IGd1YW50ZXMgcGFyYSBsYXMgY2xhc2VzIGVuIHRlcnJlbm8uIEVsIGxpY2VvKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNDQ2IFRkIChlbnRyZWdhIGVsIGxpc3RhZG8gY29tcGxldG8gZW4gbGEgbWF0cu1jdWxhLikgVGogRVQKMC44MCAwLjgyIDAuNzggUkcgMSB3IDYyIDQyNCBtIDUzMyA0MjQgbCBTCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA0MDIgVGQgKENvbnN1bHRhczogYmljZW50ZW5hcmlvbWFydGFtY3J1ekBzbmFlZHVjYS5jbCAtIDczIDIzOSAwMDMwKSBUaiBFVApCVCAvRjEgOCBUZiAwLjQ1IDAuNDggMC40NSByZyA2MiA0MiBUZCAoUHJvZi4gUm9kcmlnbyBTYWxhcyAtIEplZmUgZGUgRXNwZWNpYWxpZGFkICB8ICBMaWNlbyBBZ3LtY29sYSBNYXJ0YSBNYXJ07W5leiBDcnV6ICB8ICBkb2N1bWVudG8gZGUgbWFxdWV0YSkgVGogRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA1NCAwMDAwMCBuIAowMDAwMDAwMTExIDAwMDAwIG4gCjAwMDAwMDAxOTkgMDAwMDAgbiAKMDAwMDAwMDI5MiAwMDAwMCBuIAowMDAwMDAwNDEzIDAwMDAwIG4gCjAwMDAwMDI0NzYgMDAwMDAgbiAKMDAwMDAwMjU5NyAwMDAwMCBuIAp0cmFpbGVyCjw8L1NpemUgOS9Sb290IDEgMCBSL0luZm88PC9UaXRsZSAoRXNwZWNpYWxpZGFkIEFncm9wZWN1YXJpYTogZmljaGEgcGFyYSBhcG9kZXJhZG9zKS9BdXRob3IgKFByb2YuIFJvZHJpZ28gU2FsYXMgLSBKZWZlIGRlIEVzcGVjaWFsaWRhZCk+Pj4+CnN0YXJ0eHJlZgo0NjEwCiUlRU9GCg==","guia-ordena":"JVBERi0xLjQKMSAwIG9iago8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFI+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlL1BhZ2VzL0tpZHNbNSAwIFIgNyAwIFJdL0NvdW50IDI+PgplbmRvYmoKMyAwIG9iago8PC9UeXBlL0ZvbnQvU3VidHlwZS9UeXBlMS9CYXNlRm9udC9IZWx2ZXRpY2EvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nPj4KZW5kb2JqCjQgMCBvYmoKPDwvVHlwZS9Gb250L1N1YnR5cGUvVHlwZTEvQmFzZUZvbnQvSGVsdmV0aWNhLUJvbGQvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nPj4KZW5kb2JqCjUgMCBvYmoKPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9NZWRpYUJveFswIDAgNTk1IDg0Ml0vUmVzb3VyY2VzPDwvRm9udDw8L0YxIDMgMCBSL0YyIDQgMCBSPj4+Pi9Db250ZW50cyA2IDAgUj4+CmVuZG9iago2IDAgb2JqCjw8L0xlbmd0aCAxOTk3Pj4Kc3RyZWFtCkJUIC9GMiAyMiBUZiAwLjA1IDAuMjAgMC4xNiByZyA2MiA3NzQgVGQgKEd17WEgZGUgcHLhY3RpY2E6IG9yZGXxYSBoaWdp6W5pY2EpIFRqIEVUCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA3MjggVGQgKE3zZHVsbyAwOCAtIFByb2R1Y2Np824geSBvcmRl8WEgZGUgbGVjaGUgLSA0sCBtZWRpbyBQZWN1YXJpYSkgVGogRVQKMC44MCAwLjgyIDAuNzggUkcgMSB3IDYyIDcxNCBtIDUzMyA3MTQgbCBTCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA2OTIgVGQgKE9iamV0aXZvOiByZWFsaXphciBsYSBydXRpbmEgZGUgb3JkZfFhIGN1bXBsaWVuZG8gZWwgcHJvdG9jb2xvIGhpZ2npbmljbywgcmVnaXN0cmFuZG8gbGEpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA2NzYgVGQgKHByb2R1Y2Np824gaW5kaXZpZHVhbCB5IGRldGVjdGFuZG8gc2lnbm9zIGRlIG1hc3RpdGlzLikgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDYzNCBUZCAoQW50ZXMgZGUgZW50cmFyIGEgbGEgc2FsYSkgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDYxMiBUZCAoMS4gTGF2YWRvIGRlIG1hbm9zIHkgdXNvIGRlIGd1YW50ZXMgZGUgbml0cmlsby4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA1OTYgVGQgKDIuIE92ZXJvbCBsaW1waW8sIGJvdGFzIGxhdmFkYXMgZW4gZWwgcGVkaWx1dmlvLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDU4MCBUZCAoMy4gUmV2aXNhciBsYSB0ZW1wZXJhdHVyYSBkZWwgZXN0YW5xdWUgZGUgZnLtbzogZGViZSBlc3RhciBiYWpvIDQgsEMuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTY0IFRkICg0LiBWZXJpZmljYXIgcXVlIGVsIGVxdWlwbyBkZSBvcmRl8WEgZnVlIGxhdmFkbyBlbiBlbCBjaWNsbyBhbnRlcmlvci4pIFRqIEVUCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA1MjIgVGQgKFJ1dGluYSBkZSBvcmRl8WEpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA1MDAgVGQgKDEuIERlc3B1bnRlOiBleHRyYWVyIGxvcyBwcmltZXJvcyBjaG9ycm9zIGVuIGVsIHRhevNuIGRlIGZvbmRvIG9zY3VybyB5IG9ic2VydmFyIGdydW1vcykgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDQ4NCBUZCAobyBzYW5ncmUuIFJlZ2lzdHJhciBjdWFscXVpZXIgYW5vbWFs7WEuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNDY4IFRkICgyLiBTZWxsYWRvIHByZXZpbzogYXBsaWNhciBzZWxsYWRvciB5IGVzcGVyYXIgMzAgc2VndW5kb3MgZGUgY29udGFjdG8uKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNDUyIFRkICgzLiBTZWNhZG86IHBhcGVsIGluZGl2aWR1YWwgcG9yIHBlevNuLCBudW5jYSByZXV0aWxpemFyLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDQzNiBUZCAoNC4gQ29sb2NhY2nzbiBkZSBwZXpvbmVyYXMgZGVudHJvIGRlIGxvcyA5MCBzZWd1bmRvcyBzaWd1aWVudGVzLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDQyMCBUZCAoNS4gUmV0aXJvIHNpbiBzb2JyZW9yZGXxYS4gQ29ydGFyIGVsIHZhY+1vIGFudGVzIGRlIHNhY2FyIGxhIHVuaWRhZC4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA0MDQgVGQgKDYuIFNlbGxhZG8gcG9zdGVyaW9yIGN1YnJpZW5kbyBlbCBwZXrzbiBjb21wbGV0by4pIFRqIEVUCkJUIC9GMSA4IFRmIDAuNDUgMC40OCAwLjQ1IHJnIDYyIDQyIFRkIChQcm9mLiBDYXJvbGluYSBNdfFveiAtIE3zZHVsbyBQcm9kdWNjafNuIGRlIGxlY2hlICB8ICBMaWNlbyBBZ3LtY29sYSBNYXJ0YSBNYXJ07W5leiBDcnV6ICB8ICBkb2N1bWVudG8gZGUgbWFxdWV0YSkgVGogRVQKZW5kc3RyZWFtCmVuZG9iago3IDAgb2JqCjw8L1R5cGUvUGFnZS9QYXJlbnQgMiAwIFIvTWVkaWFCb3hbMCAwIDU5NSA4NDJdL1Jlc291cmNlczw8L0ZvbnQ8PC9GMSAzIDAgUi9GMiA0IDAgUj4+Pj4vQ29udGVudHMgOCAwIFI+PgplbmRvYmoKOCAwIG9iago8PC9MZW5ndGggMTcxMD4+CnN0cmVhbQpCVCAvRjIgMTMgVGYgMC41NSAwLjQyIDAuMTAgcmcgNjIgNzY4IFRkIChSZWdpc3RybykgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDc0NiBUZCAoQ2FkYSBlc3R1ZGlhbnRlIGFub3RhIGVuIGxhIHBsYW5pbGxhOiBu+m1lcm8gZGUgbGEgdmFjYSwgbGl0cm9zIGRlIGxhIG1h8WFuYSwgbGl0cm9zIGRlKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNzMwIFRkIChsYSB0YXJkZSwgb2JzZXJ2YWNpb25lcyBzYW5pdGFyaWFzIHkgdHJhdGFtaWVudG9zIGFwbGljYWRvcy4gTGEgcGxhbmlsbGEgc2UgZW50cmVnYSBhbCkgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDcxNCBUZCAocHJvZmVzb3IgYWwgdGVybWluYXIgbGEgcnV0aW5hLikgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDY3MiBUZCAoU2XxYWxlcyBkZSBtYXN0aXRpcyBxdWUgZGViZSByZXBvcnRhcikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDY1MCBUZCAoLSBHcnVtb3MsIGNv4Wd1bG9zIG8gc2FuZ3JlIGVuIGVsIGRlc3B1bnRlLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDYzNCBUZCAoLSBVYnJlIGNhbGllbnRlLCBlbnJvamVjaWRhIG8gZG9sb3Jvc2EgYWwgdGFjdG8uKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNjE4IFRkICgtIENh7WRhIGJydXNjYSBkZSBwcm9kdWNjafNuIGVuIHVuYSB2YWNhLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDYwMiBUZCAoLSBMZWNoZSBhY3Vvc2EgbyBjb24gb2xvciBhbm9ybWFsLikgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDU2MCBUZCAoRXZhbHVhY2nzbikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDUzOCBUZCAoU2UgZXZhbPphIGVuIHBhdXRhIGRlIGNvdGVqbyBkdXJhbnRlIHRyZXMgcnV0aW5hcyBjb25zZWN1dGl2YXMuIFNlIGFwcnVlYmEgY29uIGVsIDgwICUpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA1MjIgVGQgKGRlIGxvcyBpbmRpY2Fkb3JlcyBsb2dyYWRvcy4gTGEgc2VndXJpZGFkIHkgZWwgdHJhdG8gZGVsIGFuaW1hbCBzb24gY3JpdGVyaW9zKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTA2IFRkIChlbGltaW5hdG9yaW9zOiBubyBzZSBhcHJ1ZWJhIGxhIHBy4WN0aWNhIHNpIGhheSBtYWx0cmF0byBvIHNpIHNlIG9taXRlIGVsIHByb3RvY29sbykgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDQ5MCBUZCAoaGlnaeluaWNvLikgVGogRVQKMC44MCAwLjgyIDAuNzggUkcgMSB3IDYyIDQ2OCBtIDUzMyA0NjggbCBTCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA0NDYgVGQgKENvbnN1bHRhcyBhbCBwcm9mZXNvciBkZSBt82R1bG8gbyBlbiBsYSBzYWxhIGRlIG9yZGXxYSwgZGUgbHVuZXMgYSB2aWVybmVzLikgVGogRVQKQlQgL0YxIDggVGYgMC40NSAwLjQ4IDAuNDUgcmcgNjIgNDIgVGQgKFByb2YuIENhcm9saW5hIE118W96IC0gTfNkdWxvIFByb2R1Y2Np824gZGUgbGVjaGUgIHwgIExpY2VvIEFncu1jb2xhIE1hcnRhIE1hcnTtbmV6IENydXogIHwgIGRvY3VtZW50byBkZSBtYXF1ZXRhKSBUaiBFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA5CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU0IDAwMDAwIG4gCjAwMDAwMDAxMTEgMDAwMDAgbiAKMDAwMDAwMDE5OSAwMDAwMCBuIAowMDAwMDAwMjkyIDAwMDAwIG4gCjAwMDAwMDA0MTMgMDAwMDAgbiAKMDAwMDAwMjQ1OSAwMDAwMCBuIAowMDAwMDAyNTgwIDAwMDAwIG4gCnRyYWlsZXIKPDwvU2l6ZSA5L1Jvb3QgMSAwIFIvSW5mbzw8L1RpdGxlIChHde1hIGRlIHBy4WN0aWNhOiBvcmRl8WEgaGlnaeluaWNhKS9BdXRob3IgKFByb2YuIENhcm9saW5hIE118W96IC0gTfNkdWxvIFByb2R1Y2Np824gZGUgbGVjaGUpPj4+PgpzdGFydHhyZWYKNDMzOQolJUVPRgo=","calendario-admision":"JVBERi0xLjQKMSAwIG9iago8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFI+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlL1BhZ2VzL0tpZHNbNSAwIFJdL0NvdW50IDE+PgplbmRvYmoKMyAwIG9iago8PC9UeXBlL0ZvbnQvU3VidHlwZS9UeXBlMS9CYXNlRm9udC9IZWx2ZXRpY2EvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nPj4KZW5kb2JqCjQgMCBvYmoKPDwvVHlwZS9Gb250L1N1YnR5cGUvVHlwZTEvQmFzZUZvbnQvSGVsdmV0aWNhLUJvbGQvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nPj4KZW5kb2JqCjUgMCBvYmoKPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9NZWRpYUJveFswIDAgNTk1IDg0Ml0vUmVzb3VyY2VzPDwvRm9udDw8L0YxIDMgMCBSL0YyIDQgMCBSPj4+Pi9Db250ZW50cyA2IDAgUj4+CmVuZG9iago2IDAgb2JqCjw8L0xlbmd0aCAyNTAxPj4Kc3RyZWFtCkJUIC9GMiAyMiBUZiAwLjA1IDAuMjAgMC4xNiByZyA2MiA3NzQgVGQgKENhbGVuZGFyaW8gZGUgYWRtaXNp824gMjAyNykgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDcyOCBUZCAoUG9zdHVsYWNp824gYSAxsCBtZWRpbyB5IGEgbGEgZXNwZWNpYWxpZGFkIEFncm9wZWN1YXJpYSkgVGogRVQKMC44MCAwLjgyIDAuNzggUkcgMSB3IDYyIDcxNCBtIDUzMyA3MTQgbCBTCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA2ODAgVGQgKFNpc3RlbWEgZGUgQWRtaXNp824gRXNjb2xhciBcKFNBRVwpKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNjU4IFRkIChQb3N0dWxhY2nzbiBwcmluY2lwYWw6IGRlbCAyMCBkZSBhZ29zdG8gYWwgOCBkZSBzZXB0aWVtYnJlIGRlIDIwMjYsIGVuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNjQyIFRkIChzaXN0ZW1hZGVhZG1pc2lvbmVzY29sYXIuY2wuIFNlIHBvc3R1bGEgZW4gbO1uZWEgeSBzaW4gY29zdG8uIE5vIGhheSBwcnVlYmFzIGRlKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNjI2IFRkIChzZWxlY2Np824uKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTk2IFRkIChQdWJsaWNhY2nzbiBkZSByZXN1bHRhZG9zOiAyNyBkZSBvY3R1YnJlIGRlIDIwMjYuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTgwIFRkIChQZXLtb2RvIGRlIGFjZXB0YWNp8246IGRlbCAyNyBhbCAzMSBkZSBvY3R1YnJlIGRlIDIwMjYuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTY0IFRkIChQZXLtb2RvIGNvbXBsZW1lbnRhcmlvOiBkZWwgMTAgYWwgMTQgZGUgbm92aWVtYnJlIGRlIDIwMjYuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTQ4IFRkIChNYXRy7WN1bGE6IGRlbCAyIGFsIDEyIGRlIGRpY2llbWJyZSBkZSAyMDI2LCBlbiBTZWNyZXRhcu1hIGRlbCBsaWNlby4pIFRqIEVUCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA1MDYgVGQgKFB1ZXJ0YXMgYWJpZXJ0YXMpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA0ODQgVGQgKFPhYmFkbyAxMCBkZSBvY3R1YnJlIHkgc+FiYWRvIDE0IGRlIG5vdmllbWJyZSwgZGUgMTA6MDAgYSAxNDowMCBob3Jhcy4gUmVjb3JyaWRvIGd1aWFkbykgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDQ2OCBUZCAocG9yIGxhIGxlY2hlcu1hLCBsb3MgaW52ZXJuYWRlcm9zIHkgZWwgTGFib3JhdG9yaW8gZGUgQ29udHJvbCBCaW9s82dpY28sIGNvbiBlc3R1ZGlhbnRlcykgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDQ1MiBUZCAoZGUgNLAgbWVkaW8gY29tbyBnde1hcy4gTm8gcmVxdWllcmUgaW5zY3JpcGNp824gcHJldmlhLikgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDQxMCBUZCAoSW50ZXJuYWRvKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgMzg4IFRkIChMb3MgY3Vwb3MgZGUgaW50ZXJuYWRvIHNlIGFzaWduYW4gZGVzcHXpcyBkZSBsYSBtYXRy7WN1bGEsIGNvbiBwcmlvcmlkYWQgcG9yIGRpc3RhbmNpYSkgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDM3MiBUZCAoYWwgZXN0YWJsZWNpbWllbnRvLiBDb25zdWx0YXIgcmVxdWlzaXRvcyBlbiBJbnNwZWN0b3LtYSBHZW5lcmFsLikgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDMzMCBUZCAoRG9jdW1lbnRvcyBwYXJhIGxhIG1hdHLtY3VsYSkgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDMwOCBUZCAoLSBDZXJ0aWZpY2FkbyBkZSBuYWNpbWllbnRvLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDI5MiBUZCAoLSBDZXJ0aWZpY2FkbyBhbnVhbCBkZSBlc3R1ZGlvcyBkZSA4sCBi4XNpY28uKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgMjc2IFRkICgtIEluZm9ybWUgZGUgcGVyc29uYWxpZGFkLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDI2MCBUZCAoLSBDZXJ0aWZpY2FkbyBkZSByZXNpZGVuY2lhIHNpIHBvc3R1bGEgYSBpbnRlcm5hZG8uKSBUaiBFVAowLjgwIDAuODIgMC43OCBSRyAxIHcgNjIgMjM4IG0gNTMzIDIzOCBsIFMKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDIxNiBUZCAoQ2FtaW5vIEFicmFucXVpbCBrbSAxIHMvbiwgWWVyYmFzIEJ1ZW5hcyAtIDczIDIzOSAwMDMwKSBUaiBFVApCVCAvRjEgOCBUZiAwLjQ1IDAuNDggMC40NSByZyA2MiA0MiBUZCAoRGlyZWNjafNuICB8ICBMaWNlbyBBZ3LtY29sYSBNYXJ0YSBNYXJ07W5leiBDcnV6ICB8ICBkb2N1bWVudG8gZGUgbWFxdWV0YSkgVGogRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNwowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA1NCAwMDAwMCBuIAowMDAwMDAwMTA1IDAwMDAwIG4gCjAwMDAwMDAxOTMgMDAwMDAgbiAKMDAwMDAwMDI4NiAwMDAwMCBuIAowMDAwMDAwNDA3IDAwMDAwIG4gCnRyYWlsZXIKPDwvU2l6ZSA3L1Jvb3QgMSAwIFIvSW5mbzw8L1RpdGxlIChDYWxlbmRhcmlvIGRlIGFkbWlzafNuIDIwMjcpL0F1dGhvciAoRGlyZWNjafNuKT4+Pj4Kc3RhcnR4cmVmCjI5NTcKJSVFT0YK","control-biologico":"JVBERi0xLjQKMSAwIG9iago8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFI+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlL1BhZ2VzL0tpZHNbNSAwIFIgNyAwIFJdL0NvdW50IDI+PgplbmRvYmoKMyAwIG9iago8PC9UeXBlL0ZvbnQvU3VidHlwZS9UeXBlMS9CYXNlRm9udC9IZWx2ZXRpY2EvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nPj4KZW5kb2JqCjQgMCBvYmoKPDwvVHlwZS9Gb250L1N1YnR5cGUvVHlwZTEvQmFzZUZvbnQvSGVsdmV0aWNhLUJvbGQvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nPj4KZW5kb2JqCjUgMCBvYmoKPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9NZWRpYUJveFswIDAgNTk1IDg0Ml0vUmVzb3VyY2VzPDwvRm9udDw8L0YxIDMgMCBSL0YyIDQgMCBSPj4+Pi9Db250ZW50cyA2IDAgUj4+CmVuZG9iago2IDAgb2JqCjw8L0xlbmd0aCAyMjg2Pj4Kc3RyZWFtCkJUIC9GMiAyMiBUZiAwLjA1IDAuMjAgMC4xNiByZyA2MiA3NzQgVGQgKENvbnRyb2wgYmlvbPNnaWNvIGRlIHBsYWdhcykgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDcyOCBUZCAoQ2FydGlsbGEgZGUgdHJhYmFqbyBkZWwgbGFib3JhdG9yaW8pIFRqIEVUCjAuODAgMC44MiAwLjc4IFJHIDEgdyA2MiA3MTQgbSA1MzMgNzE0IGwgUwpCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNjkyIFRkIChFbCBjb250cm9sIGJpb2zzZ2ljbyB1c2Egb3JnYW5pc21vcyB2aXZvcyBwYXJhIHJlZHVjaXIgcG9ibGFjaW9uZXMgZGUgcGxhZ2FzLCBlbiB2ZXogZGUpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA2NzYgVGQgKGFwbGljYXIgcGVzdGljaWRhcy4gRXMgbGEgbO1uZWEgZGUgdHJhYmFqbyBxdWUgZGlzdGluZ3VlIGEgZXN0ZSBsaWNlbyB5IHBvciBsYSBxdWUpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA2NjAgVGQgKHJlY2liaW1vcyBkZWxlZ2FjaW9uZXMgZGUgb3Ryb3MgZXN0YWJsZWNpbWllbnRvcyB5IGRlIElOQUNBUC4pIFRqIEVUCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA2MTggVGQgKExvcyB0cmVzIHRpcG9zIGRlIGNvbnRyb2wpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA1OTYgVGQgKENs4XNpY286IHNlIGludHJvZHVjZSB1biBlbmVtaWdvIG5hdHVyYWwgcXVlIG5vIGV4aXN0ZSBlbiBsYSB6b25hLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDU4MCBUZCAoQXVtZW50YXRpdm86IHNlIGNy7WEgeSBsaWJlcmEgZWwgZW5lbWlnbyBuYXR1cmFsIGVuIGNhbnRpZGFkLiBFcyBlbCBxdWUgaGFjZW1vcyBhcXXtLikgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDU2NCBUZCAoQ29uc2VydmF0aXZvOiBzZSBtb2RpZmljYSBlbCBtYW5lam8gZGVsIHByZWRpbyBwYXJhIGZhdm9yZWNlciBhIGxvcyBlbmVtaWdvcyBuYXR1cmFsZXMpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA1NDggVGQgKHF1ZSB5YSBlc3Thbi4pIFRqIEVUCkJUIC9GMiAxMyBUZiAwLjU1IDAuNDIgMC4xMCByZyA2MiA1MDYgVGQgKExvIHF1ZSBjcmlhbW9zIGVuIGVsIGxhYm9yYXRvcmlvKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNDg0IFRkICgtIENocnlzb3BlcmxhOiBzdXMgbGFydmFzIGNvbWVuIHB1bGdvbmVzLCBodWV2b3MgeSBsYXJ2YXMgcGVxdWXxYXMuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNDY4IFRkICgtIFRyaWNob2dyYW1tYTogYXZpc3BpdGEgcXVlIHBhcmFzaXRhIGh1ZXZvcyBkZSBwb2xpbGxhcy4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA0NTIgVGQgKC0gQ2hpbml0YSBDcnlwdG9sYWVtdXM6IGNvbnRyYSBlbCBjaGFuY2hpdG8gYmxhbmNvIGVuIGZydXRhbGVzLikgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDQxMCBUZCAoUnV0aW5hIHNlbWFuYWwgZGVsIGVzdHVkaWFudGUpIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiAzODggVGQgKDEuIE1vbml0b3JlbyBjb24gdHJhbXBhcyBhbWFyaWxsYXMgZW4gaW52ZXJuYWRlcm8geSBmcnV0YWxlcy4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiAzNzIgVGQgKDIuIENvbnRlbyBlIGlkZW50aWZpY2FjafNuIGRlIHBsYWdhcyB5IGVuZW1pZ29zIG5hdHVyYWxlcy4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiAzNTYgVGQgKDMuIEPhbGN1bG8gZGVsIHVtYnJhbCBkZSBkYfFvIGVjb27zbWljby4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiAzNDAgVGQgKDQuIERlY2lzafNuOiBsaWJlcmFyLCBlc3BlcmFyIG8gY29tYmluYXIgY29uIG1hbmVqbyBjdWx0dXJhbC4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiAzMjQgVGQgKDUuIFJlZ2lzdHJvIGVuIGxhIGJpdOFjb3JhIGRlbCBsYWJvcmF0b3Jpby4pIFRqIEVUCkJUIC9GMSA4IFRmIDAuNDUgMC40OCAwLjQ1IHJnIDYyIDQyIFRkIChQcm9mLiBJbulzIFZlcmdhcmEgLSBMYWJvcmF0b3JpbyBkZSBDb250cm9sIEJpb2zzZ2ljbyAgfCAgTGljZW8gQWdy7WNvbGEgTWFydGEgTWFydO1uZXogQ3J1eiAgfCAgZG9jdW1lbnRvIGRlIG1hcXVldGEpIFRqIEVUCmVuZHN0cmVhbQplbmRvYmoKNyAwIG9iago8PC9UeXBlL1BhZ2UvUGFyZW50IDIgMCBSL01lZGlhQm94WzAgMCA1OTUgODQyXS9SZXNvdXJjZXM8PC9Gb250PDwvRjEgMyAwIFIvRjIgNCAwIFI+Pj4+L0NvbnRlbnRzIDggMCBSPj4KZW5kb2JqCjggMCBvYmoKPDwvTGVuZ3RoIDE1NDQ+PgpzdHJlYW0KQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDc2OCBUZCAoVW1icmFsIGRlIGRh8W8gZWNvbvNtaWNvKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNzQ2IFRkIChObyB0b2RhIHBsYWdhIHNlIGNvbWJhdGUuIFNlIGFjdPphIGN1YW5kbyBlbCBkYfFvIGVzcGVyYWRvIHN1cGVyYSBlbCBjb3N0byBkZWwgY29udHJvbC4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA3MzAgVGQgKFBvciBlc28gZWwgY29udGVvIGVzIG9ibGlnYXRvcmlvIGFudGVzIGRlIGN1YWxxdWllciBsaWJlcmFjafNuOiBzaW4gZGF0b3Mgbm8gc2UgZGVjaWRlLikgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDY4OCBUZCAoQ3VpZGFkb3MgZW4gbGEgY3JpYW56YSkgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDY2NiBUZCAoLSBUZW1wZXJhdHVyYSBlbnRyZSAyMiB5IDI2ILBDIGVuIGxhIHNhbGEgZGUgY3LtYS4pIFRqIEVUCkJUIC9GMSAxMSBUZiAwLjEwIDAuMTMgMC4xMSByZyA2MiA2NTAgVGQgKC0gSHVtZWRhZCByZWxhdGl2YSBlbnRyZSA2MCB5IDcwICUuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNjM0IFRkICgtIFJldmlzYXIgZGlhcmlhbWVudGUgcXVlIG5vIGhheWEgY29udGFtaW5hY2nzbiBwb3IgaG9ybWlnYXMgbyDhY2Fyb3MuKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNjE4IFRkICgtIFJvdHVsYXIgY2FkYSBiYW5kZWphIGNvbiBlc3BlY2llLCBmZWNoYSB5IGVzdGFkbyBkZSBkZXNhcnJvbGxvLikgVGogRVQKQlQgL0YyIDEzIFRmIDAuNTUgMC40MiAwLjEwIHJnIDYyIDU3NiBUZCAoU2VndXJpZGFkKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTU0IFRkIChFbCBsYWJvcmF0b3JpbyBubyBtYW5lamEgcGVzdGljaWRhcywgcGVybyBz7SBtYXRlcmlhbCBiaW9s82dpY28gdml2by4gTm8gc2Ugc2FjYSkgVGogRVQKQlQgL0YxIDExIFRmIDAuMTAgMC4xMyAwLjExIHJnIDYyIDUzOCBUZCAobWF0ZXJpYWwgZnVlcmEgZGVsIHByZWRpbyBzaW4gYXV0b3JpemFjafNuIGRlbCBwcm9mZXNvci4gTGF2YWRvIGRlIG1hbm9zIGFsIGVudHJhciB5IGFsKSBUaiBFVApCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNTIyIFRkIChzYWxpci4pIFRqIEVUCjAuODAgMC44MiAwLjc4IFJHIDEgdyA2MiA1MDAgbSA1MzMgNTAwIGwgUwpCVCAvRjEgMTEgVGYgMC4xMCAwLjEzIDAuMTEgcmcgNjIgNDc4IFRkIChMYWJvcmF0b3JpbyBkZSBDb250cm9sIEJpb2zzZ2ljbyAtIHB1bnRvIDggZGVsIHBsYW5vIGRlbCBwcmVkaW8uKSBUaiBFVApCVCAvRjEgOCBUZiAwLjQ1IDAuNDggMC40NSByZyA2MiA0MiBUZCAoUHJvZi4gSW7pcyBWZXJnYXJhIC0gTGFib3JhdG9yaW8gZGUgQ29udHJvbCBCaW9s82dpY28gIHwgIExpY2VvIEFncu1jb2xhIE1hcnRhIE1hcnTtbmV6IENydXogIHwgIGRvY3VtZW50byBkZSBtYXF1ZXRhKSBUaiBFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA5CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU0IDAwMDAwIG4gCjAwMDAwMDAxMTEgMDAwMDAgbiAKMDAwMDAwMDE5OSAwMDAwMCBuIAowMDAwMDAwMjkyIDAwMDAwIG4gCjAwMDAwMDA0MTMgMDAwMDAgbiAKMDAwMDAwMjc0OCAwMDAwMCBuIAowMDAwMDAyODY5IDAwMDAwIG4gCnRyYWlsZXIKPDwvU2l6ZSA5L1Jvb3QgMSAwIFIvSW5mbzw8L1RpdGxlIChDYXJ0aWxsYTogY29udHJvbCBiaW9s82dpY28gZGUgcGxhZ2FzKS9BdXRob3IgKFByb2YuIElu6XMgVmVyZ2FyYSAtIExhYm9yYXRvcmlvIGRlIENvbnRyb2wgQmlvbPNnaWNvKT4+Pj4Kc3RhcnR4cmVmCjQ0NjIKJSVFT0YK"}
+</script>
+<!--DOCS-FIN-->
+
+<!-- plano base del predio: dibujo fijo, los puntos numerados vienen del contenido -->
+<script type="text/plain" id="plano-local">
+<svg viewBox="0 0 1000 900" role="img" aria-label="Plano del predio del liceo">
+  <defs>
+    <pattern id="rows" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(12)">
+      <rect width="16" height="16" fill="none"/>
+      <line x1="0" y1="0" x2="0" y2="16" stroke="rgba(122,190,150,.30)" stroke-width="3"/>
+    </pattern>
+    <pattern id="trees" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="5" fill="rgba(122,190,150,.34)"/>
+      <circle cx="27" cy="27" r="5" fill="rgba(122,190,150,.34)"/>
+    </pattern>
+    <pattern id="grass" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(122,190,150,.13)" stroke-width="2"/>
+    </pattern>
+    <clipPath id="predio"><path d="M40 60 L960 40 L975 800 L860 872 L120 880 L30 700 Z"/></clipPath>
+  </defs>
+  <path d="M40 60 L960 40 L975 800 L860 872 L120 880 L30 700 Z" fill="#0E3A2C" stroke="rgba(242,246,236,.30)" stroke-width="2.5"/>
+  <g clip-path="url(#predio)">
+    <rect x="20" y="20" width="970" height="880" fill="url(#grass)" opacity=".7"/>
+    <path d="M350 80 L500 76 L505 505 L345 508 Z" fill="rgba(122,190,150,.10)" stroke="rgba(242,246,236,.16)"/>
+    <text class="map-label" x="358" y="112">Potreros</text>
+    <path d="M70 90 L320 82 L325 330 L72 335 Z" fill="url(#trees)" stroke="rgba(242,246,236,.18)"/>
+    <text class="map-label" x="82" y="118">Frutales</text>
+    <g stroke="rgba(242,246,236,.35)" fill="rgba(90,169,204,.22)">
+      <rect x="90" y="380" width="220" height="34" rx="17"/>
+      <rect x="90" y="424" width="220" height="34" rx="17"/>
+      <rect x="90" y="468" width="220" height="34" rx="17"/>
+    </g>
+    <circle cx="720" cy="290" r="200" fill="url(#rows)" stroke="rgba(242,246,236,.28)" stroke-width="2"/>
+    <circle cx="720" cy="290" r="200" fill="rgba(90,169,204,.06)"/>
+    <line x1="720" y1="290" x2="920" y2="290" stroke="rgba(242,246,236,.5)" stroke-width="4" stroke-dasharray="14 8"/>
+    <circle cx="720" cy="290" r="9" fill="rgba(242,246,236,.6)"/>
+    <path d="M30 545 C 220 520, 430 560, 620 535 S 900 560, 975 545" fill="none" stroke="rgba(90,169,204,.65)" stroke-width="7" stroke-linecap="round"/>
+    <text class="map-label" x="790" y="522">Canal Abranquil</text>
+    <g fill="rgba(242,246,236,.16)" stroke="rgba(242,246,236,.45)" stroke-width="2">
+      <rect x="95" y="600" width="180" height="82" rx="4"/>
+      <rect x="95" y="712" width="180" height="70" rx="4"/>
+      <rect x="300" y="600" width="120" height="70" rx="4"/>
+      <rect x="300" y="700" width="150" height="88" rx="4"/>
+      <rect x="490" y="608" width="150" height="76" rx="4"/>
+      <rect x="490" y="716" width="185" height="90" rx="4"/>
+      <rect x="512" y="560" width="86" height="46" rx="4"/>
+    </g>
+    <circle cx="800" cy="720" r="72" fill="none" stroke="rgba(201,106,60,.85)" stroke-width="6"/>
+    <circle cx="800" cy="720" r="52" fill="rgba(201,106,60,.14)"/>
+    <path d="M20 858 L980 838" stroke="rgba(242,246,236,.42)" stroke-width="14" fill="none"/>
+    <path d="M20 858 L980 838" stroke="rgba(7,32,26,.9)" stroke-width="3" stroke-dasharray="20 18" fill="none"/>
+    <path d="M175 858 L175 690" stroke="rgba(242,246,236,.3)" stroke-width="8" fill="none"/>
+    <text class="map-label" x="590" y="884">Camino Abranquil km 1</text>
+  </g>
+  <g transform="translate(915,110)">
+    <path d="M0 -34 L13 16 L0 6 L-13 16 Z" fill="rgba(242,246,236,.75)"/>
+    <text class="map-label" x="0" y="42" text-anchor="middle" style="font-size:19px">N</text>
+  </g>
+  <g id="pins"></g>
+</svg>
+</script>
+
+<!-- lector de PDF y generador de QR: en el totem instalado van servidos desde el disco, no desde internet -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"></script>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s == null ? "" : s).replace(/[<>]/g, function(c){ return c === "<" ? "&lt;" : "&gt;"; }); };
+
+  /* ================= escalado a la pantalla ================= */
+  var app = $("app");
+  function fit(){
+    var s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    app.style.transform = "translate(" + ((innerWidth - 1080 * s) / 2) + "px," +
+                          ((innerHeight - 1920 * s) / 2) + "px) scale(" + s + ")";
+  }
+  addEventListener("resize", fit); fit();
+
+  /* ================= estado ================= */
+  var D = null, origen = "Copia local", toques = 0, arranque = Date.now();
+  var pantalla = "sc-inicio", idleT = null, rotI = 0, rotT = null, avI = 0, avT = null;
+
+  /* ================= carga de contenido =================
+     1. copia local embebida  -> arranca siempre, sin red
+     2. contenido/contenido.json en disco -> si el kiosco corre servido
+     3. servidor remoto -> sincronizacion en segundo plano                */
+  function leerLocal(){
+    try { return JSON.parse($("contenido-local").textContent); }
+    catch(e){ return null; }
+  }
+  function guardado(){
+    try {
+      var v = localStorage.getItem("totem:contenido");
+      return v ? JSON.parse(v) : null;
+    } catch(e){ return null; }
+  }
+  function guardar(d){
+    try { localStorage.setItem("totem:contenido", JSON.stringify(d)); } catch(e){}
+  }
+
+  var local = leerLocal(), cache = guardado();
+  D = (cache && cache.version > local.version) ? cache : local;
+  if(cache && cache.version > local.version) origen = "Caché · v" + cache.version;
+  /* el primer pintado va al final del archivo, cuando todas las variables ya existen */
+
+  fetch("contenido/contenido.json", { cache: "no-store" })
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+    .then(function(d){
+      if(d && d.version && d.version !== D.version){
+        D = d; guardar(d); origen = "Archivo en disco"; pintarTodo();
+        log("BOOT  Contenido de disco cargado · <u>v" + d.version + "</u>");
+      } else { origen = "Archivo en disco"; }
+    })
+    .catch(function(){ log("BOOT  Sin archivo en disco — se usa la copia embebida"); });
+
+  /* ================= pintado ================= */
+  function pintarTodo(){
+    var L = D.liceo || {}, P = D.pantallas || {};
+    $("cNombre").textContent = L.nombre || "";
+    $("cUbic").textContent = L.ubicacionCorta || "";
+    $("cInsignia").textContent = L.insignia || "";
+    pintarAtractor(D.atractor || {});
+    pintarAvisos(D.avisos || []);
+    pintarLiceo(P.liceo || {});
+    pintarAgro(P.agro || {});
+    pintarCampo(P.campo || {});
+    pintarDocs(P.documentos || {});
+    pintarVisita(P.visita || {});
+    $("tEquipo").textContent = (D.config && D.config.equipo) || "—";
+    $("tVer").textContent = "v" + D.version;
+    $("tOrigen").textContent = origen;
+  }
+
+  /* ---- atractor ---- */
+  var cifras = [];
+  function pintarAtractor(A){
+    $("aLead").textContent = A.lead || "";
+    $("aCta").textContent = A.cta || "";
+    cifras = A.cifras || [];
+    $("dots").innerHTML = cifras.map(function(){ return "<i></i>"; }).join("");
+    rotI = 0; rotar();
+    clearInterval(rotT);
+    rotT = setInterval(rotar, ((D.config && D.config.rotacionSegundos) || 5) * 1000);
+  }
+  function rotar(){
+    if(!cifras.length) return;
+    var c = cifras[rotI];
+    $("rotN").innerHTML = esc(c.valor) + (c.unidad ? "<small> " + esc(c.unidad) + "</small>" : "");
+    $("rotT").textContent = c.texto || "";
+    var ds = $("dots").children;
+    for(var i = 0; i < ds.length; i++) ds[i].classList.toggle("on", i === rotI);
+    rotI = (rotI + 1) % cifras.length;
+  }
+
+  /* ---- avisos vigentes ---- */
+  function pintarAvisos(avs){
+    var hoy = new Date().toISOString().slice(0, 10);
+    var vig = avs.filter(function(a){
+      return (!a.desde || a.desde <= hoy) && (!a.hasta || a.hasta >= hoy);
+    });
+    var box = $("avisos");
+    if(!vig.length){ box.style.display = "none"; return; }
+    box.style.display = "";
+    box.innerHTML = vig.map(function(a, i){
+      return '<div class="av' + (i === 0 ? " on" : "") + '"><b>Aviso</b><span>' + esc(a.texto) + "</span></div>";
+    }).join("");
+    clearInterval(avT); avI = 0;
+    if(vig.length > 1){
+      avT = setInterval(function(){
+        var els = box.children;
+        els[avI].classList.remove("on");
+        avI = (avI + 1) % els.length;
+        els[avI].classList.add("on");
+      }, 7000);
+    }
+  }
+
+  /* ---- el liceo ---- */
+  function pintarLiceo(S){
+    $("lKicker").textContent = S.kicker || "";
+    $("lTitulo").textContent = S.titulo || "";
+    $("lBajada").textContent = S.bajada || "";
+    $("lFiguras").innerHTML = (S.figuras || []).map(function(f){
+      return '<div class="fig"><b>' + esc(f.valor) + "</b><span>" + esc(f.texto) + "</span></div>";
+    }).join("");
+    $("lHitos").innerHTML = (S.hitos || []).map(function(h){
+      return '<li class="' + (h.destacado ? "" : "minor") + '"><div class="yr">' + esc(h.anio) +
+             '</div><div class="ev">' + (h.texto || "") + "</div></li>";
+    }).join("");
+    $("lTarjetas").innerHTML = tarjetas(S.tarjetas);
+  }
+  function tarjetas(ts){
+    return (ts || []).map(function(t){
+      return '<div class="card"><h4>' + esc(t.titulo) + "</h4><p>" + (t.texto || "") + "</p></div>";
+    }).join("");
+  }
+
+  /* ---- agropecuaria ---- */
+  var menSel = 0;
+  function pintarAgro(S){
+    $("gKicker").textContent = S.kicker || "";
+    $("gTitulo").textContent = S.titulo || "";
+    $("gBajada").textContent = S.bajada || "";
+    $("gPerfilT").textContent = S.perfilTitulo || "";
+    $("gPerfil").innerHTML = (S.perfil || []).map(function(p){ return "<li>" + esc(p) + "</li>"; }).join("");
+    $("gFiguras").innerHTML = (S.figuras || []).map(function(f){
+      return '<div class="fig"><b>' + esc(f.valor) + (f.unidad ? "<small> " + esc(f.unidad) + "</small>" : "") +
+             "</b><span>" + esc(f.texto) + "</span></div>";
+    }).join("");
+    $("gTarjetas").innerHTML = tarjetas(S.tarjetas);
+
+    var mens = S.menciones || [];
+    $("gTabs").innerHTML = mens.map(function(m, i){
+      return '<button role="tab" aria-selected="' + (i === menSel) + '" data-i="' + i + '">' + esc(m.nombre) + "</button>";
+    }).join("");
+    Array.prototype.forEach.call($("gTabs").children, function(b){
+      b.addEventListener("click", function(){ menSel = +b.dataset.i; pintarAgro(S); });
+    });
+    var comunes = (S.modulosComunes || []).map(function(m){ return fila(m, "Común"); }).join("");
+    var propios = mens[menSel] ? mens[menSel].modulos.map(function(m){ return fila(m, "Mención"); }).join("") : "";
+    $("gMods").innerHTML = comunes + propios;
+  }
+  function fila(m, tag){
+    return '<li><span class="n">' + esc(m.n) + '</span><span class="m">' + esc(m.nombre) +
+           '</span><span class="tg">' + tag + "</span></li>";
+  }
+
+  /* ---- el campo ---- */
+  function pintarCampo(S){
+    $("mKicker").textContent = S.kicker || "";
+    $("mTitulo").textContent = S.titulo || "";
+    $("mBajada").textContent = S.bajada || "";
+    $("mEscala").textContent = S.escala || "";
+    $("planoHost").innerHTML = $("plano-local").textContent;
+    var pins = $("planoHost").querySelector("#pins");
+    var NS = "http://www.w3.org/2000/svg";
+    (S.puntos || []).forEach(function(p){
+      var g = document.createElementNS(NS, "g");
+      g.setAttribute("class", "hot");
+      g.setAttribute("tabindex", "0");
+      g.setAttribute("role", "button");
+      g.setAttribute("aria-label", p.titulo);
+      g.innerHTML =
+        '<circle class="halo" cx="' + p.x + '" cy="' + p.y + '" r="42"/>' +
+        '<circle class="pin" cx="' + p.x + '" cy="' + p.y + '" r="25"/>' +
+        '<text class="num" x="' + p.x + '" y="' + (p.y + 8) + '">' + p.n + "</text>";
+      function abrir(){
+        Array.prototype.forEach.call(pins.querySelectorAll(".hot"), function(h){ h.classList.remove("sel"); });
+        g.classList.add("sel");
+        $("shN").textContent = p.n;
+        $("shT").textContent = p.titulo;
+        $("shP").textContent = p.texto;
+        $("shF").innerHTML = (p.datos || []).map(function(d){ return "<span>" + esc(d) + "</span>"; }).join("");
+        $("sheet").classList.add("open");
+        reiniciarIdle();
+      }
+      g.addEventListener("click", abrir);
+      g.addEventListener("keydown", function(e){
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); abrir(); }
+      });
+      pins.appendChild(g);
+    });
+  }
+  function cerrarFicha(){
+    $("sheet").classList.remove("open");
+    Array.prototype.forEach.call(document.querySelectorAll(".hot"), function(h){ h.classList.remove("sel"); });
+  }
+  $("shX").addEventListener("click", cerrarFicha);
+
+  /* ================= documentos ================= */
+  var docsEmb = {};
+  try { docsEmb = JSON.parse($("docs-embebidos").textContent); } catch(e){}
+  var docsS = {}, docsCat = "todos";
+
+  function pintarDocs(S){
+    docsS = S;
+    $("dKicker").textContent = S.kicker || "";
+    $("dTitulo").textContent = S.titulo || "";
+    $("dBajada").textContent = S.bajada || "";
+    var cats = S.categorias || [{ id: "todos", nombre: "Todos" }];
+    if(!cats.some(function(c){ return c.id === docsCat; })) docsCat = cats[0].id;
+    $("dChips").innerHTML = cats.map(function(c){
+      return '<button aria-pressed="' + (c.id === docsCat) + '" data-c="' + esc(c.id) + '">' + esc(c.nombre) + "</button>";
+    }).join("");
+    Array.prototype.forEach.call($("dChips").children, function(b){
+      b.addEventListener("click", function(){ docsCat = b.dataset.c; pintarDocs(docsS); });
+    });
+    listarDocs();
+  }
+
+  var MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  function fechaCorta(f){
+    if(!f) return "";
+    var p = String(f).split("-");
+    return p.length === 3 ? (+p[2]) + " " + MESES[+p[1] - 1] + " " + p[0] : f;
+  }
+
+  function listarDocs(){
+    var items = (docsS.items || []).filter(function(d){
+      return docsCat === "todos" || d.categoria === docsCat;
+    });
+    if(!items.length){
+      $("dLista").innerHTML = '<li class="docs-vacio">Todavía no hay documentos en esta categoría.</li>';
+      return;
+    }
+    $("dLista").innerHTML = items.map(function(d){
+      return '<li><button class="doc' + (d.destacado ? " dest" : "") + '" data-id="' + esc(d.id) + '">' +
+        '<span class="doc-ico"><span>PDF</span></span>' +
+        '<span class="doc-txt">' +
+          '<span class="h">' + esc(d.titulo) + "</span>" +
+          '<span class="p">' + esc(d.descripcion) + "</span>" +
+          '<span class="doc-meta">' +
+            '<span class="aut">' + esc(d.autor) + (d.cargo ? " · " + esc(d.cargo) : "") + "</span>" +
+            "<span>" + (d.paginas || "?") + " pág.</span>" +
+            "<span>" + fechaCorta(d.fecha) + "</span>" +
+          "</span>" +
+        "</span><span class=\"doc-go\">›</span></button></li>";
+    }).join("");
+    Array.prototype.forEach.call($("dLista").querySelectorAll(".doc"), function(b){
+      b.addEventListener("click", function(){
+        var d = (docsS.items || []).filter(function(x){ return x.id === b.dataset.id; })[0];
+        if(d) abrirDoc(d);
+      });
+    });
+  }
+
+  /* ---- lector ---- */
+  var pdfDoc = null, pdfPag = 1, pdfTotal = 1, pdfZoom = 1, docActual = null;
+
+  function b64aBytes(s){
+    var bin = atob(s), u = new Uint8Array(bin.length);
+    for(var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+    return u;
+  }
+  function cargarBytes(d){
+    return fetch(d.archivo, { cache: "no-store" })
+      .then(function(r){ if(!r.ok) throw 0; return r.arrayBuffer(); })
+      .then(function(a){ return new Uint8Array(a); })
+      .catch(function(){
+        if(docsEmb[d.id]) return b64aBytes(docsEmb[d.id]);
+        throw 0;
+      });
+  }
+
+  function abrirDoc(d){
+    docActual = d; pdfDoc = null; pdfPag = 1; pdfZoom = 1;
+    $("lecT").textContent = d.titulo;
+    $("lecA").textContent = d.autor + (d.cargo ? " · " + d.cargo : "") + "  ·  " + fechaCorta(d.fecha);
+    $("lecZoom").textContent = "Ampliar";
+    $("lecQr").classList.remove("open");
+    $("lecDoc").innerHTML = '<div class="lec-cargando">Abriendo documento…</div>';
+    $("lector").classList.add("open");
+    barra();
+    log("DOCS  Abierto “" + d.titulo + "”");
+    cargarBytes(d)
+      .then(function(bytes){ return abrirPdf(bytes); })
+      .catch(function(){
+        $("lecDoc").innerHTML = '<div class="lec-cargando">No se pudo abrir este documento.<br>Avise en Secretaría.</div>';
+      });
+  }
+
+  function abrirPdf(bytes){
+    var copia = bytes.slice(0);
+    if(typeof pdfjsLib === "undefined") return nativo(copia);
+    try {
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    } catch(e){}
+    return pdfjsLib.getDocument({ data: bytes }).promise
+      .then(function(doc){ pdfDoc = doc; pdfTotal = doc.numPages; return dibujarPagina(); })
+      .catch(function(){ return nativo(copia); });
+  }
+  function nativo(bytes){
+    var url = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+    $("lecDoc").innerHTML = '<embed src="' + url + '#toolbar=0&navpanes=0&view=FitH" type="application/pdf">';
+    pdfDoc = null; pdfTotal = 1; pdfPag = 1; barra();
+  }
+
+  function dibujarPagina(){
+    if(!pdfDoc) return Promise.resolve();
+    return pdfDoc.getPage(pdfPag).then(function(pag){
+      var v0 = pag.getViewport({ scale: 1 });
+      var ancho = (1080 - 52) * pdfZoom;
+      var vp = pag.getViewport({ scale: (ancho / v0.width) * 2 });   // 2x: nitidez en panel grande
+      var cv = document.createElement("canvas");
+      cv.width = vp.width; cv.height = vp.height;
+      cv.style.width = Math.round(ancho) + "px";
+      return pag.render({ canvasContext: cv.getContext("2d"), viewport: vp }).promise.then(function(){
+        var caja = $("lecDoc");
+        caja.innerHTML = ""; caja.appendChild(cv);
+        caja.style.justifyContent = pdfZoom > 1 ? "flex-start" : "center";
+        caja.scrollTop = 0; caja.scrollLeft = 0;
+        barra();
+      });
+    });
+  }
+  function barra(){
+    $("lecPag").textContent = pdfPag + " / " + pdfTotal;
+    $("lecPrev").disabled = pdfPag <= 1;
+    $("lecNext").disabled = pdfPag >= pdfTotal;
+  }
+  $("lecPrev").addEventListener("click", function(){ if(pdfPag > 1){ pdfPag--; dibujarPagina(); } });
+  $("lecNext").addEventListener("click", function(){ if(pdfPag < pdfTotal){ pdfPag++; dibujarPagina(); } });
+  $("lecZoom").addEventListener("click", function(){
+    pdfZoom = pdfZoom > 1 ? 1 : 1.7;
+    $("lecZoom").textContent = pdfZoom > 1 ? "Ajustar" : "Ampliar";
+    dibujarPagina();
+  });
+  $("lecX").addEventListener("click", cerrarLector);
+  $("lecQrBtn").addEventListener("click", function(){
+    var abierto = $("lecQr").classList.toggle("open");
+    if(abierto && docActual){
+      qrEn($("lecQrG"), docActual.url ||
+        ((D.config && D.config.urlPublica) || "https://www.martamartinezcruz.cl/"));
+    }
+  });
+  function cerrarLector(){
+    $("lector").classList.remove("open");
+    $("lecQr").classList.remove("open");
+    $("lecDoc").innerHTML = "";
+    pdfDoc = null; docActual = null;
+  }
+
+  /* ---- QR ---- */
+  function qrEn(host, texto){
+    host.innerHTML = "";
+    if(typeof qrcode === "function"){
+      try {
+        var q = qrcode(0, "M"); q.addData(texto); q.make();
+        var n = q.getModuleCount(), out = [];
+        host.style.gridTemplateColumns = "repeat(" + n + ",1fr)";
+        host.style.gridTemplateRows = "repeat(" + n + ",1fr)";
+        for(var r = 0; r < n; r++)
+          for(var c = 0; c < n; c++)
+            out.push('<i class="' + (q.isDark(r, c) ? "k" : "") + '"></i>');
+        host.innerHTML = out.join("");
+        return;
+      } catch(e){}
+    }
+    host.style.gridTemplateColumns = "repeat(25,1fr)";
+    host.style.gridTemplateRows = "repeat(25,1fr)";
+    var semilla = 20260907, res = [];
+    function rnd(){ semilla = (semilla * 1103515245 + 12345) % 2147483648; return semilla / 2147483648; }
+    for(var i = 0; i < 625; i++) res.push('<i class="' + (rnd() > .52 ? "k" : "") + '"></i>');
+    host.innerHTML = res.join("");
+  }
+
+  /* ---- visitanos ---- */
+  function pintarVisita(S){
+    $("vKicker").textContent = S.kicker || "";
+    $("vTitulo").textContent = S.titulo || "";
+    $("vBajada").textContent = S.bajada || "";
+    $("vQrT").textContent = S.qrTitulo || "";
+    $("vQrP").textContent = S.qrTexto || "";
+    $("vQrE").innerHTML = (S.qrEtiquetas || []).map(function(e){ return "<span>" + esc(e) + "</span>"; }).join("");
+    $("vContacto").innerHTML = (S.contacto || []).map(function(c){
+      return '<li><span class="lab">' + esc(c.etiqueta) + '</span><span class="val' +
+             (c.mono ? " mono" : "") + '">' + esc(c.valor) + "</span></li>";
+    }).join("");
+    $("vTarjetas").innerHTML = tarjetas(S.tarjetas);
+    qrEn($("qr"), S.qrUrl || "https://www.martamartinezcruz.cl/");
+  }
+
+  /* ================= navegacion ================= */
+  var pantallas = ["sc-inicio", "sc-liceo", "sc-agro", "sc-campo", "sc-docs", "sc-visita"];
+  var botones = Array.prototype.slice.call(document.querySelectorAll(".nav button"));
+  function ir(id){
+    pantallas.forEach(function(s){ $(s).classList.toggle("on", s === id); });
+    botones.forEach(function(b){
+      if(b.dataset.go === id) b.setAttribute("aria-current", "true");
+      else b.removeAttribute("aria-current");
+    });
+    pantalla = id;
+    cerrarFicha();
+    cerrarLector();
+    $("tech").classList.remove("open");
+    document.querySelectorAll(".scroll").forEach(function(s){ s.scrollTop = 0; });
+    reiniciarIdle();
+  }
+  botones.forEach(function(b){ b.addEventListener("click", function(){ ir(b.dataset.go); }); });
+  $("sc-inicio").addEventListener("click", function(){ ir("sc-liceo"); });
+
+  function reiniciarIdle(){
+    clearTimeout(idleT);
+    if(pantalla === "sc-inicio") return;
+    idleT = setTimeout(function(){ ir("sc-inicio"); }, ((D.config && D.config.idleSegundos) || 45) * 1000);
+  }
+  app.addEventListener("pointerdown", function(){ toques++; $("tToques").textContent = toques; reiniciarIdle(); });
+
+  /* ================= campo animado ================= */
+  var cv = $("art"), cx = cv.getContext("2d"), W = 1080, H = 1490;
+  cv.width = W; cv.height = H;
+  var tallos = [];
+  for(var i = 0; i < 260; i++){
+    tallos.push({ x: Math.random() * W, y: H * (0.42 + Math.random() * 0.58),
+                  h: 40 + Math.random() * 190, f: Math.random() * Math.PI * 2, w: 2 + Math.random() * 4 });
+  }
+  var cerros = [{ y:.44, a:26, c:"#0B2C23" }, { y:.52, a:18, c:"#0E3A2C" }, { y:.62, a:12, c:"#124434" }];
+  function dibujar(t){
+    var g = cx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, "#123F31"); g.addColorStop(.42, "#0E3627"); g.addColorStop(1, "#07201A");
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    cx.fillStyle = "rgba(228,175,78,.16)"; cx.beginPath(); cx.arc(770, H * .30, 130, 0, 6.284); cx.fill();
+    cx.fillStyle = "rgba(228,175,78,.30)"; cx.beginPath(); cx.arc(770, H * .30, 58, 0, 6.284); cx.fill();
+    cerros.forEach(function(hl, k){
+      cx.fillStyle = hl.c; cx.beginPath(); cx.moveTo(0, H);
+      for(var x = 0; x <= W; x += 12) cx.lineTo(x, H * hl.y + Math.sin(x / (180 + k * 60) + k) * hl.a);
+      cx.lineTo(W, H); cx.closePath(); cx.fill();
+    });
+    tallos.forEach(function(b){
+      var s = Math.sin(t / 900 + b.f) * (b.h / 11), d = (b.y - H * .42) / (H * .58);
+      cx.strokeStyle = "rgba(" + Math.round(150 - d * 60) + "," + Math.round(200 - d * 70) + "," + Math.round(140 - d * 50) + ",.42)";
+      cx.lineWidth = b.w;
+      cx.beginPath(); cx.moveTo(b.x, b.y);
+      cx.quadraticCurveTo(b.x + s * .5, b.y - b.h * .6, b.x + s, b.y - b.h);
+      cx.stroke();
+    });
+  }
+  if(reduce) dibujar(0);
+  else (function bucle(t){ dibujar(t); requestAnimationFrame(bucle); })(0);
+
+  /* ================= reloj y estado ================= */
+  function reloj(){
+    var d = new Date();
+    $("clock").textContent = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0") +
+      " · Yerbas Buenas " + ((D.config && D.config.temperaturaComuna) || "");
+    var m = Math.floor((Date.now() - arranque) / 60000);
+    $("tUp").textContent = Math.floor(m / 60) + " h " + (m % 60) + " min";
+  }
+  reloj(); setInterval(reloj, 15000);
+
+  function estado(){
+    var ok = navigator.onLine;
+    $("dot").classList.toggle("off", !ok);
+    $("sTxt").textContent = ok ? "Sincronizado · v" + D.version : "Sin conexión · mostrando v" + D.version;
+    $("tConn").textContent = ok ? "En línea" : "Sin señal";
+  }
+  addEventListener("online", estado); addEventListener("offline", estado); estado();
+
+  /* ================= panel tecnico y sincronizacion ================= */
+  function hora(){
+    var d = new Date();
+    return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0") +
+           ":" + String(d.getSeconds()).padStart(2, "0");
+  }
+  function log(s){
+    var l = $("tLog");
+    l.innerHTML += (l.innerHTML ? "<br>" : "") + hora() + "  " + s;
+    l.scrollTop = l.scrollHeight;
+  }
+  $("status").addEventListener("click", function(e){
+    if(e.target.id === "btnFs") return;
+    $("tech").classList.toggle("open");
+  });
+  $("btnBack").addEventListener("click", function(){ $("tech").classList.remove("open"); });
+
+  $("btnFs").addEventListener("click", function(e){
+    e.stopPropagation();
+    if(document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+  });
+
+  function sincronizar(manual){
+    if(!navigator.onLine){
+      if(manual) log("SYNC  Sin red — reintento programado · <u>el tótem sigue operando</u>");
+      return;
+    }
+    var base = (D.config && D.config.servidor) || "";
+    log("SYNC  Consultando el manifiesto…");
+    fetch(base + "/api/manifest", { cache: "no-store" })
+      .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function(m){
+        if(m.version === D.version){ log("SYNC  Versión remota <u>v" + m.version + "</u> = local — <b>sin cambios</b>"); return; }
+        log("SYNC  Versión remota <u>v" + m.version + "</u> ≠ local — descargando");
+        return fetch(base + "/api/contenido", { cache: "no-store" })
+          .then(function(r){ return r.json(); })
+          .then(function(d){
+            guardar(d);
+            log("SYNC  Descarga completa · guardada como contenido.next");
+            if(pantalla === "sc-inicio"){ aplicar(d); }
+            else { log("SYNC  Esperando la pantalla de inicio para aplicar el cambio"); pendiente = d; }
+          });
+      })
+      .catch(function(err){
+        log("SYNC  Servidor no disponible (" + err + ") — <b>sigue operando con v" + D.version + "</b>");
+      });
+    $("tSync").textContent = hora();
+  }
+  var pendiente = null;
+  function aplicar(d){
+    D = d; origen = "Servidor"; pintarTodo();
+    log("SYNC  Cambio atómico aplicado · activo <u>v" + d.version + "</u>");
+    estado();
+  }
+  $("btnSync").addEventListener("click", function(){ sincronizar(true); });
+  setInterval(function(){
+    if(pendiente && pantalla === "sc-inicio"){ aplicar(pendiente); pendiente = null; }
+  }, 2000);
+  setInterval(function(){ sincronizar(false); },
+    ((local.config && local.config.sincronizarCadaMinutos) || 30) * 60000);
+
+  /* teclas de mantencion: 1-6 pantallas, T panel tecnico, F pantalla completa */
+  addEventListener("keydown", function(e){
+    var n = "123456".indexOf(e.key);
+    if(n >= 0) ir(pantallas[n]);
+    if(e.key.toLowerCase() === "t") $("tech").classList.toggle("open");
+    if(e.key.toLowerCase() === "f") $("btnFs").click();
+    if(e.key === "ArrowRight") $("lecNext").click();
+    if(e.key === "ArrowLeft") $("lecPrev").click();
+    if(e.key === "Escape"){ cerrarFicha(); cerrarLector(); $("tech").classList.remove("open"); }
+  });
+
+  /* ================= arranque ================= */
+  pintarTodo();
+  log("BOOT  Tótem iniciado · <u>v" + D.version + "</u> · origen: " + origen);
+  estado();
+  reloj();
+})();
+</script>

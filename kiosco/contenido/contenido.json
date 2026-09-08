@@ -1,0 +1,256 @@
+{
+  "version": "2026.09.07-1",
+  "generado": "2026-09-07T09:00:00-03:00",
+  "nota": "ADVERTENCIA: cifras, fichas del plano y estadísticas son contenido de maqueta. Reemplazar por información validada por el liceo antes de instalar.",
+
+  "liceo": {
+    "nombre": "Liceo Agrícola Marta Martínez Cruz",
+    "nombreLargo": "Liceo Bicentenario Agrícola Marta Martínez Cruz",
+    "ubicacionCorta": "Yerbas Buenas · Región del Maule",
+    "insignia": "Bicentenario"
+  },
+
+  "config": {
+    "idleSegundos": 45,
+    "rotacionSegundos": 5,
+    "sincronizarCadaMinutos": 30,
+    "telemetriaCadaMinutos": 5,
+    "servidor": "http://localhost:4300",
+    "equipo": "TOTEM-MMC-01",
+    "ubicacionEquipo": "Portón principal",
+    "temperaturaComuna": "18 °C"
+  },
+
+  "avisos": [
+    {
+      "id": "av-puertas-abiertas",
+      "texto": "Puertas abiertas: sábado 10 de octubre, 10:00 a 14:00",
+      "desde": "2026-09-01",
+      "hasta": "2026-10-10"
+    },
+    {
+      "id": "av-admision",
+      "texto": "Postulaciones a 1° medio abiertas en el Sistema de Admisión Escolar",
+      "desde": "2026-08-15",
+      "hasta": "2026-10-31"
+    }
+  ],
+
+  "atractor": {
+    "lead": "Desde 1958 formando en el campo",
+    "cta": "Toque la pantalla para recorrer el liceo",
+    "cifras": [
+      { "valor": "90",   "unidad": "ha", "texto": "El predio completo es la sala de clases" },
+      { "valor": "12",   "unidad": "ha", "texto": "Riega el pivote central, día y noche" },
+      { "valor": "1958", "unidad": "",   "texto": "El año en que abrió la primera escuela agrícola de mujeres de Chile" },
+      { "valor": "380",  "unidad": "",   "texto": "Estudiantes del Maule, muchos de ellos internos" },
+      { "valor": "3",    "unidad": "",   "texto": "Invernaderos de tecnología israelí en producción" }
+    ]
+  },
+
+  "pantallas": {
+    "liceo": {
+      "kicker": "Nuestra historia",
+      "titulo": "La primera escuela agrícola de mujeres de Chile",
+      "bajada": "Marta Martínez Cruz abrió las puertas en 1958 con un puñado de alumnas y un potrero. Hoy son 90 hectáreas y 380 estudiantes.",
+      "figuras": [
+        { "valor": "1958", "texto": "Primeras clases" },
+        { "valor": "380",  "texto": "Estudiantes hoy" },
+        { "valor": "68",   "texto": "Años formando" }
+      ],
+      "hitos": [
+        { "anio": "1958 — 1960", "destacado": true,  "texto": "Inician las actividades y se funda oficialmente la <b>primera escuela agrícola femenina del país</b>, dirigida por Marta Martínez Cruz." },
+        { "anio": "1965",        "destacado": false, "texto": "Egresan las <b>primeras 22 alumnas</b> como Prácticas Agrícolas." },
+        { "anio": "1966 — 1967", "destacado": false, "texto": "El liceo asciende a grado superior y titula a las <b>primeras siete Técnicas Agrícolas</b>." },
+        { "anio": "1970",        "destacado": false, "texto": "Se abren las menciones de <b>ganadería e industrias agropecuarias</b>." },
+        { "anio": "1976 — 1978", "destacado": true,  "texto": "Gran remodelación: pabellones, internado y plantas productivas. En 1978 obtiene <b>clasificación “A”</b>." },
+        { "anio": "1993",        "destacado": true,  "texto": "Pasa a la red <b>SNA Educa — CODESSER</b>, de la Sociedad Nacional de Agricultura." },
+        { "anio": "2021",        "destacado": false, "texto": "Es reconocido como <b>Liceo Bicentenario</b> de excelencia." },
+        { "anio": "2024",        "destacado": false, "texto": "Convenio con <b>INDAP</b>: prácticas en predios de agricultura familiar campesina." },
+        { "anio": "2026",        "destacado": true,  "texto": "Referente nacional en <b>control biológico de plagas</b>; recibe delegaciones de otros liceos y de INACAP." }
+      ],
+      "tarjetas": [
+        { "titulo": "Internado",             "texto": "140 camas para estudiantes de comunas rurales del Maule. Alimentación, cuidado nocturno y talleres vespertinos." },
+        { "titulo": "Club de Huasos escolar", "texto": "Nuestras colleras compiten en el circuito de <b>rodeos escolares</b>. Entrenan en la medialuna del predio." }
+      ]
+    },
+
+    "agro": {
+      "kicker": "La especialidad",
+      "titulo": "Técnico de Nivel Medio en Agropecuaria",
+      "bajada": "Formación diferenciada en 3° y 4° medio. Se aprende cultivando, ordeñando y arreglando la máquina que se echó a perder.",
+      "modulosComunes": [
+        { "n": "01", "nombre": "Manejo de suelo y residuos" },
+        { "n": "02", "nombre": "Manejo de técnicas de riego" },
+        { "n": "03", "nombre": "Técnicas de reproducción vegetal" },
+        { "n": "04", "nombre": "Alimentación y pesaje pecuario" },
+        { "n": "05", "nombre": "Control de plagas y enfermedades" },
+        { "n": "06", "nombre": "Emprendimiento y empleabilidad" }
+      ],
+      "menciones": [
+        {
+          "id": "agricultura",
+          "nombre": "Mención Agricultura",
+          "modulos": [
+            { "n": "07", "nombre": "Manejo y conducción de cultivos" },
+            { "n": "08", "nombre": "Cosecha y poscosecha vegetal" },
+            { "n": "09", "nombre": "Operación de maquinaria agrícola" }
+          ]
+        },
+        {
+          "id": "pecuaria",
+          "nombre": "Mención Pecuaria",
+          "modulos": [
+            { "n": "07", "nombre": "Manejo sanitario del ganado" },
+            { "n": "08", "nombre": "Producción y ordeña de leche" },
+            { "n": "09", "nombre": "Reproducción y crianza animal" }
+          ]
+        }
+      ],
+      "perfilTitulo": "Al titularse, la o el estudiante puede…",
+      "perfil": [
+        "Establecer y manejar cultivos y praderas según plan de fertilización y riego.",
+        "Operar y mantener tractor, implementos de labranza y equipos de riego tecnificado.",
+        "Aplicar control biológico y monitoreo de plagas con criterio de manejo integrado.",
+        "Manejar el rebaño lechero: alimentación, ordeña higiénica, registros y sanidad.",
+        "Llevar costos, registros prediales y formular un proyecto de emprendimiento rural."
+      ],
+      "figuras": [
+        { "valor": "240", "unidad": "h", "texto": "Práctica profesional" },
+        { "valor": "96",  "unidad": "%", "texto": "Titulación oportuna" },
+        { "valor": "2",   "unidad": "",  "texto": "Menciones" }
+      ],
+      "tarjetas": [
+        { "titulo": "Después del liceo",   "texto": "Agronomía, Medicina Veterinaria, Ingeniería Agrícola o trabajo directo en huertos, packings y lecherías del Maule. Convenio de continuidad con INACAP y Santo Tomás." },
+        { "titulo": "Dual con la industria", "texto": "Cuarto medio alterna liceo y empresa: viveros, packing de cerezas, planta lechera y predios de agricultura familiar campesina vía INDAP." }
+      ]
+    },
+
+    "campo": {
+      "kicker": "Plano del predio · 90 hectáreas",
+      "titulo": "El campo, punto por punto",
+      "bajada": "Toque un número para ver qué se hace ahí.",
+      "escala": "0 — 200 metros",
+      "puntos": [
+        { "n": 1,  "x": 185, "y": 641, "titulo": "Aulas y laboratorios",
+          "texto": "Seis salas, laboratorio de ciencias y sala de computación. Aquí parten las mañanas antes de salir al campo.",
+          "datos": ["6 salas", "Biblioteca", "Sala de enlaces"] },
+        { "n": 2,  "x": 185, "y": 747, "titulo": "Internado",
+          "texto": "140 camas para estudiantes que vienen de comunas rurales del Maule. Comedor, duchas y estudio vespertino.",
+          "datos": ["140 camas", "Comedor 200 personas", "Damas y varones"] },
+        { "n": 3,  "x": 565, "y": 646, "titulo": "Lechería",
+          "texto": "Sala de ordeña mecánica con estanque de frío. Los cuartos medios llevan el registro diario de producción de cada vaca.",
+          "datos": ["38 vacas en ordeña", "2 ordeñas al día", "Estanque 1 500 L"] },
+        { "n": 4,  "x": 582, "y": 761, "titulo": "Establo y corrales",
+          "texto": "Bovinos de carne y leche, ovinos y una crianza de cerdos. Alimentación, sanidad y manejo del rebaño se practican aquí todo el año.",
+          "datos": ["Bovinos", "Ovinos", "Porcinos"] },
+        { "n": 5,  "x": 800, "y": 720, "titulo": "Medialuna y pesebrera",
+          "texto": "Cancha reglamentaria donde entrenan las colleras del Club de Huasos escolar, que compiten en el circuito de rodeos escolares.",
+          "datos": ["9 caballos", "Rodeo escolar", "Cancha reglamentaria"] },
+        { "n": 6,  "x": 720, "y": 290, "titulo": "Pivote central",
+          "texto": "Riego por aspersión sobre praderas y maíz forrajero. Los estudiantes programan la lámina de agua según el balance hídrico de la semana.",
+          "datos": ["Cubre 12 ha", "Riego por aspersión", "Programación semanal"] },
+        { "n": 7,  "x": 200, "y": 441, "titulo": "Invernaderos israelíes",
+          "texto": "Tres módulos con control de temperatura, fertirriego por goteo y ventilación cenital. Hortalizas de hoja, tomate y almácigos.",
+          "datos": ["3 módulos", "Fertirriego", "Producción todo el año"] },
+        { "n": 8,  "x": 360, "y": 635, "titulo": "Laboratorio de Control Biológico",
+          "texto": "Cría de insectos benéficos para controlar plagas sin pesticidas. Es el sello del liceo: vienen delegaciones de otros liceos y de INACAP a capacitarse.",
+          "datos": ["Cría de benéficos", "Manejo integrado", "Referente nacional"] },
+        { "n": 9,  "x": 555, "y": 583, "titulo": "Sala de riego tecnificado",
+          "texto": "Cabezal de filtrado, inyección de fertilizantes y programación por sectores. Desde aquí se maneja el goteo de frutales e invernaderos.",
+          "datos": ["Cabezal de filtros", "Fertirriego", "Control por sectores"] },
+        { "n": 10, "x": 375, "y": 744, "titulo": "Galpón de maquinaria",
+          "texto": "Tractores, arado, rastra, sembradora, fumigadora y carro forrajero, todos propios. Mantención básica y operación segura se enseñan aquí.",
+          "datos": ["3 tractores", "Implementos de labranza", "Taller de mantención"] },
+        { "n": 11, "x": 198, "y": 208, "titulo": "Huerto de frutales",
+          "texto": "Cerezos, arándanos y manzanos en producción. Poda, raleo y cosecha son evaluación práctica en primavera y verano.",
+          "datos": ["Cerezo", "Arándano", "Manzano"] },
+        { "n": 12, "x": 425, "y": 300, "titulo": "Praderas y potreros",
+          "texto": "Pastoreo rotativo con cerco eléctrico. Se mide carga animal y se hace ensilaje para el invierno.",
+          "datos": ["Pastoreo rotativo", "Ensilaje", "Cerco eléctrico"] }
+      ]
+    },
+
+    "documentos": {
+      "kicker": "Material del liceo",
+      "titulo": "Documentos para leer aquí mismo",
+      "bajada": "Lo que suben los profesores. Toque uno para leerlo en la pantalla; el QR se lo lleva al teléfono.",
+      "categorias": [
+        { "id": "todos",       "nombre": "Todos" },
+        { "id": "visitas",     "nombre": "Para visitas" },
+        { "id": "estudiantes", "nombre": "Para estudiantes" }
+      ],
+      "items": [
+        {
+          "id": "ficha-agropecuaria",
+          "titulo": "Especialidad Agropecuaria: ficha para apoderados",
+          "descripcion": "Qué se aprende, dónde se aprende, práctica profesional y preguntas frecuentes.",
+          "categoria": "visitas",
+          "autor": "Prof. Rodrigo Salas",
+          "cargo": "Jefe de Especialidad",
+          "fecha": "2026-08-20",
+          "paginas": 2,
+          "archivo": "contenido/documentos/ficha-especialidad-agropecuaria.pdf",
+          "destacado": true
+        },
+        {
+          "id": "calendario-admision",
+          "titulo": "Calendario de admisión 2027",
+          "descripcion": "Fechas del SAE, puertas abiertas, matrícula y documentos que hay que traer.",
+          "categoria": "visitas",
+          "autor": "Dirección",
+          "cargo": "",
+          "fecha": "2026-08-18",
+          "paginas": 1,
+          "archivo": "contenido/documentos/calendario-admision-2027.pdf",
+          "destacado": true
+        },
+        {
+          "id": "guia-ordena",
+          "titulo": "Guía de práctica: ordeña higiénica",
+          "descripcion": "Protocolo paso a paso, registro de producción y señales de mastitis. Módulo 08, 4° Pecuaria.",
+          "categoria": "estudiantes",
+          "autor": "Prof. Carolina Muñoz",
+          "cargo": "Módulo Producción de leche",
+          "fecha": "2026-09-01",
+          "paginas": 2,
+          "archivo": "contenido/documentos/guia-ordena-higienica.pdf",
+          "destacado": false
+        },
+        {
+          "id": "control-biologico",
+          "titulo": "Cartilla: control biológico de plagas",
+          "descripcion": "Los tres tipos de control, qué criamos en el laboratorio y la rutina semanal.",
+          "categoria": "estudiantes",
+          "autor": "Prof. Inés Vergara",
+          "cargo": "Laboratorio de Control Biológico",
+          "fecha": "2026-08-28",
+          "paginas": 2,
+          "archivo": "contenido/documentos/cartilla-control-biologico.pdf",
+          "destacado": false
+        }
+      ]
+    },
+
+    "visita": {
+      "kicker": "Admisión y visitas",
+      "titulo": "Venga a conocer el campo",
+      "bajada": "Postulaciones a 1° medio por el Sistema de Admisión Escolar. Las visitas guiadas se agendan por teléfono.",
+      "qrTitulo": "Llévese la información",
+      "qrTexto": "Escanee con la cámara del teléfono para abrir el sitio del liceo, el calendario de admisión y el mapa para llegar.",
+      "qrUrl": "https://www.martamartinezcruz.cl/",
+      "qrEtiquetas": ["martamartinezcruz.cl", "@lammc_oficial"],
+      "contacto": [
+        { "etiqueta": "Dirección",  "valor": "Camino Abranquil km 1 s/n, Yerbas Buenas, Región del Maule" },
+        { "etiqueta": "Teléfono",   "valor": "73 239 0030 · +56 9 6170 5002", "mono": true },
+        { "etiqueta": "Correo",     "valor": "bicentenariomartamcruz@snaeduca.cl" },
+        { "etiqueta": "Sostenedor", "valor": "SNA Educa — CODESSER" },
+        { "etiqueta": "Cómo llegar", "valor": "Desde Linares, 12 km por la ruta a Yerbas Buenas. Recorrido rural 1 y 3 paran en el portón." }
+      ],
+      "tarjetas": [
+        { "titulo": "Puertas abiertas", "texto": "Segundo sábado de octubre y noviembre, 10:00 a 14:00. Recorrido por lechería, invernaderos y laboratorio con estudiantes de 4° medio como guías." },
+        { "titulo": "Internado",        "texto": "Cupos para estudiantes de comunas rurales. Consulte requisitos en Inspectoría o al teléfono del liceo." }
+      ]
+    }
+  }
+}

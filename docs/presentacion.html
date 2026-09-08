@@ -1,0 +1,1375 @@
+<title>Tótem Campo Abierto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,800;1,400&family=Source+Sans+3:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ============================================================
+   TOKENS — página (responde al tema del visor)
+   ============================================================ */
+:root{
+  --bg:#EFF1EC;
+  --bg-2:#E4E8DF;
+  --surface:#FFFFFF;
+  --ink:#16211B;
+  --ink-2:#5A655B;
+  --ink-3:#8A948A;
+  --line:#D3D9CD;
+  --line-2:#C0C8B9;
+  --accent:#14503C;
+  --accent-soft:#DCE7DF;
+  --gold:#9A6A12;
+  --water:#245E7C;
+  --clay:#8E3F1F;
+  --shadow:0 24px 60px -30px rgba(12,32,22,.45);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1310;
+    --bg-2:#161B15;
+    --surface:#1A201A;
+    --ink:#E9EEE4;
+    --ink-2:#A0AB9F;
+    --ink-3:#79847A;
+    --line:#2B322A;
+    --line-2:#3A423A;
+    --accent:#79C69C;
+    --accent-soft:#1E2C24;
+    --gold:#E0AE55;
+    --water:#6FB6D6;
+    --clay:#D97A4E;
+    --shadow:0 24px 60px -30px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1310; --bg-2:#161B15; --surface:#1A201A;
+  --ink:#E9EEE4; --ink-2:#A0AB9F; --ink-3:#79847A;
+  --line:#2B322A; --line-2:#3A423A;
+  --accent:#79C69C; --accent-soft:#1E2C24;
+  --gold:#E0AE55; --water:#6FB6D6; --clay:#D97A4E;
+  --shadow:0 24px 60px -30px rgba(0,0,0,.8);
+}
+
+/* ============================================================
+   TOKENS — pantalla del tótem (mundo propio, no cambia con el tema)
+   ============================================================ */
+.totem{
+  --t-night:#07201A;
+  --t-deep:#0C3327;
+  --t-green:#12503B;
+  --t-green-2:#17654A;
+  --t-bone:#F2F6EC;
+  --t-bone-2:#BFCDBC;
+  --t-bone-3:#89998A;
+  --t-gold:#E4AF4E;
+  --t-gold-2:#F3D08A;
+  --t-water:#5AA9CC;
+  --t-clay:#C96A3C;
+  --t-line:rgba(242,246,236,.14);
+  --t-line-2:rgba(242,246,236,.28);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:"Bitter",Georgia,"Times New Roman",serif;text-wrap:balance;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,"Courier New",monospace}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:2px}
+
+/* ============================================================
+   CABECERA DE LA PRESENTACIÓN
+   ============================================================ */
+.pitch{
+  max-width:1240px;margin:0 auto;padding:56px 32px 8px;
+  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);
+  gap:48px;align-items:end;
+}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
+  display:flex;align-items:center;gap:10px;margin-bottom:18px;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+.pitch h1{font-size:clamp(34px,4.4vw,54px);font-weight:800;line-height:1.04;letter-spacing:-.02em}
+.pitch h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+.pitch p{color:var(--ink-2);font-size:17px;max-width:56ch;margin:16px 0 0}
+.pitch-meta{display:flex;flex-wrap:wrap;gap:8px 10px;padding-bottom:6px}
+.tag{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;
+  padding:6px 11px;border:1px solid var(--line-2);border-radius:999px;color:var(--ink-2);
+  background:var(--surface);
+}
+.tag strong{color:var(--ink);font-weight:600}
+
+/* ============================================================
+   ESCENARIO — tótem + notas
+   ============================================================ */
+.stage{
+  max-width:1240px;margin:0 auto;padding:40px 32px 64px;
+  display:grid;grid-template-columns:minmax(0,auto) minmax(280px,1fr);
+  gap:56px;align-items:start;
+}
+.device-col{display:flex;flex-direction:column;align-items:center;gap:18px;min-width:0}
+
+/* marco físico */
+.bezel{
+  background:linear-gradient(175deg,#2A2F2B,#141815 55%,#0B0E0C);
+  padding:26px 26px 64px;border-radius:22px;
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.09);
+  position:relative;
+}
+.bezel::after{
+  content:"LICEO AGRÍCOLA MARTA MARTÍNEZ CRUZ";
+  position:absolute;left:0;right:0;bottom:22px;text-align:center;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.28em;
+  color:rgba(226,175,78,.55);
+}
+.sensor{
+  position:absolute;top:11px;left:50%;transform:translateX(-50%);
+  display:flex;gap:7px;align-items:center;
+}
+.sensor i{width:6px;height:6px;border-radius:50%;background:#3B423C;display:block}
+.sensor i.on{background:#2E7D5B;box-shadow:0 0 6px #2E7D5B}
+
+.viewport{width:1080px;height:1920px;transform-origin:top left;position:relative}
+.viewport-shell{overflow:hidden;border-radius:6px;background:#000}
+
+.caption{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);
+  letter-spacing:.04em;text-align:center;max-width:420px;
+}
+
+/* notas laterales */
+.notes{position:sticky;top:32px;display:flex;flex-direction:column;gap:26px}
+.note h3{
+  font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+  font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--accent);margin-bottom:10px;
+}
+.note p{margin:0;color:var(--ink-2);font-size:15px}
+.note ol{margin:0;padding-left:0;list-style:none;counter-reset:s}
+.note ol li{
+  counter-increment:s;position:relative;padding:11px 0 11px 38px;
+  border-bottom:1px solid var(--line);font-size:15px;color:var(--ink-2);
+}
+.note ol li:last-child{border-bottom:0}
+.note ol li::before{
+  content:counter(s,decimal-leading-zero);position:absolute;left:0;top:12px;
+  font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3);
+}
+.note ol li b{color:var(--ink);font-weight:600;display:block}
+.remote{
+  border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:16px 18px;
+}
+.remote-title{font-size:13px;font-weight:700;margin-bottom:10px;letter-spacing:.01em}
+.remote-btns{display:flex;flex-wrap:wrap;gap:7px}
+.remote-btns button{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;
+  padding:7px 12px;border-radius:7px;cursor:pointer;
+  border:1px solid var(--line-2);background:transparent;color:var(--ink-2);
+  transition:background .15s,color .15s,border-color .15s;
+}
+.remote-btns button:hover{background:var(--accent-soft);color:var(--ink);border-color:var(--accent)}
+.remote-btns button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.remote small{display:block;margin-top:10px;color:var(--ink-3);font-size:12.5px;line-height:1.5}
+
+/* ============================================================
+   PANTALLA DEL TÓTEM
+   ============================================================ */
+.totem{
+  position:absolute;inset:0;overflow:hidden;
+  background:var(--t-night);color:var(--t-bone);
+  display:flex;flex-direction:column;
+  font-family:"Source Sans 3",sans-serif;
+}
+.totem::before{ /* trama de surcos */
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(23,101,74,.55), transparent 70%),
+    repeating-linear-gradient(96deg, rgba(242,246,236,.028) 0 2px, transparent 2px 46px);
+}
+
+/* barra superior */
+.t-top{
+  position:relative;z-index:2;height:150px;flex:none;
+  display:flex;align-items:center;gap:26px;padding:0 46px;
+  border-bottom:1px solid var(--t-line);
+  background:linear-gradient(180deg,rgba(7,32,26,.9),rgba(7,32,26,.4));
+}
+.crest{
+  width:82px;height:82px;flex:none;border-radius:50%;
+  border:2px solid var(--t-gold);display:grid;place-items:center;
+  background:radial-gradient(circle at 40% 30%,var(--t-green-2),var(--t-deep));
+}
+.crest svg{width:44px;height:44px}
+.t-top .name{flex:1;min-width:0}
+.t-top .name b{
+  display:block;font-family:"Bitter",serif;font-weight:700;font-size:34px;line-height:1.12;
+  letter-spacing:-.01em;
+}
+.t-top .name span{
+  display:block;font-family:"IBM Plex Mono",monospace;font-size:15px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--t-bone-3);margin-top:5px;
+}
+.bicent{
+  flex:none;padding:9px 16px;border:1px solid var(--t-gold);border-radius:999px;
+  font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.12em;
+  color:var(--t-gold);text-transform:uppercase;
+}
+
+/* área de contenido */
+.t-body{position:relative;z-index:1;flex:1;min-height:0}
+.screen{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  padding:52px 46px 34px;overflow:hidden;
+}
+.screen.is-on{display:flex;animation:rise .45s cubic-bezier(.2,.7,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .screen.is-on{animation:none}
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+
+.s-head{margin-bottom:34px;flex:none}
+.s-kicker{
+  font-family:"IBM Plex Mono",monospace;font-size:17px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--t-gold);margin-bottom:14px;
+}
+.s-title{font-size:62px;font-weight:800;line-height:1.02;letter-spacing:-.02em}
+.s-sub{font-size:25px;color:var(--t-bone-2);margin-top:16px;max-width:36ch;line-height:1.45}
+.scroller{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:6px}
+.scroller::-webkit-scrollbar{width:8px}
+.scroller::-webkit-scrollbar-thumb{background:var(--t-line-2);border-radius:99px}
+
+/* ---------- ATRACTOR ---------- */
+#s-inicio{padding:0;justify-content:flex-end}
+.attract-art{position:absolute;inset:0;overflow:hidden}
+.attract-art canvas{width:100%;height:100%;display:block}
+.attract-art::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(7,32,26,.15) 0%,rgba(7,32,26,.55) 46%,rgba(7,32,26,.97) 88%);
+}
+.attract-copy{position:relative;z-index:2;padding:0 52px 60px;text-align:left}
+.attract-copy .lead{
+  font-family:"IBM Plex Mono",monospace;font-size:19px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--t-gold);margin-bottom:22px;
+}
+.rot{min-height:340px;display:flex;flex-direction:column;justify-content:flex-end}
+.rot-num{
+  font-family:"Bitter",serif;font-weight:800;font-size:150px;line-height:.88;
+  letter-spacing:-.045em;color:var(--t-bone);
+}
+.rot-num small{font-size:56px;letter-spacing:-.02em}
+.rot-txt{font-size:34px;color:var(--t-bone-2);margin-top:20px;max-width:24ch;line-height:1.25}
+.rot-dots{display:flex;gap:9px;margin-top:34px}
+.rot-dots i{width:34px;height:4px;background:var(--t-line-2);border-radius:99px;transition:background .3s}
+.rot-dots i.on{background:var(--t-gold)}
+.touch-cue{
+  margin-top:52px;display:inline-flex;align-items:center;gap:18px;
+  padding:22px 38px;border:2px solid var(--t-gold);border-radius:999px;
+  font-size:29px;font-weight:600;color:var(--t-gold-2);
+  animation:breathe 2.6s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:translateY(0);box-shadow:0 0 0 0 rgba(228,175,78,.28)}50%{transform:translateY(-6px);box-shadow:0 0 0 16px rgba(228,175,78,0)}}
+.touch-cue svg{width:34px;height:34px}
+
+/* ---------- tarjetas y datos ---------- */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{
+  background:rgba(242,246,236,.055);border:1px solid var(--t-line);
+  border-radius:14px;padding:26px 28px;
+}
+.card h4{font-size:27px;font-weight:700;margin-bottom:10px;line-height:1.15}
+.card p{margin:0;font-size:21px;color:var(--t-bone-2);line-height:1.42}
+.figure{
+  border-left:3px solid var(--t-gold);padding:6px 0 6px 20px;
+}
+.figure b{display:block;font-family:"Bitter",serif;font-size:52px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.figure span{display:block;font-size:19px;color:var(--t-bone-3);margin-top:8px;line-height:1.3}
+
+/* línea de tiempo */
+.tl{list-style:none;margin:0;padding:0 0 0 34px;position:relative}
+.tl::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:2px;background:var(--t-line-2)}
+.tl li{position:relative;padding:0 0 30px}
+.tl li::before{
+  content:"";position:absolute;left:-33px;top:12px;width:16px;height:16px;border-radius:50%;
+  background:var(--t-night);border:3px solid var(--t-gold);
+}
+.tl li.minor::before{border-color:var(--t-bone-3);width:12px;height:12px;left:-31px;top:14px}
+.tl .yr{font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600;color:var(--t-gold);letter-spacing:.04em}
+.tl .ev{font-size:23px;color:var(--t-bone-2);line-height:1.4;margin-top:4px}
+.tl .ev b{color:var(--t-bone);font-weight:600}
+
+/* pestañas menciones */
+.tabs{display:flex;gap:12px;margin-bottom:22px}
+.tabs button{
+  flex:1;padding:20px 14px;border-radius:12px;cursor:pointer;
+  border:1px solid var(--t-line-2);background:transparent;color:var(--t-bone-2);
+  font-family:"Source Sans 3",sans-serif;font-size:25px;font-weight:600;
+  transition:background .2s,color .2s,border-color .2s;
+}
+.tabs button[aria-selected="true"]{background:var(--t-gold);border-color:var(--t-gold);color:#20180A}
+.mods{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.mods li{
+  display:flex;gap:18px;align-items:baseline;padding:15px 20px;
+  background:rgba(242,246,236,.05);border-radius:10px;font-size:22px;
+}
+.mods li .n{font-family:"IBM Plex Mono",monospace;font-size:17px;color:var(--t-gold);flex:none;width:34px}
+.mods li .m{color:var(--t-bone);line-height:1.3}
+.mods li .tagm{
+  margin-left:auto;flex:none;font-family:"IBM Plex Mono",monospace;font-size:14px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--t-bone-3);
+  border:1px solid var(--t-line-2);padding:4px 10px;border-radius:99px;
+}
+.bullets{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.bullets li{position:relative;padding-left:34px;font-size:22px;color:var(--t-bone-2);line-height:1.4}
+.bullets li::before{
+  content:"";position:absolute;left:2px;top:11px;width:14px;height:14px;
+  border:2px solid var(--t-water);border-radius:3px;transform:rotate(45deg);
+}
+
+/* ---------- MAPA ---------- */
+#s-campo{padding-bottom:0}
+.map-wrap{
+  flex:1;min-height:0;position:relative;border-radius:14px;overflow:hidden;
+  border:1px solid var(--t-line);background:#0A2A21;
+}
+.map-wrap svg{width:100%;height:100%;display:block}
+.hot{cursor:pointer}
+.hot .halo{fill:rgba(228,175,78,.16);stroke:none}
+.hot .pin{fill:var(--t-gold);stroke:#20180A;stroke-width:2}
+.hot .num{fill:#20180A;font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600;text-anchor:middle}
+.hot.sel .pin{fill:var(--t-bone)}
+.hot.sel .halo{fill:rgba(242,246,236,.22)}
+.map-label{fill:rgba(242,246,236,.5);font-family:"IBM Plex Mono",monospace;font-size:16px;letter-spacing:.1em;text-transform:uppercase}
+.map-legend{
+  position:absolute;left:20px;bottom:20px;display:flex;align-items:center;gap:14px;
+  background:rgba(7,32,26,.82);border:1px solid var(--t-line);border-radius:10px;padding:12px 16px;
+  font-family:"IBM Plex Mono",monospace;font-size:15px;color:var(--t-bone-3);letter-spacing:.06em;
+}
+.map-legend .bar{width:74px;height:6px;border-top:2px solid var(--t-bone-3);border-left:2px solid var(--t-bone-3);border-right:2px solid var(--t-bone-3)}
+
+/* ficha de punto del mapa */
+.sheet{
+  position:absolute;left:0;right:0;bottom:0;z-index:5;
+  background:linear-gradient(180deg,rgba(12,51,39,.97),rgba(7,32,26,.99));
+  border-top:2px solid var(--t-gold);
+  padding:32px 40px 36px;transform:translateY(100%);transition:transform .32s cubic-bezier(.2,.7,.3,1);
+  max-height:60%;overflow-y:auto;
+}
+.sheet.open{transform:translateY(0)}
+.sheet-top{display:flex;align-items:flex-start;gap:20px;margin-bottom:14px}
+.sheet-n{
+  flex:none;width:56px;height:56px;border-radius:50%;background:var(--t-gold);color:#20180A;
+  display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-size:25px;font-weight:600;
+}
+.sheet h4{font-size:38px;font-weight:800;line-height:1.08;flex:1}
+.sheet-close{
+  flex:none;width:56px;height:56px;border-radius:50%;cursor:pointer;
+  background:transparent;border:1px solid var(--t-line-2);color:var(--t-bone-2);font-size:28px;line-height:1;
+}
+.sheet p{font-size:23px;color:var(--t-bone-2);line-height:1.45;margin:0 0 18px}
+.sheet .facts{display:flex;flex-wrap:wrap;gap:10px}
+.sheet .facts span{
+  font-family:"IBM Plex Mono",monospace;font-size:16px;letter-spacing:.06em;
+  border:1px solid var(--t-line-2);border-radius:99px;padding:7px 14px;color:var(--t-bone);
+}
+
+/* ---------- VISÍTANOS ---------- */
+.qr{
+  width:290px;height:290px;background:var(--t-bone);padding:14px;border-radius:8px;
+  display:grid;grid-template-columns:repeat(25,1fr);grid-template-rows:repeat(25,1fr);flex:none;
+}
+.qr i{display:block;background:transparent}
+.qr i.k{background:#07201A}
+.contact{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+.contact li{display:flex;gap:16px;align-items:baseline;font-size:23px;line-height:1.35}
+.contact .lab{
+  font-family:"IBM Plex Mono",monospace;font-size:15px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--t-bone-3);flex:none;width:130px;padding-top:4px;
+}
+.contact .val{color:var(--t-bone)}
+
+/* barra inferior de navegación */
+.t-nav{
+  position:relative;z-index:3;flex:none;height:212px;display:flex;
+  border-top:1px solid var(--t-line-2);background:rgba(6,26,21,.96);
+}
+.t-nav button{
+  flex:1;border:0;background:transparent;cursor:pointer;color:var(--t-bone-3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  font-family:"Source Sans 3",sans-serif;font-size:23px;font-weight:600;letter-spacing:.01em;
+  border-right:1px solid var(--t-line);transition:color .2s,background .2s;
+  padding-top:6px;
+}
+.t-nav button:last-child{border-right:0}
+.t-nav button svg{width:52px;height:52px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.t-nav button[aria-current="true"]{color:var(--t-gold);background:linear-gradient(180deg,rgba(228,175,78,.14),transparent)}
+.t-nav button[aria-current="true"]::before{
+  content:"";position:absolute;top:0;width:20%;height:4px;background:var(--t-gold);
+}
+.t-nav button{position:relative}
+
+/* franja de estado */
+.t-status{
+  position:relative;z-index:3;flex:none;height:70px;display:flex;align-items:center;gap:26px;
+  padding:0 46px;background:#051914;border-top:1px solid var(--t-line);
+  font-family:"IBM Plex Mono",monospace;font-size:17px;color:var(--t-bone-3);letter-spacing:.05em;
+  cursor:pointer;
+}
+.t-status .dot{width:9px;height:9px;border-radius:50%;background:#3E9E70;box-shadow:0 0 8px #3E9E70;flex:none}
+.t-status .dot.off{background:#C96A3C;box-shadow:0 0 8px #C96A3C}
+.t-status .sp{margin-left:auto}
+
+/* panel técnico */
+.tech{
+  position:absolute;inset:0;z-index:9;background:rgba(4,16,13,.97);
+  padding:60px 52px;display:none;flex-direction:column;gap:26px;
+  font-family:"IBM Plex Mono",monospace;
+}
+.tech.open{display:flex}
+.tech h4{font-family:"IBM Plex Mono",monospace;font-size:24px;letter-spacing:.2em;text-transform:uppercase;color:var(--t-gold)}
+.tech table{width:100%;border-collapse:collapse;font-size:20px}
+.tech td{padding:14px 0;border-bottom:1px solid var(--t-line);color:var(--t-bone-2)}
+.tech td:last-child{text-align:right;color:var(--t-bone);font-variant-numeric:tabular-nums}
+.tech .log{
+  background:#020D0A;border:1px solid var(--t-line);border-radius:8px;padding:20px;
+  font-size:17px;line-height:1.9;color:var(--t-bone-3);flex:1;overflow:auto;
+}
+.tech .log b{color:#7BD0A3;font-weight:400}
+.tech .log u{color:var(--t-gold);text-decoration:none}
+.tech .btns{display:flex;gap:14px}
+.tech .btns button{
+  flex:1;padding:20px;border-radius:10px;cursor:pointer;font-family:"IBM Plex Mono",monospace;
+  font-size:19px;letter-spacing:.08em;background:transparent;border:1px solid var(--t-line-2);color:var(--t-bone);
+}
+.tech .btns button.primary{background:var(--t-gold);border-color:var(--t-gold);color:#20180A;font-weight:600}
+
+/* ============================================================
+   FICHA TÉCNICA (debajo del tótem)
+   ============================================================ */
+.spec{border-top:1px solid var(--line);background:var(--bg-2)}
+.spec-inner{max-width:1240px;margin:0 auto;padding:64px 32px 24px}
+.spec h2{font-size:clamp(26px,3vw,36px);font-weight:800;letter-spacing:-.015em;margin-bottom:12px}
+.spec .intro{color:var(--ink-2);max-width:62ch;margin:0 0 44px;font-size:16.5px}
+
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:56px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.flow > div{padding:24px 26px;border-right:1px solid var(--line);position:relative}
+.flow > div:last-child{border-right:0}
+.flow .step{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--gold);text-transform:uppercase;margin-bottom:10px}
+.flow h4{font-size:17px;margin-bottom:8px}
+.flow p{margin:0;font-size:14.5px;color:var(--ink-2);line-height:1.5}
+
+.layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);margin-bottom:56px}
+.layer{padding:26px 28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.layer .lnum{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3);letter-spacing:.14em}
+.layer h4{font-size:19px;margin:8px 0 10px}
+.layer p{margin:0 0 12px;font-size:14.5px;color:var(--ink-2);line-height:1.55}
+.layer ul{margin:0;padding-left:18px;font-size:14px;color:var(--ink-2);line-height:1.7}
+.layer code{
+  font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:var(--accent-soft);
+  color:var(--accent);padding:2px 6px;border-radius:4px;
+}
+
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:44px;margin-bottom:56px}
+.dl{margin:0}
+.dl h3{font-size:13px;font-family:"IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.dl dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:0 22px}
+.dl dt{
+  font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-3);
+  padding:11px 0;border-top:1px solid var(--line);white-space:nowrap;letter-spacing:.03em;
+}
+.dl dd{margin:0;padding:11px 0;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink)}
+
+.disclaimer{
+  border-left:3px solid var(--clay);padding:4px 0 4px 18px;margin:0 0 56px;
+  color:var(--ink-2);font-size:14.5px;max-width:70ch;
+}
+.disclaimer b{color:var(--ink)}
+
+footer{
+  max-width:1240px;margin:0 auto;padding:0 32px 64px;
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);
+  display:flex;flex-wrap:wrap;gap:12px 26px;border-top:1px solid var(--line);padding-top:22px;
+}
+footer a{color:var(--ink-2)}
+
+@media (max-width:1100px){
+  .pitch,.stage{grid-template-columns:1fr;gap:32px}
+  .notes{position:static}
+  .flow{grid-template-columns:1fr 1fr}
+  .flow > div:nth-child(2){border-right:0}
+  .flow > div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:620px){
+  .pitch,.stage,.spec-inner,footer{padding-left:20px;padding-right:20px}
+  .flow{grid-template-columns:1fr}
+  .flow > div{border-right:0;border-bottom:1px solid var(--line)}
+}
+</style>
+
+<header class="pitch">
+  <div>
+    <div class="eyebrow">Maqueta de señalética interactiva · Sept 2026</div>
+    <h1>Un tótem que cuenta el campo <em>antes de que lo pises</em></h1>
+    <p>Prototipo navegable del kiosco de 43" para el Liceo Bicentenario Agrícola Marta Martínez Cruz,
+       Yerbas Buenas. Funciona completo sin internet; cuando hay señal, se actualiza solo.
+       Toque los botones de la barra inferior y los puntos del plano.</p>
+  </div>
+  <div class="pitch-meta">
+    <span class="tag"><strong>43"</strong> vertical</span>
+    <span class="tag"><strong>1080 × 1920</strong> px</span>
+    <span class="tag">Intemperie <strong>IP65</strong></span>
+    <span class="tag">Táctil <strong>PCAP</strong></span>
+    <span class="tag">Offline <strong>first</strong></span>
+  </div>
+</header>
+
+<section class="stage">
+  <div class="device-col">
+    <div class="bezel">
+      <div class="sensor"><i></i><i class="on"></i><i></i></div>
+      <div class="viewport-shell" id="shell">
+        <div class="viewport" id="viewport">
+          <div class="totem" id="totem">
+
+            <!-- ============ BARRA SUPERIOR ============ -->
+            <div class="t-top">
+              <div class="crest" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="#E4AF4E" stroke-width="2" stroke-linecap="round">
+                  <path d="M24 42V16"/>
+                  <path d="M24 22c-6-1-9-5-9-11 6 0 9 4 9 11z" fill="rgba(228,175,78,.25)"/>
+                  <path d="M24 30c6-1 9-5 9-11-6 0-9 4-9 11z" fill="rgba(228,175,78,.25)"/>
+                  <path d="M10 42h28"/>
+                </svg>
+              </div>
+              <div class="name">
+                <b>Liceo Agrícola Marta Martínez Cruz</b>
+                <span>Yerbas Buenas · Región del Maule</span>
+              </div>
+              <div class="bicent">Bicentenario</div>
+            </div>
+
+            <!-- ============ CONTENIDO ============ -->
+            <div class="t-body">
+
+              <!-- ---------- INICIO / ATRACTOR ---------- -->
+              <section class="screen is-on" id="s-inicio">
+                <div class="attract-art"><canvas id="fieldArt"></canvas></div>
+                <div class="attract-copy">
+                  <div class="lead">Desde 1958 formando en el campo</div>
+                  <div class="rot">
+                    <div class="rot-num" id="rotNum">90<small> ha</small></div>
+                    <div class="rot-txt" id="rotTxt">de campo productivo son la sala de clases</div>
+                  </div>
+                  <div class="rot-dots" id="rotDots"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+                  <div class="touch-cue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 11V6a2 2 0 1 1 4 0v9"/>
+                      <path d="M13 12a2 2 0 1 1 4 0v4a5 5 0 0 1-5 5h-1.5a5 5 0 0 1-4.2-2.3L4 15.5a1.8 1.8 0 0 1 2.7-2.3L9 15"/>
+                    </svg>
+                    Toque la pantalla para recorrer el liceo
+                  </div>
+                </div>
+              </section>
+
+              <!-- ---------- EL LICEO ---------- -->
+              <section class="screen" id="s-liceo">
+                <div class="s-head">
+                  <div class="s-kicker">Nuestra historia</div>
+                  <h2 class="s-title">La primera escuela agrícola<br>de mujeres de Chile</h2>
+                  <p class="s-sub">Marta Martínez Cruz abrió las puertas en 1958 con un puñado de alumnas
+                     y un potrero. Hoy son 90 hectáreas y 380 estudiantes.</p>
+                </div>
+                <div class="scroller">
+                  <div class="grid-3" style="margin-bottom:34px">
+                    <div class="figure"><b>1958</b><span>Primeras clases</span></div>
+                    <div class="figure"><b>380</b><span>Estudiantes hoy</span></div>
+                    <div class="figure"><b>68</b><span>Años formando</span></div>
+                  </div>
+                  <ol class="tl">
+                    <li>
+                      <div class="yr">1958 — 1960</div>
+                      <div class="ev">Inician las actividades y se funda oficialmente la <b>primera escuela agrícola femenina del país</b>, dirigida por Marta Martínez Cruz.</div>
+                    </li>
+                    <li class="minor">
+                      <div class="yr">1965</div>
+                      <div class="ev">Egresan las <b>primeras 22 alumnas</b> como Prácticas Agrícolas.</div>
+                    </li>
+                    <li class="minor">
+                      <div class="yr">1966 — 1967</div>
+                      <div class="ev">El liceo asciende a grado superior y titula a las <b>primeras siete Técnicas Agrícolas</b>.</div>
+                    </li>
+                    <li class="minor">
+                      <div class="yr">1970</div>
+                      <div class="ev">Se abren las menciones de <b>ganadería e industrias agropecuarias</b>.</div>
+                    </li>
+                    <li>
+                      <div class="yr">1976 — 1978</div>
+                      <div class="ev">Gran remodelación: pabellones, internado y plantas productivas. En 1978 obtiene <b>clasificación “A”</b>.</div>
+                    </li>
+                    <li>
+                      <div class="yr">1993</div>
+                      <div class="ev">Pasa a la red <b>SNA Educa — CODESSER</b>, de la Sociedad Nacional de Agricultura.</div>
+                    </li>
+                    <li class="minor">
+                      <div class="yr">2021</div>
+                      <div class="ev">Es reconocido como <b>Liceo Bicentenario</b> de excelencia.</div>
+                    </li>
+                    <li class="minor">
+                      <div class="yr">2024</div>
+                      <div class="ev">Convenio con <b>INDAP</b>: prácticas en predios de agricultura familiar campesina.</div>
+                    </li>
+                    <li>
+                      <div class="yr">2026</div>
+                      <div class="ev">Referente nacional en <b>control biológico de plagas</b>; recibe delegaciones de otros liceos y de INACAP.</div>
+                    </li>
+                  </ol>
+                  <div class="grid-2" style="margin-top:14px">
+                    <div class="card">
+                      <h4>Internado</h4>
+                      <p>140 camas para estudiantes de comunas rurales del Maule. Alimentación, cuidado nocturno y talleres vespertinos.</p>
+                    </div>
+                    <div class="card">
+                      <h4>Club de Huasos escolar</h4>
+                      <p>Nuestra colleras compiten en el circuito de <b>rodeos escolares</b>. Entrenan en la media luna del predio.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ---------- AGROPECUARIA ---------- -->
+              <section class="screen" id="s-agro">
+                <div class="s-head">
+                  <div class="s-kicker">La especialidad</div>
+                  <h2 class="s-title">Técnico de Nivel Medio<br>en Agropecuaria</h2>
+                  <p class="s-sub">Formación diferenciada en 3° y 4° medio. Se aprende cultivando, ordeñando
+                     y arreglando la máquina que se echó a perder.</p>
+                </div>
+                <div class="scroller">
+                  <div class="tabs" role="tablist">
+                    <button role="tab" aria-selected="true" data-men="agricultura">Mención Agricultura</button>
+                    <button role="tab" aria-selected="false" data-men="pecuaria">Mención Pecuaria</button>
+                  </div>
+
+                  <ul class="mods" id="modList"></ul>
+
+                  <h4 style="font-size:29px;margin:34px 0 18px">Al titularse, la o el estudiante puede…</h4>
+                  <ul class="bullets">
+                    <li>Establecer y manejar cultivos y praderas según plan de fertilización y riego.</li>
+                    <li>Operar y mantener tractor, implementos de labranza y equipos de riego tecnificado.</li>
+                    <li>Aplicar control biológico y monitoreo de plagas con criterio de manejo integrado.</li>
+                    <li>Manejar el rebaño lechero: alimentación, ordeña higiénica, registros y sanidad.</li>
+                    <li>Llevar costos, registros prediales y formular un proyecto de emprendimiento rural.</li>
+                  </ul>
+
+                  <div class="grid-3" style="margin-top:38px">
+                    <div class="figure"><b>240<small style="font-size:26px"> h</small></b><span>Práctica profesional</span></div>
+                    <div class="figure"><b>96%</b><span>Titulación oportuna</span></div>
+                    <div class="figure"><b>2</b><span>Menciones</span></div>
+                  </div>
+
+                  <div class="grid-2" style="margin-top:24px">
+                    <div class="card">
+                      <h4>Después del liceo</h4>
+                      <p>Agronomía, Medicina Veterinaria, Ingeniería Agrícola o trabajo directo en huertos,
+                         packings y lecherías del Maule. Convenio de continuidad con INACAP y Santo Tomás.</p>
+                    </div>
+                    <div class="card">
+                      <h4>Dual con la industria</h4>
+                      <p>Cuarto medio alterna liceo y empresa: viveros, packing de cerezas, planta lechera
+                         y predios de agricultura familiar campesina vía INDAP.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ---------- EL CAMPO / MAPA ---------- -->
+              <section class="screen" id="s-campo">
+                <div class="s-head" style="margin-bottom:22px">
+                  <div class="s-kicker">Plano del predio · 90 hectáreas</div>
+                  <h2 class="s-title">El campo, punto por punto</h2>
+                  <p class="s-sub" style="font-size:23px">Toque un número para ver qué se hace ahí.</p>
+                </div>
+                <div class="map-wrap">
+                  <svg viewBox="0 0 1000 900" id="mapa" role="img" aria-label="Plano del predio del liceo">
+                    <defs>
+                      <pattern id="rows" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(12)">
+                        <rect width="16" height="16" fill="none"/>
+                        <line x1="0" y1="0" x2="0" y2="16" stroke="rgba(122,190,150,.30)" stroke-width="3"/>
+                      </pattern>
+                      <pattern id="trees" width="34" height="34" patternUnits="userSpaceOnUse">
+                        <circle cx="10" cy="10" r="5" fill="rgba(122,190,150,.34)"/>
+                        <circle cx="27" cy="27" r="5" fill="rgba(122,190,150,.34)"/>
+                      </pattern>
+                      <pattern id="grass" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                        <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(122,190,150,.13)" stroke-width="2"/>
+                      </pattern>
+                    </defs>
+
+                    <!-- terreno -->
+                    <path d="M40 60 L960 40 L975 800 L860 872 L120 880 L30 700 Z" fill="#0E3A2C" stroke="rgba(242,246,236,.30)" stroke-width="2.5"/>
+                    <rect x="40" y="40" width="935" height="840" fill="url(#grass)" opacity=".7" style="clip-path:none"/>
+
+                    <!-- praderas centrales -->
+                    <path d="M350 80 L500 76 L505 505 L345 508 Z" fill="rgba(122,190,150,.10)" stroke="rgba(242,246,236,.16)"/>
+                    <text class="map-label" x="358" y="112">Potreros</text>
+
+                    <!-- frutales -->
+                    <path d="M70 90 L320 82 L325 330 L72 335 Z" fill="url(#trees)" stroke="rgba(242,246,236,.18)"/>
+
+                    <!-- invernaderos -->
+                    <g stroke="rgba(242,246,236,.35)" fill="rgba(90,169,204,.22)">
+                      <rect x="90" y="380" width="220" height="34" rx="17"/>
+                      <rect x="90" y="424" width="220" height="34" rx="17"/>
+                      <rect x="90" y="468" width="220" height="34" rx="17"/>
+                    </g>
+
+                    <!-- pivote central -->
+                    <circle cx="720" cy="290" r="200" fill="url(#rows)" stroke="rgba(242,246,236,.28)" stroke-width="2"/>
+                    <circle cx="720" cy="290" r="200" fill="rgba(90,169,204,.06)"/>
+                    <line x1="720" y1="290" x2="920" y2="290" stroke="rgba(242,246,236,.5)" stroke-width="4" stroke-dasharray="14 8"/>
+                    <circle cx="720" cy="290" r="9" fill="rgba(242,246,236,.6)"/>
+
+                    <!-- canal de riego -->
+                    <path d="M30 545 C 220 520, 430 560, 620 535 S 900 560, 975 545" fill="none" stroke="rgba(90,169,204,.65)" stroke-width="7" stroke-linecap="round"/>
+                    <text class="map-label" x="800" y="522">Canal Abranquil</text>
+
+                    <!-- casco: edificios -->
+                    <g fill="rgba(242,246,236,.16)" stroke="rgba(242,246,236,.45)" stroke-width="2">
+                      <rect x="95" y="600" width="180" height="82" rx="4"/>
+                      <rect x="95" y="712" width="180" height="70" rx="4"/>
+                      <rect x="300" y="600" width="120" height="70" rx="4"/>
+                      <rect x="300" y="700" width="150" height="88" rx="4"/>
+                      <rect x="490" y="608" width="150" height="76" rx="4"/>
+                      <rect x="490" y="716" width="185" height="90" rx="4"/>
+                      <rect x="512" y="560" width="86" height="46" rx="4"/>
+                    </g>
+                    <!-- media luna -->
+                    <circle cx="800" cy="720" r="72" fill="none" stroke="rgba(201,106,60,.85)" stroke-width="6"/>
+                    <circle cx="800" cy="720" r="52" fill="rgba(201,106,60,.14)"/>
+
+                    <!-- camino -->
+                    <path d="M20 858 L980 838" stroke="rgba(242,246,236,.42)" stroke-width="14" fill="none"/>
+                    <path d="M20 858 L980 838" stroke="rgba(7,32,26,.9)" stroke-width="3" stroke-dasharray="20 18" fill="none"/>
+                    <path d="M175 858 L175 690" stroke="rgba(242,246,236,.3)" stroke-width="8" fill="none"/>
+                    <text class="map-label" x="600" y="884">Camino Abranquil km 1</text>
+
+                    <!-- norte -->
+                    <g transform="translate(915,110)">
+                      <path d="M0 -34 L13 16 L0 6 L-13 16 Z" fill="rgba(242,246,236,.75)"/>
+                      <text class="map-label" x="0" y="42" text-anchor="middle" style="font-size:19px">N</text>
+                    </g>
+
+                    <g id="pins"></g>
+                  </svg>
+                  <div class="map-legend"><span class="bar"></span> 0 — 200 metros</div>
+                  <div class="sheet" id="sheet">
+                    <div class="sheet-top">
+                      <div class="sheet-n" id="shN">1</div>
+                      <h4 id="shT">—</h4>
+                      <button class="sheet-close" id="shX" aria-label="Cerrar">×</button>
+                    </div>
+                    <p id="shP">—</p>
+                    <div class="facts" id="shF"></div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ---------- VISÍTANOS ---------- -->
+              <section class="screen" id="s-visita">
+                <div class="s-head">
+                  <div class="s-kicker">Admisión y visitas</div>
+                  <h2 class="s-title">Venga a conocer<br>el campo</h2>
+                  <p class="s-sub">Postulaciones a 1° medio por el Sistema de Admisión Escolar.
+                     Las visitas guiadas se agendan por teléfono.</p>
+                </div>
+                <div class="scroller">
+                  <div style="display:flex;gap:34px;align-items:flex-start;margin-bottom:34px">
+                    <div class="qr" id="qr" aria-label="Código QR del sitio del liceo"></div>
+                    <div>
+                      <h4 style="font-size:30px;margin-bottom:12px">Llévese la información</h4>
+                      <p style="font-size:22px;color:var(--t-bone-2);line-height:1.45;margin:0 0 18px">
+                        Escanee con la cámara del teléfono para abrir el sitio del liceo,
+                        el calendario de admisión y el mapa para llegar.</p>
+                      <div class="facts" style="display:flex;gap:10px;flex-wrap:wrap">
+                        <span style="font-family:'IBM Plex Mono',monospace;font-size:16px;border:1px solid var(--t-line-2);border-radius:99px;padding:7px 14px">martamartinezcruz.cl</span>
+                        <span style="font-family:'IBM Plex Mono',monospace;font-size:16px;border:1px solid var(--t-line-2);border-radius:99px;padding:7px 14px">@lammc_oficial</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ul class="contact">
+                    <li><span class="lab">Dirección</span><span class="val">Camino Abranquil km 1 s/n, Yerbas Buenas, Región del Maule</span></li>
+                    <li><span class="lab">Teléfono</span><span class="val mono">73 239 0030 · +56 9 6170 5002</span></li>
+                    <li><span class="lab">Correo</span><span class="val">bicentenariomartamcruz@snaeduca.cl</span></li>
+                    <li><span class="lab">Sostenedor</span><span class="val">SNA Educa — CODESSER</span></li>
+                    <li><span class="lab">Cómo llegar</span><span class="val">Desde Linares, 12 km por la ruta a Yerbas Buenas. Recorrido rural 1 y 3 paran en el portón.</span></li>
+                  </ul>
+
+                  <div class="grid-2" style="margin-top:32px">
+                    <div class="card">
+                      <h4>Puertas abiertas</h4>
+                      <p>Segundo sábado de octubre y noviembre, 10:00 a 14:00. Recorrido por lechería,
+                         invernaderos y laboratorio con estudiantes de 4° medio como guías.</p>
+                    </div>
+                    <div class="card">
+                      <h4>Internado</h4>
+                      <p>Cupos para estudiantes de comunas rurales. Consulte requisitos en Inspectoría
+                         o al teléfono del liceo.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ---------- PANEL TÉCNICO ---------- -->
+              <div class="tech" id="tech">
+                <h4>Estado del tótem</h4>
+                <table>
+                  <tr><td>Equipo</td><td>TOTEM-MMC-01 · Portón principal</td></tr>
+                  <tr><td>Versión de contenido</td><td id="tv">v2026.09.04 · build 118</td></tr>
+                  <tr><td>Última sincronización</td><td id="tls">hoy 06:12</td></tr>
+                  <tr><td>Conexión</td><td id="tconn">4G · −71 dBm</td></tr>
+                  <tr><td>Encendido continuo</td><td>21 d 04 h</td></tr>
+                  <tr><td>Temperatura gabinete</td><td>31,4 °C</td></tr>
+                  <tr><td>Brillo automático</td><td>2 800 nits (día)</td></tr>
+                  <tr><td>Toques últimos 7 días</td><td>1 942</td></tr>
+                </table>
+                <div class="log" id="tlog"></div>
+                <div class="btns">
+                  <button class="primary" id="btnSync">Buscar actualización</button>
+                  <button id="btnBack">Volver al tótem</button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- ============ NAVEGACIÓN ============ -->
+            <nav class="t-nav" id="nav">
+              <button data-go="s-inicio" aria-current="true">
+                <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+                Inicio
+              </button>
+              <button data-go="s-liceo">
+                <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M10 21v-6h4v6"/><path d="M9 12h.01M15 12h.01"/></svg>
+                El Liceo
+              </button>
+              <button data-go="s-agro">
+                <svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M12 13c-5 0-7-3-7-8 5 0 7 3 7 8z"/><path d="M12 17c5 0 7-3 7-8-5 0-7 3-7 8z"/></svg>
+                Agropecuaria
+              </button>
+              <button data-go="s-campo">
+                <svg viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>
+                El Campo
+              </button>
+              <button data-go="s-visita">
+                <svg viewBox="0 0 24 24"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+                Visítanos
+              </button>
+            </nav>
+
+            <!-- ============ ESTADO ============ -->
+            <div class="t-status" id="status" title="Panel técnico">
+              <span class="dot" id="dot"></span>
+              <span id="conn">Sincronizado · v2026.09.04</span>
+              <span class="sp" id="clock">--:--</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Simulación a resolución real: 1080 × 1920 px, escalada para caber en pantalla.<br>Todo lo que ve aquí corre sin conexión.</p>
+  </div>
+
+  <aside class="notes">
+    <div class="note">
+      <h3>Cómo se recorre</h3>
+      <ol>
+        <li><b>Atractor</b>Cifras rotando y un campo animado. Vuelve solo a los 45 s sin uso.</li>
+        <li><b>El Liceo</b>Historia real desde 1958, hitos y vida escolar.</li>
+        <li><b>Agropecuaria</b>Menciones, módulos MINEDUC y perfil de egreso.</li>
+        <li><b>El Campo</b>Plano de las 90 ha con 12 puntos táctiles.</li>
+        <li><b>Visítanos</b>Contacto, admisión y QR para llevarse todo.</li>
+      </ol>
+    </div>
+    <div class="remote">
+      <div class="remote-title">Control de demostración</div>
+      <div class="remote-btns">
+        <button id="demoOffline" aria-pressed="false">Cortar internet</button>
+        <button id="demoTech">Panel técnico</button>
+        <button id="demoIdle">Simular inactividad</button>
+      </div>
+      <small>El corte de red no apaga nada: el tótem sigue completo y sólo cambia el indicador
+        de la franja inferior. Es el punto central de la arquitectura.</small>
+    </div>
+    <div class="note">
+      <h3>Por qué vertical</h3>
+      <p>Un tótem exterior se lee de pie y a un metro. El formato 9:16 pone el título a la altura
+         de los ojos y deja los cinco botones al alcance de la mano sin agacharse; una pantalla
+         horizontal obliga a barrer la vista y desperdicia la mitad inferior.</p>
+    </div>
+  </aside>
+</section>
+
+<section class="spec">
+  <div class="spec-inner">
+    <h2>Cómo funcionaría por dentro</h2>
+    <p class="intro">El requisito de fondo es simple: en el portón de un liceo rural la conexión se cae.
+      El tótem por lo tanto <b>no depende de la red para funcionar</b> — la usa sólo para enterarse
+      de que hay contenido nuevo.</p>
+
+    <div class="flow">
+      <div>
+        <div class="step">Paso 01</div>
+        <h4>El liceo edita</h4>
+        <p>Un panel web con formularios simples: textos, fotos, avisos, puntos del plano. Sin tocar código. Publicar genera una versión numerada.</p>
+      </div>
+      <div>
+        <div class="step">Paso 02</div>
+        <h4>El tótem pregunta</h4>
+        <p>Cada 30 minutos pide un <code>manifest.json</code> liviano. Compara versión y hash de cada archivo. Si nada cambió, son 2 KB y se acabó.</p>
+      </div>
+      <div>
+        <div class="step">Paso 03</div>
+        <h4>Descarga aparte</h4>
+        <p>Baja sólo los archivos nuevos a una carpeta paralela. Si se corta a mitad de camino, la pantalla en uso ni se entera.</p>
+      </div>
+      <div>
+        <div class="step">Paso 04</div>
+        <h4>Cambio en silencio</h4>
+        <p>Con la descarga completa y verificada, cambia de carpeta durante el atractor. Si algo falla, vuelve a la versión anterior sola.</p>
+      </div>
+    </div>
+
+    <div class="layers">
+      <div class="layer">
+        <div class="lnum">CAPA 1</div>
+        <h4>Runtime local</h4>
+        <p>Navegador en modo kiosco sobre un mini-PC sin ventilador dentro del gabinete.</p>
+        <ul>
+          <li>Arranque automático, sin escritorio ni barra</li>
+          <li>Watchdog que reinicia si la app deja de responder</li>
+          <li>Bloqueo de gestos, teclado y menús del sistema</li>
+          <li>Reinicio programado 04:00, apagado de panel 23:00–06:00</li>
+        </ul>
+      </div>
+      <div class="layer">
+        <div class="lnum">CAPA 2</div>
+        <h4>Contenido en disco</h4>
+        <p>Todo vive en el equipo: <code>contenido.json</code> + <code>/media</code>. La interfaz nunca pide nada a un servidor para pintar una pantalla.</p>
+        <ul>
+          <li>Textos, cifras y puntos del plano en un solo JSON versionado</li>
+          <li>Imágenes ya redimensionadas a 1080 px de ancho</li>
+          <li>Tipografías empaquetadas, sin CDN</li>
+        </ul>
+      </div>
+      <div class="layer">
+        <div class="lnum">CAPA 3</div>
+        <h4>Sincronización</h4>
+        <p>Un proceso aparte del que dibuja. Descarga incremental con <code>ETag</code> y cambio atómico de carpeta.</p>
+        <ul>
+          <li>Reintentos con espera creciente; nunca bloquea la pantalla</li>
+          <li>Verificación SHA-256 antes de activar</li>
+          <li>Retiene las 3 versiones anteriores para volver atrás</li>
+        </ul>
+      </div>
+      <div class="layer">
+        <div class="lnum">CAPA 4</div>
+        <h4>Panel del liceo</h4>
+        <p>CMS liviano en la nube, con cuentas para dirección y el equipo de Agropecuaria.</p>
+        <ul>
+          <li>Avisos con fecha de inicio y término automáticos</li>
+          <li>Vista previa a tamaño de tótem antes de publicar</li>
+          <li>Un mismo contenido sirve a varios tótems por grupo</li>
+        </ul>
+      </div>
+      <div class="layer">
+        <div class="lnum">CAPA 5</div>
+        <h4>Monitoreo</h4>
+        <p>Latido cada 5 minutos con lo mínimo para saber si el equipo está vivo y siendo usado.</p>
+        <ul>
+          <li>Versión activa, tiempo encendido, temperatura</li>
+          <li>Toques por pantalla — qué mira realmente la gente</li>
+          <li>Alerta por correo si un tótem calla más de 2 horas</li>
+        </ul>
+      </div>
+      <div class="layer">
+        <div class="lnum">CAPA 6</div>
+        <h4>Contingencia</h4>
+        <p>Lo que pasa cuando algo se rompe, decidido de antemano.</p>
+        <ul>
+          <li>Sin red: sigue igual, sólo cambia el indicador de estado</li>
+          <li>Sin luz: UPS para apagado limpio; vuelve solo al restablecerse</li>
+          <li>Contenido corrupto: arranca la versión anterior válida</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="dl">
+        <h3>Hardware sugerido</h3>
+        <dl>
+          <dt>Pantalla</dt><dd>43" alto brillo, 2 500–3 500 nits, vertical</dd>
+          <dt>Táctil</dt><dd>PCAP 10 puntos, funciona con guante y con lluvia</dd>
+          <dt>Vidrio</dt><dd>Templado 6 mm antivandálico con capa antirreflejo</dd>
+          <dt>Gabinete</dt><dd>Acero galvanizado IP65, climatizado, anclado a radier</dd>
+          <dt>Cómputo</dt><dd>Mini-PC fanless o Raspberry Pi 5 con SSD industrial</dd>
+          <dt>Red</dt><dd>Router 4G con SIM de datos; wifi del liceo como respaldo</dd>
+          <dt>Energía</dt><dd>Circuito propio con diferencial y UPS de 30 min</dd>
+          <dt>Extra</dt><dd>Sensor de luz para brillo y sensor de presencia para despertar</dd>
+        </dl>
+      </div>
+      <div class="dl">
+        <h3>Decisiones de interfaz para intemperie</h3>
+        <dl>
+          <dt>Tipografía</dt><dd>Mínimo 21 px reales; títulos sobre 55 px</dd>
+          <dt>Contraste</dt><dd>Fondo oscuro: menos reflejo bajo sol directo</dd>
+          <dt>Botones</dt><dd>Zona táctil de 210 px de alto, cinco como máximo</dd>
+          <dt>Alcance</dt><dd>Nada interactivo bajo 90 cm ni sobre 180 cm del suelo</dd>
+          <dt>Sin teclado</dt><dd>Ningún formulario; para llevarse datos, QR</dd>
+          <dt>Regreso</dt><dd>Vuelve al atractor a los 45 s sin toque</dd>
+          <dt>Profundidad</dt><dd>Máximo dos niveles: pantalla y ficha</dd>
+          <dt>Idioma</dt><dd>Español; preparado para una segunda lengua si se pide</dd>
+        </dl>
+      </div>
+    </div>
+
+    <p class="disclaimer"><b>Sobre los datos.</b> La historia, la dirección, los teléfonos y el sostenedor
+      provienen del sitio del liceo y de SNA Educa. Las cifras del predio, la disposición del plano,
+      las estadísticas y los textos de las fichas son <b>contenido de relleno para la maqueta</b>:
+      sirven para ver el formato, no para publicarse. Antes de instalar hay que reemplazarlos con
+      información validada por el liceo.</p>
+  </div>
+</section>
+
+<footer>
+  <span>Maqueta de tótem interactivo · Liceo Bicentenario Agrícola Marta Martínez Cruz</span>
+  <span>Fuentes: <a href="https://www.martamartinezcruz.cl/historia-liceo/">martamartinezcruz.cl</a> · <a href="https://www.snaeduca.cl/liceoagricolamartamartinezcruz/">SNA Educa</a> · <a href="https://www.curriculumnacional.cl/portal/Educacion-Tecnico-Profesional/Especialidad-Agropecuaria/">Currículum Nacional MINEDUC</a></span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- escalado del tótem ---------- */
+  var shell = document.getElementById("shell"), vp = document.getElementById("viewport");
+  function fit(){
+    var stage = document.querySelector(".stage");
+    var wide = window.innerWidth > 1100;
+    var availW = Math.min((wide ? stage.clientWidth * 0.52 : stage.clientWidth) - 64, 640);
+    var availH = window.innerHeight - 140;
+    var s = Math.min(availW / 1080, availH / 1920);
+    s = Math.max(Math.min(s, 0.6), 0.17);
+    vp.style.transform = "scale(" + s + ")";
+    shell.style.width = Math.round(1080 * s) + "px";
+    shell.style.height = Math.round(1920 * s) + "px";
+  }
+  window.addEventListener("resize", fit);
+
+  /* ---------- navegación ---------- */
+  var screens = ["s-inicio","s-liceo","s-agro","s-campo","s-visita"];
+  var navBtns = Array.prototype.slice.call(document.querySelectorAll("#nav button"));
+  var idleTimer, current = "s-inicio";
+
+  function go(id){
+    screens.forEach(function(s){
+      document.getElementById(s).classList.toggle("is-on", s === id);
+    });
+    navBtns.forEach(function(b){
+      if(b.dataset.go === id){ b.setAttribute("aria-current","true"); }
+      else { b.removeAttribute("aria-current"); }
+    });
+    current = id;
+    closeSheet();
+    resetIdle();
+  }
+  navBtns.forEach(function(b){ b.addEventListener("click", function(){ go(b.dataset.go); }); });
+  document.getElementById("s-inicio").addEventListener("click", function(){ go("s-liceo"); });
+
+  function resetIdle(){
+    clearTimeout(idleTimer);
+    if(current === "s-inicio") return;
+    idleTimer = setTimeout(function(){ go("s-inicio"); }, 45000);
+  }
+  document.getElementById("totem").addEventListener("pointerdown", resetIdle);
+
+  /* ---------- atractor: cifras rotando ---------- */
+  var stats = [
+    ["90","ha","de campo productivo son la sala de clases"],
+    ["12","ha","riega el pivote central, día y noche"],
+    ["1958","","el año en que abrió la primera escuela agrícola de mujeres de Chile"],
+    ["380",""," estudiantes del Maule, muchos internos"],
+    ["3","","invernaderos de tecnología israelí en producción"]
+  ];
+  var si = 0, rotN = document.getElementById("rotNum"), rotT = document.getElementById("rotTxt"),
+      dots = Array.prototype.slice.call(document.querySelectorAll("#rotDots i"));
+  function rotate(){
+    var s = stats[si];
+    rotN.innerHTML = s[0] + (s[1] ? "<small> " + s[1] + "</small>" : "");
+    rotT.textContent = s[2];
+    dots.forEach(function(d,i){ d.classList.toggle("on", i === si); });
+    si = (si + 1) % stats.length;
+  }
+  rotate();
+  setInterval(rotate, 5000);
+
+  /* ---------- campo animado en canvas ---------- */
+  var cv = document.getElementById("fieldArt"), cx = cv.getContext("2d");
+  var blades = [], W = 1080, H = 1490;
+  cv.width = W; cv.height = H;
+  for(var i = 0; i < 260; i++){
+    blades.push({
+      x: Math.random() * W,
+      y: H * (0.42 + Math.random() * 0.58),
+      h: 40 + Math.random() * 190,
+      ph: Math.random() * Math.PI * 2,
+      w: 2 + Math.random() * 4
+    });
+  }
+  var hills = [
+    {y: 0.44, a: 26, c: "#0B2C23"},
+    {y: 0.52, a: 18, c: "#0E3A2C"},
+    {y: 0.62, a: 12, c: "#124434"}
+  ];
+  function drawField(t){
+    var g = cx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, "#123F31"); g.addColorStop(0.42, "#0E3627"); g.addColorStop(1, "#07201A");
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    // sol bajo
+    cx.fillStyle = "rgba(228,175,78,.16)";
+    cx.beginPath(); cx.arc(770, H * 0.30, 130, 0, Math.PI * 2); cx.fill();
+    cx.fillStyle = "rgba(228,175,78,.30)";
+    cx.beginPath(); cx.arc(770, H * 0.30, 58, 0, Math.PI * 2); cx.fill();
+    // cerros
+    hills.forEach(function(hl, k){
+      cx.fillStyle = hl.c; cx.beginPath(); cx.moveTo(0, H);
+      for(var x = 0; x <= W; x += 12){
+        cx.lineTo(x, H * hl.y + Math.sin(x / (180 + k * 60) + k) * hl.a);
+      }
+      cx.lineTo(W, H); cx.closePath(); cx.fill();
+    });
+    // trigo
+    blades.forEach(function(b){
+      var sway = Math.sin(t / 900 + b.ph) * (b.h / 11);
+      var depth = (b.y - H * 0.42) / (H * 0.58);
+      cx.strokeStyle = "rgba(" + Math.round(150 - depth * 60) + "," + Math.round(200 - depth * 70) + "," + Math.round(140 - depth * 50) + ",.42)";
+      cx.lineWidth = b.w;
+      cx.beginPath(); cx.moveTo(b.x, b.y);
+      cx.quadraticCurveTo(b.x + sway * 0.5, b.y - b.h * 0.6, b.x + sway, b.y - b.h);
+      cx.stroke();
+    });
+  }
+  if(reduce){ drawField(0); }
+  else { (function loop(t){ drawField(t); requestAnimationFrame(loop); })(0); }
+
+  /* ---------- menciones y módulos ---------- */
+  var comunes = [
+    ["01","Manejo de suelo y residuos"],
+    ["02","Manejo de técnicas de riego"],
+    ["03","Técnicas de reproducción vegetal"],
+    ["04","Alimentación y pesaje pecuario"],
+    ["05","Control de plagas y enfermedades"],
+    ["06","Emprendimiento y empleabilidad"]
+  ];
+  var mencion = {
+    agricultura: [
+      ["07","Manejo y conducción de cultivos"],
+      ["08","Cosecha y poscosecha vegetal"],
+      ["09","Operación de maquinaria agrícola"]
+    ],
+    pecuaria: [
+      ["07","Manejo sanitario del ganado"],
+      ["08","Producción y ordeña de leche"],
+      ["09","Reproducción y crianza animal"]
+    ]
+  };
+  var modList = document.getElementById("modList");
+  function paintMods(m){
+    var html = "";
+    comunes.forEach(function(r){
+      html += '<li><span class="n">' + r[0] + '</span><span class="m">' + r[1] + '</span><span class="tagm">Común</span></li>';
+    });
+    mencion[m].forEach(function(r){
+      html += '<li><span class="n">' + r[0] + '</span><span class="m">' + r[1] + '</span><span class="tagm">Mención</span></li>';
+    });
+    modList.innerHTML = html;
+  }
+  paintMods("agricultura");
+  Array.prototype.slice.call(document.querySelectorAll(".tabs button")).forEach(function(b){
+    b.addEventListener("click", function(){
+      document.querySelectorAll(".tabs button").forEach(function(o){ o.setAttribute("aria-selected","false"); });
+      b.setAttribute("aria-selected","true");
+      paintMods(b.dataset.men);
+    });
+  });
+
+  /* ---------- plano: puntos ---------- */
+  var puntos = [
+    {n:1,  x:185, y:641, t:"Aulas y laboratorios",
+     d:"Seis salas, laboratorio de ciencias y sala de computación. Aquí parten las mañanas antes de salir al campo.",
+     f:["6 salas","Biblioteca","Sala de enlaces"]},
+    {n:2,  x:185, y:747, t:"Internado",
+     d:"140 camas para estudiantes que vienen de comunas rurales del Maule. Comedor, duchas y estudio vespertino.",
+     f:["140 camas","Comedor 200 personas","Damas y varones"]},
+    {n:3,  x:565, y:646, t:"Lechería",
+     d:"Sala de ordeña mecánica con estanque de frío. Los cuartos medios llevan el registro diario de producción de cada vaca.",
+     f:["38 vacas en ordeña","2 ordeñas al día","Estanque 1 500 L"]},
+    {n:4,  x:582, y:761, t:"Establo y corrales",
+     d:"Bovinos de carne y leche, ovinos y una crianza de cerdos. Alimentación, sanidad y manejo del rebaño se practican aquí todo el año.",
+     f:["Bovinos","Ovinos","Porcinos"]},
+    {n:5,  x:800, y:720, t:"Media luna y pesebrera",
+     d:"Cancha reglamentaria donde entrenan las colleras del Club de Huasos escolar, que compiten en el circuito de rodeos escolares.",
+     f:["9 caballos","Rodeo escolar","Cancha reglamentaria"]},
+    {n:6,  x:720, y:290, t:"Pivote central",
+     d:"Riego por aspersión sobre praderas y maíz forrajero. Los estudiantes programan la lámina de agua según el balance hídrico de la semana.",
+     f:["Cubre 12 ha","Riego por aspersión","Programación semanal"]},
+    {n:7,  x:200, y:441, t:"Invernaderos israelíes",
+     d:"Tres módulos con control de temperatura, fertirriego por goteo y ventilación cenital. Hortalizas de hoja, tomate y almácigos.",
+     f:["3 módulos","Fertirriego","Producción todo el año"]},
+    {n:8,  x:360, y:635, t:"Laboratorio de Control Biológico",
+     d:"Cría de insectos benéficos para controlar plagas sin pesticidas. Es el sello del liceo: vienen delegaciones de otros liceos y de INACAP a capacitarse.",
+     f:["Cría de benéficos","Manejo integrado","Referente nacional"]},
+    {n:9,  x:555, y:583, t:"Sala de riego tecnificado",
+     d:"Cabezal de filtrado, inyección de fertilizantes y programación por sectores. Desde aquí se maneja el goteo de frutales e invernaderos.",
+     f:["Cabezal de filtros","Fertirriego","Control por sectores"]},
+    {n:10, x:375, y:744, t:"Galpón de maquinaria",
+     d:"Tractores, arado, rastra, sembradora, fumigadora y carro forrajero, todos propios. Mantención básica y operación segura se enseñan aquí.",
+     f:["3 tractores","Implementos de labranza","Taller de mantención"]},
+    {n:11, x:198, y:208, t:"Huerto de frutales",
+     d:"Cerezos, arándanos y manzanos en producción. Poda, raleo y cosecha son evaluación práctica en primavera y verano.",
+     f:["Cerezo","Arándano","Manzano"]},
+    {n:12, x:425, y:300, t:"Praderas y potreros",
+     d:"Pastoreo rotativo con cerco eléctrico. Se mide carga animal y se hace ensilaje para el invierno.",
+     f:["Pastoreo rotativo","Ensilaje","Cerco eléctrico"]}
+  ];
+  var pins = document.getElementById("pins"), NS = "http://www.w3.org/2000/svg";
+  var sheet = document.getElementById("sheet"),
+      shN = document.getElementById("shN"), shT = document.getElementById("shT"),
+      shP = document.getElementById("shP"), shF = document.getElementById("shF");
+
+  puntos.forEach(function(p){
+    var g = document.createElementNS(NS, "g");
+    g.setAttribute("class", "hot");
+    g.setAttribute("tabindex", "0");
+    g.setAttribute("role", "button");
+    g.setAttribute("aria-label", p.t);
+    g.innerHTML =
+      '<circle class="halo" cx="' + p.x + '" cy="' + p.y + '" r="42"/>' +
+      '<circle class="pin" cx="' + p.x + '" cy="' + p.y + '" r="25"/>' +
+      '<text class="num" x="' + p.x + '" y="' + (p.y + 8) + '">' + p.n + '</text>';
+    function open(){
+      document.querySelectorAll(".hot").forEach(function(h){ h.classList.remove("sel"); });
+      g.classList.add("sel");
+      shN.textContent = p.n; shT.textContent = p.t; shP.textContent = p.d;
+      shF.innerHTML = p.f.map(function(x){ return "<span>" + x + "</span>"; }).join("");
+      sheet.classList.add("open");
+      resetIdle();
+    }
+    g.addEventListener("click", open);
+    g.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
+    pins.appendChild(g);
+  });
+  function closeSheet(){
+    sheet.classList.remove("open");
+    document.querySelectorAll(".hot").forEach(function(h){ h.classList.remove("sel"); });
+  }
+  document.getElementById("shX").addEventListener("click", closeSheet);
+
+  /* ---------- QR decorativo ---------- */
+  var qr = document.getElementById("qr"), N = 25, seed = 20260907;
+  function rnd(){ seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+  var cells = [];
+  for(var r = 0; r < N; r++){
+    for(var c = 0; c < N; c++){
+      var finder = (r < 7 && c < 7) || (r < 7 && c > N - 8) || (r > N - 8 && c < 7);
+      var on;
+      if(finder){
+        var rr = r > N - 8 ? r - (N - 7) : r, cc = c > N - 8 ? c - (N - 7) : c;
+        var ring = Math.max(Math.abs(rr - 3), Math.abs(cc - 3));
+        on = (ring === 3 || ring <= 1);
+      } else {
+        on = rnd() > 0.52;
+      }
+      cells.push('<i class="' + (on ? "k" : "") + '"></i>');
+    }
+  }
+  qr.innerHTML = cells.join("");
+
+  /* ---------- reloj y estado ---------- */
+  var clock = document.getElementById("clock"), dot = document.getElementById("dot"),
+      conn = document.getElementById("conn"), tconn = document.getElementById("tconn"),
+      tls = document.getElementById("tls");
+  function tick(){
+    var d = new Date();
+    var hh = String(d.getHours()).padStart(2,"0"), mm = String(d.getMinutes()).padStart(2,"0");
+    clock.textContent = hh + ":" + mm + " · Yerbas Buenas 18 °C";
+  }
+  tick(); setInterval(tick, 20000);
+
+  var online = true;
+  function setOnline(v){
+    online = v;
+    dot.classList.toggle("off", !v);
+    conn.textContent = v ? "Sincronizado · v2026.09.04" : "Sin conexión · mostrando v2026.09.04";
+    tconn.textContent = v ? "4G · −71 dBm" : "sin señal";
+    tls.textContent = v ? "hoy 06:12" : "hoy 06:12 (hace 9 h)";
+    offBtn.setAttribute("aria-pressed", String(!v));
+    offBtn.textContent = v ? "Cortar internet" : "Restablecer internet";
+  }
+
+  /* ---------- panel técnico ---------- */
+  var tech = document.getElementById("tech"), tlog = document.getElementById("tlog");
+  var logLines = [
+    "06:12:03  sync  manifest recibido  <b>200 OK</b>",
+    "06:12:03  sync  versión remota <u>v2026.09.04</u> = local — sin cambios",
+    "06:12:04  sync  próxima consulta 06:42",
+    "07:00:11  app   pantalla El Campo · punto 8 abierto",
+    "09:30:02  sync  manifest recibido  <b>304 Not Modified</b>",
+    "11:14:47  hw    brillo 2 800 nits · sensor 68 klux",
+    "12:00:00  hb    latido enviado · uptime 21d04h"
+  ];
+  tlog.innerHTML = logLines.join("<br>");
+  function logAdd(s){
+    tlog.innerHTML += "<br>" + s;
+    tlog.scrollTop = tlog.scrollHeight;
+  }
+  function showTech(v){ tech.classList.toggle("open", v); }
+  document.getElementById("status").addEventListener("click", function(){ showTech(true); });
+  document.getElementById("btnBack").addEventListener("click", function(){ showTech(false); });
+  document.getElementById("btnSync").addEventListener("click", function(){
+    var t = new Date(), hh = String(t.getHours()).padStart(2,"0"), mm = String(t.getMinutes()).padStart(2,"0");
+    if(!online){
+      logAdd(hh + ":" + mm + ":09  sync  sin red — reintento en 15 min · <u>el tótem sigue operando</u>");
+      return;
+    }
+    logAdd(hh + ":" + mm + ":09  sync  buscando actualización…");
+    setTimeout(function(){ logAdd(hh + ":" + mm + ":11  sync  versión remota <u>v2026.09.06</u> ≠ local"); }, 700);
+    setTimeout(function(){ logAdd(hh + ":" + mm + ":14  sync  descargando 4 archivos (2,1 MB) → contenido.next/"); }, 1400);
+    setTimeout(function(){ logAdd(hh + ":" + mm + ":26  sync  SHA-256 verificado · <b>ok</b>"); }, 2600);
+    setTimeout(function(){
+      logAdd(hh + ":" + mm + ":27  sync  cambio atómico en atractor · activo <u>v2026.09.06</u>");
+      document.getElementById("tv").textContent = "v2026.09.06 · build 121";
+      conn.textContent = "Sincronizado · v2026.09.06";
+      document.getElementById("tls").textContent = hh + ":" + mm;
+    }, 3400);
+  });
+
+  /* ---------- control de demostración ---------- */
+  var offBtn = document.getElementById("demoOffline");
+  offBtn.addEventListener("click", function(){ setOnline(!online); });
+  document.getElementById("demoTech").addEventListener("click", function(){ showTech(!tech.classList.contains("open")); });
+  document.getElementById("demoIdle").addEventListener("click", function(){ showTech(false); go("s-inicio"); });
+  setOnline(true);
+
+  fit();
+})();
+</script>
