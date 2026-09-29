@@ -15,7 +15,7 @@
     "rotacionSegundos": 5,
     "sincronizarCadaMinutos": 30,
     "telemetriaCadaMinutos": 5,
-    "servidor": "http://localhost:4300",
+    "servidor": "",
     "equipo": "TOTEM-MMC-01",
     "ubicacionEquipo": "Portón principal",
     "temperaturaComuna": "18 °C"

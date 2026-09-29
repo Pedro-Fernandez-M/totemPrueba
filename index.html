@@ -1,0 +1,139 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Tótem Aulas Abiertas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;700;800&family=Source+Sans+3:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --bg:#F2F4EF; --surface:#FFFFFF; --surface-2:#F8FAF5;
+  --ink:#16211B; --ink-2:#57625A; --ink-3:#8A948B;
+  --line:#DCE2D6; --line-2:#C4CCBD;
+  --accent:#14503C; --accent-soft:#E1EAE2;
+  --gold:#8C5F0E; --gold-soft:#F8EDD6;
+  --sombra:0 18px 44px -28px rgba(14,40,28,.45);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1310; --surface:#171C16; --surface-2:#1C221B;
+    --ink:#E9EEE4; --ink-2:#A3AEA2; --ink-3:#79847A;
+    --line:#2A312A; --line-2:#3B433B;
+    --accent:#7FCBA0; --accent-soft:#1B2A22;
+    --gold:#E0AE55; --gold-soft:#2B2315;
+    --sombra:0 18px 44px -28px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1310; --surface:#171C16; --surface-2:#1C221B;
+  --ink:#E9EEE4; --ink-2:#A3AEA2; --ink-3:#79847A;
+  --line:#2A312A; --line-2:#3B433B;
+  --accent:#7FCBA0; --accent-soft:#1B2A22;
+  --gold:#E0AE55; --gold-soft:#2B2315;
+  --sombra:0 18px 44px -28px rgba(0,0,0,.85);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Source Sans 3",-apple-system,"Segoe UI",sans-serif;font-size:16.5px;line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Bitter",Georgia,serif;margin:0;text-wrap:balance}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}}
+
+.hoja{max-width:900px;margin:0 auto;padding:68px 28px 90px}
+
+.rotulo{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.rotulo::after{content:"";flex:1;height:1px;background:var(--line)}
+h1{font-size:clamp(30px,5vw,46px);font-weight:800;line-height:1.05;letter-spacing:-.022em;max-width:17ch}
+.entrada{font-size:18.5px;color:var(--ink-2);margin:18px 0 0;max-width:60ch}
+
+.maqueta{display:flex;gap:13px;align-items:flex-start;margin:30px 0 40px;padding:16px 20px;
+  border-radius:11px;background:var(--gold-soft);
+  border:1px solid color-mix(in srgb,var(--gold) 38%,transparent);font-size:15px;max-width:66ch}
+.maqueta svg{width:19px;height:19px;flex:none;margin-top:3px;stroke:var(--gold);fill:none;stroke-width:1.8}
+.maqueta b{display:block;margin-bottom:3px}
+.maqueta p{margin:0;color:var(--ink-2)}
+
+.tarjetas{display:grid;gap:14px}
+.t{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:20px;align-items:center;
+  padding:24px 26px;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  text-decoration:none;color:inherit;transition:border-color .16s,transform .16s,box-shadow .16s}
+.t:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--sombra)}
+.t .ic{width:52px;height:52px;border-radius:12px;background:var(--accent-soft);display:grid;place-items:center}
+.t .ic svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.t h2{font-size:20px;font-weight:700;margin-bottom:4px}
+.t p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.45}
+.t .flecha{font-size:22px;color:var(--ink-3)}
+.t .como{display:block;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;
+  color:var(--gold);margin-top:8px}
+
+.pie{margin-top:54px;padding-top:22px;border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);line-height:1.9}
+
+@media (max-width:620px){
+  .hoja{padding:44px 18px 64px}
+  .t{grid-template-columns:44px minmax(0,1fr);gap:14px}
+  .t .flecha{display:none}
+  .t .ic{width:44px;height:44px}
+}
+</style>
+
+<div class="hoja">
+  <div class="rotulo">Aulas abiertas interactivas</div>
+  <h1>Tótem informativo para liceos agrícolas</h1>
+  <p class="entrada">Maqueta navegable de lo que se instalaría en los cuatro tótems: la pantalla que ve
+     el público, el panel con que los profesores la mantienen, y el detalle técnico de la solución.</p>
+
+  <div class="maqueta">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+    <div>
+      <b>Esto es una maqueta de demostración</b>
+      <p>Las cifras del predio, los nombres de profesores, las estadísticas y los documentos son
+         contenido de relleno para mostrar el formato. No son información oficial de ningún
+         establecimiento.</p>
+    </div>
+  </div>
+
+  <div class="tarjetas">
+    <a class="t" href="/kiosco/">
+      <span class="ic"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span>
+      <span>
+        <h2>El tótem</h2>
+        <p>La pantalla completa, tal como se vería en el acceso del liceo. Toque los botones de abajo
+           y los números del plano del predio.</p>
+        <span class="como">Use el botón ⛶ de la franja inferior para verlo a pantalla completa</span>
+      </span>
+      <span class="flecha">→</span>
+    </a>
+
+    <a class="t" href="/panel/">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
+      <span>
+        <h2>El panel de administración</h2>
+        <p>Donde cada liceo sube sus documentos, publica avisos y edita los textos. Arrastre cualquier
+           PDF que tenga a mano para probarlo.</p>
+        <span class="como">Cambie el rol arriba a la derecha para ver el flujo de aprobación</span>
+      </span>
+      <span class="flecha">→</span>
+    </a>
+
+    <a class="t" href="/docs/arquitectura-4-totems.html">
+      <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span>
+      <span>
+        <h2>Detalle de la arquitectura</h2>
+        <p>Qué se instala en cada tótem, el equipamiento requerido, las condiciones de sitio por
+           establecimiento y los tiempos de ejecución.</p>
+      </span>
+      <span class="flecha">→</span>
+    </a>
+  </div>
+
+  <div class="pie">
+    Preparado por Pedro Fernández M. · Septiembre 2026<br>
+    Ni el tótem ni el panel de esta demostración guardan datos fuera de su propio navegador.
+  </div>
+</div>
