@@ -1,0 +1,676 @@
+<title>Arquitectura Cuatro Tótems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Source+Sans+3:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --bg:#F2F4EF; --surface:#FFFFFF; --surface-2:#F8FAF5;
+  --ink:#16211B; --ink-2:#57625A; --ink-3:#8A948B;
+  --line:#DCE2D6; --line-2:#C4CCBD;
+  --accent:#14503C; --accent-soft:#E1EAE2;
+  --gold:#8C5F0E; --gold-soft:#F8EDD6;
+  --agua:#245E7C; --agua-soft:#DEEDF4;
+  --clay:#8E3F1F; --clay-soft:#F8E5DC;
+  --sombra:0 18px 44px -28px rgba(14,40,28,.45);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1310; --surface:#171C16; --surface-2:#1C221B;
+    --ink:#E9EEE4; --ink-2:#A3AEA2; --ink-3:#79847A;
+    --line:#2A312A; --line-2:#3B433B;
+    --accent:#7FCBA0; --accent-soft:#1B2A22;
+    --gold:#E0AE55; --gold-soft:#2B2315;
+    --agua:#7FBDDA; --agua-soft:#16262E;
+    --clay:#DD8560; --clay-soft:#2D1B13;
+    --sombra:0 18px 44px -28px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1310; --surface:#171C16; --surface-2:#1C221B;
+  --ink:#E9EEE4; --ink-2:#A3AEA2; --ink-3:#79847A;
+  --line:#2A312A; --line-2:#3B433B;
+  --accent:#7FCBA0; --accent-soft:#1B2A22;
+  --gold:#E0AE55; --gold-soft:#2B2315;
+  --agua:#7FBDDA; --agua-soft:#16262E;
+  --clay:#DD8560; --clay-soft:#2D1B13;
+  --sombra:0 18px 44px -28px rgba(0,0,0,.85);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Source Sans 3",-apple-system,"Segoe UI",sans-serif;font-size:16.5px;line-height:1.62;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Bitter",Georgia,serif;margin:0;text-wrap:balance}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+p{margin:0 0 15px}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+.hoja{max-width:1000px;margin:0 auto;padding:0 28px 96px}
+.col{max-width:72ch}
+
+/* ---------- portada ---------- */
+.portada{padding:64px 0 34px;border-bottom:2px solid var(--ink)}
+.rotulo{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:20px}
+.portada h1{font-size:clamp(30px,4.6vw,46px);font-weight:800;line-height:1.06;letter-spacing:-.022em;max-width:20ch}
+.portada .sub{font-size:19px;color:var(--ink-2);margin:16px 0 0;max-width:62ch}
+.ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0;margin-top:34px;
+  border-top:1px solid var(--line)}
+.ficha div{padding:14px 0;border-right:1px solid var(--line);padding-right:18px}
+.ficha div:last-child{border-right:0}
+.ficha dt{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:5px}
+.ficha dd{margin:0;font-size:15px;font-weight:600}
+
+/* ---------- secciones ---------- */
+section{padding-top:52px}
+h2{font-size:clamp(21px,2.6vw,27px);font-weight:800;letter-spacing:-.014em;
+  display:flex;gap:16px;align-items:baseline;margin-bottom:8px}
+h2 .n{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:500;color:var(--accent);flex:none}
+h3{font-size:18px;font-weight:700;margin:30px 0 8px}
+h3 .n{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500;color:var(--ink-3);margin-right:9px}
+.bajo-h2{color:var(--ink-2);margin:0 0 22px;padding-left:30px;max-width:66ch}
+section > p, section > ul, section > ol{max-width:72ch}
+ul,ol{padding-left:22px;margin:0 0 16px}
+li{margin-bottom:7px}
+li::marker{color:var(--ink-3)}
+strong{font-weight:700}
+
+/* ---------- destacados ---------- */
+.nota{border-left:3px solid var(--accent);background:var(--surface);padding:18px 22px;border-radius:0 10px 10px 0;
+  margin:22px 0;max-width:72ch}
+.nota.ojo{border-left-color:var(--gold);background:var(--gold-soft)}
+.nota.riesgo{border-left-color:var(--clay);background:var(--clay-soft)}
+.nota b{display:block;margin-bottom:5px}
+.nota p:last-child{margin-bottom:0}
+
+/* ---------- diagrama ---------- */
+.figura{margin:28px 0 12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:22px;overflow-x:auto}
+.figura svg{display:block;width:100%;min-width:640px;height:auto}
+.pie-fig{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);margin:0 0 30px;
+  padding-left:2px;max-width:72ch}
+
+.dg-caja{fill:var(--surface-2);stroke:var(--line-2);stroke-width:1.5}
+.dg-gab{fill:none;stroke:var(--accent);stroke-width:2}
+.dg-pc{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.dg-red{fill:var(--agua-soft);stroke:var(--agua);stroke-width:1.5}
+.dg-t{fill:var(--ink);font-family:"Source Sans 3",sans-serif;font-size:14px;font-weight:600}
+.dg-s{fill:var(--ink-2);font-family:"Source Sans 3",sans-serif;font-size:12.5px}
+.dg-m{fill:var(--ink-3);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em}
+.dg-k{fill:var(--accent);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:600}
+.dg-fl{stroke:var(--ink-3);stroke-width:1.6;fill:none}
+
+/* ---------- tablas ---------- */
+.tabla{margin:20px 0 26px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:500;padding:13px 16px;border-bottom:1px solid var(--line);
+  background:var(--surface-2)}
+td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.mono{font-family:"IBM Plex Mono",monospace;font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
+td b{font-weight:700}
+
+/* ---------- carta gantt ---------- */
+.gantt{margin:22px 0 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);
+  overflow-x:auto;padding:18px 0 8px}
+.gantt-int{min-width:820px}
+.g-fila{display:grid;grid-template-columns:270px repeat(16,1fr);align-items:center;
+  border-bottom:1px solid var(--line);min-height:44px}
+.g-fila:last-child{border-bottom:0}
+.g-cab{border-bottom:1px solid var(--line-2);min-height:34px}
+.g-cab .g-et{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3)}
+.g-cab span{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-3);text-align:center}
+.g-et{padding:8px 16px;font-size:14px;line-height:1.3}
+.g-et small{display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-3);
+  letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.g-barra{height:22px;border-radius:5px;margin:0 3px;display:flex;align-items:center;padding:0 9px;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:#fff;white-space:nowrap;overflow:hidden}
+.g-pedro{background:var(--accent)}
+.g-inst{background:var(--gold)}
+.g-junto{background:var(--agua)}
+:root[data-theme="dark"] .g-barra, :root:not([data-theme="light"]) .g-barra{color:#0E1310}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .g-barra{color:#fff}}
+.leyenda{display:flex;flex-wrap:wrap;gap:8px 20px;margin:14px 0 30px;font-size:13.5px;color:var(--ink-2)}
+.leyenda span{display:flex;align-items:center;gap:7px}
+.leyenda i{width:14px;height:10px;border-radius:3px;display:block}
+
+/* ---------- listas de requisitos ---------- */
+.req{list-style:none;padding:0;margin:16px 0 24px;max-width:72ch}
+.req li{display:flex;gap:14px;padding:12px 0;border-top:1px solid var(--line);margin:0}
+.req li:last-child{border-bottom:1px solid var(--line)}
+.req .c{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);flex:none;width:26px;padding-top:4px}
+.req b{display:block;margin-bottom:2px}
+.req span{color:var(--ink-2);font-size:15px}
+
+.pie{margin-top:64px;padding-top:22px;border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);line-height:1.8}
+
+@media (max-width:700px){
+  .hoja{padding:0 18px 70px}
+  .ficha div{border-right:0;border-bottom:1px solid var(--line)}
+  h2{gap:10px}
+  .bajo-h2{padding-left:0}
+  .g-fila{grid-template-columns:180px repeat(16,1fr)}
+}
+</style>
+
+<div class="hoja">
+
+<header class="portada">
+  <div class="rotulo">Propuesta técnica · Aulas abiertas interactivas</div>
+  <h1>Arquitectura e implementación de cuatro tótems interactivos</h1>
+  <p class="sub">Detalle de la solución a instalar, especificación del equipamiento a adquirir,
+     requerimientos por establecimiento y cronograma de puesta en marcha.</p>
+  <dl class="ficha">
+    <div><dt>Para</dt><dd>[Nombre · Institución]</dd></div>
+    <div><dt>De</dt><dd>Pedro Fernández M.</dd></div>
+    <div><dt>Fecha</dt><dd>29 de septiembre de 2026</dd></div>
+    <div><dt>Versión</dt><dd class="mono">1.0</dd></div>
+  </dl>
+</header>
+
+<section>
+  <h2><span class="n">00</span> Resumen</h2>
+  <div class="col">
+    <p>Se instalarán cuatro tótems táctiles de exterior, uno por establecimiento, cada uno como una
+       <strong>instalación independiente y autónoma</strong>. Todo el contenido reside en el propio equipo,
+       de modo que cada tótem opera completo sin conexión a internet.</p>
+    <p>Cada liceo administra su unidad desde la red interna del establecimiento, a través de un panel web
+       al que acceden sus profesores y su encargado de informática. No hay servidor externo, no hay
+       dependencia entre establecimientos y no hay costo mensual de operación.</p>
+    <p>En la puesta en marcha, cada liceo entrega su material y yo lo dejo cargado y revisado.
+       Desde la capacitación en adelante, el establecimiento actualiza sus propios documentos, avisos y
+       textos sin requerir intervención externa.</p>
+    <p>El trabajo toma <strong>doce semanas desde la aprobación</strong>. El camino crítico es la
+       adquisición del equipamiento.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">01</span> Alcance</h2>
+  <p class="bajo-h2">Qué entrego y qué queda del lado de la institución.</p>
+  <div class="col">
+    <p><strong>Incluido:</strong> el software del tótem y su panel de administración, la personalización
+       del contenido y del plano del predio de cada uno de los cuatro establecimientos, la carga inicial
+       del material que entreguen, la instalación y configuración del software en los cuatro equipos,
+       la capacitación del personal de cada liceo y cuatro semanas de marcha blanca acompañada.</p>
+    <p><strong>A cargo de la institución:</strong> la adquisición del equipamiento según la especificación
+       del punto 05, la obra civil y eléctrica de cada emplazamiento según el punto 06, y la entrega del
+       contenido de cada establecimiento dentro del plazo del cronograma.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">02</span> Arquitectura</h2>
+  <p class="bajo-h2">Cuatro instalaciones independientes que comparten el mismo programa y no comparten nada más.</p>
+
+  <div class="figura">
+    <svg viewBox="0 0 1000 600" role="img" aria-label="Diagrama de la arquitectura: anatomía de una instalación y las cuatro unidades independientes">
+      <text class="dg-k" x="0" y="14">Anatomía de una instalación</text>
+
+      <!-- gabinete -->
+      <rect class="dg-gab" x="2" y="34" width="560" height="262" rx="14"/>
+      <text class="dg-m" x="20" y="58">GABINETE DEL TÓTEM · INTEMPERIE IP65</text>
+
+      <rect class="dg-caja" x="24" y="74" width="250" height="56" rx="8"/>
+      <text class="dg-t" x="40" y="98">Pantalla 43" vertical</text>
+      <text class="dg-s" x="40" y="117">Táctil, alto brillo, vidrio antivandálico</text>
+
+      <rect class="dg-caja" x="292" y="74" width="120" height="56" rx="8"/>
+      <text class="dg-t" x="308" y="98">UPS</text>
+      <text class="dg-s" x="308" y="117">Apagado limpio</text>
+
+      <rect class="dg-caja" x="430" y="74" width="112" height="56" rx="8"/>
+      <text class="dg-t" x="446" y="98">Clima</text>
+      <text class="dg-s" x="446" y="117">Calefactor</text>
+
+      <rect class="dg-pc" x="24" y="152" width="518" height="124" rx="10"/>
+      <text class="dg-m" x="40" y="176">MINI-PC SIN VENTILADOR</text>
+      <rect class="dg-caja" x="40" y="190" width="155" height="68" rx="7"/>
+      <text class="dg-t" x="54" y="216">Kiosco</text>
+      <text class="dg-s" x="54" y="236">Lo que ve</text>
+      <text class="dg-s" x="54" y="251">el visitante</text>
+      <rect class="dg-caja" x="207" y="190" width="155" height="68" rx="7"/>
+      <text class="dg-t" x="221" y="216">Servidor local</text>
+      <text class="dg-s" x="221" y="236">Panel, usuarios,</text>
+      <text class="dg-s" x="221" y="251">versiones</text>
+      <rect class="dg-caja" x="374" y="190" width="152" height="68" rx="7"/>
+      <text class="dg-t" x="388" y="216">Contenido</text>
+      <text class="dg-s" x="388" y="236">En disco:</text>
+      <text class="dg-s" x="388" y="251">textos y PDF</text>
+
+      <!-- conexión -->
+      <path class="dg-fl" d="M562 165 H 620" marker-end="url(#pta)"/>
+      <defs>
+        <marker id="pta" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+          <path d="M0 0 L9 4.5 L0 9 z" fill="#8A948B"/>
+        </marker>
+      </defs>
+
+      <!-- red del liceo -->
+      <rect class="dg-red" x="620" y="34" width="378" height="262" rx="14"/>
+      <text class="dg-m" x="640" y="58">RED INTERNA DEL ESTABLECIMIENTO</text>
+
+      <rect class="dg-caja" x="642" y="78" width="334" height="62" rx="8"/>
+      <text class="dg-t" x="660" y="104">Profesores</text>
+      <text class="dg-s" x="660" y="124">Suben documentos y avisos, quedan pendientes</text>
+
+      <rect class="dg-caja" x="642" y="152" width="334" height="62" rx="8"/>
+      <text class="dg-t" x="660" y="178">Encargado UTP</text>
+      <text class="dg-s" x="660" y="198">Revisa, aprueba y publica al tótem</text>
+
+      <rect class="dg-caja" x="642" y="226" width="334" height="56" rx="8"/>
+      <text class="dg-t" x="660" y="250">Informática del liceo</text>
+      <text class="dg-s" x="660" y="269">Administra usuarios y el equipo</text>
+
+      <!-- separador -->
+      <line x1="0" y1="340" x2="1000" y2="340" stroke="var(--line)" stroke-width="1"/>
+      <text class="dg-k" x="0" y="380">Las cuatro, sin relación entre sí</text>
+
+      <g>
+        <rect class="dg-gab" x="2" y="402" width="236" height="104" rx="12"/>
+        <text class="dg-t" x="22" y="432">Liceo 1</text>
+        <text class="dg-s" x="22" y="456">Su contenido, su red,</text>
+        <text class="dg-s" x="22" y="474">sus usuarios</text>
+        <text class="dg-m" x="22" y="495">OPERA SIN INTERNET</text>
+      </g>
+      <g>
+        <rect class="dg-gab" x="256" y="402" width="236" height="104" rx="12"/>
+        <text class="dg-t" x="276" y="432">Liceo 2</text>
+        <text class="dg-s" x="276" y="456">Su contenido, su red,</text>
+        <text class="dg-s" x="276" y="474">sus usuarios</text>
+        <text class="dg-m" x="276" y="495">OPERA SIN INTERNET</text>
+      </g>
+      <g>
+        <rect class="dg-gab" x="510" y="402" width="236" height="104" rx="12"/>
+        <text class="dg-t" x="530" y="432">Liceo 3</text>
+        <text class="dg-s" x="530" y="456">Su contenido, su red,</text>
+        <text class="dg-s" x="530" y="474">sus usuarios</text>
+        <text class="dg-m" x="530" y="495">OPERA SIN INTERNET</text>
+      </g>
+      <g>
+        <rect class="dg-gab" x="764" y="402" width="234" height="104" rx="12"/>
+        <text class="dg-t" x="784" y="432">Liceo 4</text>
+        <text class="dg-s" x="784" y="456">Su contenido, su red,</text>
+        <text class="dg-s" x="784" y="474">sus usuarios</text>
+        <text class="dg-m" x="784" y="495">OPERA SIN INTERNET</text>
+      </g>
+
+      <text class="dg-s" x="2" y="540">Si una unidad falla, las otras tres no se enteran. No hay servidor central que pueda dejar a los cuatro fuera de servicio.</text>
+      <text class="dg-s" x="2" y="562">El único enlace hacia fuera es un canal saliente y opcional, usado solo para soporte (punto 02.4).</text>
+    </svg>
+  </div>
+  <p class="pie-fig">Figura 1 — Anatomía de una unidad y relación entre las cuatro. El panel se alcanza por la
+     dirección IP fija del tótem dentro de la red del establecimiento; el tráfico no sale del edificio.</p>
+
+  <h3><span class="n">02.1</span> Por qué independientes y no un servidor central</h3>
+  <div class="col">
+    <p>Un servidor central se justifica cuando hay contenido común que se publica una vez y llega a muchas
+       pantallas. Aquí no ocurre: cada liceo tiene su propia historia, su propio predio, sus propias
+       especialidades y sus propios documentos. Los cuatro tótems comparten el programa, no la información.</p>
+    <p>Puestos a elegir, la instalación independiente entrega ventajas concretas: no hay costo mensual de
+       servidor ni de dominio que alguien deba renovar todos los años, no hay un punto único de falla que
+       pueda dejar los cuatro establecimientos sin servicio, no salen datos de los liceos hacia un tercero,
+       y cada encargado de informática administra su equipo con las herramientas y políticas que ya usa.</p>
+  </div>
+
+  <h3><span class="n">02.2</span> Capas del sistema</h3>
+  <div class="tabla">
+    <table>
+      <thead><tr><th>Capa</th><th>Qué hace</th></tr></thead>
+      <tbody>
+        <tr><td><b>Kiosco</b></td><td>Navegador en modo kiosco a pantalla completa, con arranque automático,
+          watchdog que reinicia si la aplicación deja de responder, bloqueo de teclado, gestos y menús del
+          sistema, reinicio programado de madrugada y apagado del panel en horario nocturno.</td></tr>
+        <tr><td><b>Contenido</b></td><td>Textos, avisos y documentos en disco, versionados. La pantalla nunca
+          consulta a un servidor para dibujarse. El equipo lleva además una copia de respaldo embebida con la
+          que arranca aunque el archivo principal se dañe.</td></tr>
+        <tr><td><b>Servidor local</b></td><td>Entrega el panel de administración y su API dentro de la red del
+          liceo. Maneja el ingreso con clave, los roles, la subida de documentos, el versionado con historial
+          y restauración, y una bitácora de quién hizo qué.</td></tr>
+        <tr><td><b>Soporte</b></td><td>Canal saliente opcional que reporta versión, tiempo encendido y estado,
+          y permite intervención remota para actualizaciones del programa. Ver punto 02.4.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="n">02.3</span> Comportamiento ante fallas</h3>
+  <div class="tabla">
+    <table>
+      <thead><tr><th>Situación</th><th>Qué pasa</th></tr></thead>
+      <tbody>
+        <tr><td>Se cae internet</td><td>El tótem no se entera. Todo el contenido es local.</td></tr>
+        <tr><td>Se cae la red del liceo</td><td>El tótem sigue mostrando todo. Solo se suspende la posibilidad
+          de publicar hasta que la red vuelva.</td></tr>
+        <tr><td>Corte de luz</td><td>La UPS permite un apagado limpio. Al volver la energía, el equipo arranca
+          solo y entra al kiosco sin intervención.</td></tr>
+        <tr><td>Contenido dañado</td><td>Arranca automáticamente con la última versión válida.</td></tr>
+        <tr><td>La aplicación se congela</td><td>El watchdog la reinicia sin que nadie tenga que ir.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="n">02.4</span> Soporte remoto</h3>
+  <div class="col">
+    <p>El contenido es local y no requiere nada mío. El programa sí: cuando haya una corrección o una mejora,
+       hay que actualizar cuatro equipos en cuatro establecimientos distintos.</p>
+    <p>Para eso propongo un canal de soporte que sale desde el tótem hacia fuera, no al revés. Al ser una
+       conexión saliente, <strong>no requiere abrir puertos ni modificar el firewall de ningún liceo</strong>,
+       que con cuatro áreas de informática distintas es precisamente lo que conviene evitar. Si ese canal está
+       caído, el tótem funciona igual: no participa en la operación, solo en el mantenimiento.</p>
+    <p>Es opcional. Si la institución prefiere no habilitarlo, las actualizaciones del programa se entregan como
+       un paquete que el encargado de informática de cada liceo aplica, o se hacen presencialmente. Conviene
+       tener claro que esa decisión encarece y demora el soporte posterior.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">03</span> Gestión de contenido</h2>
+  <p class="bajo-h2">Dos etapas: carga inicial de mi parte, administración propia después.</p>
+  <div class="col">
+    <p><strong>Etapa 1 — puesta en marcha.</strong> Cada establecimiento entrega su material: historia,
+       descripción de especialidades, referencias del predio, fotografías y los documentos en PDF que quiera
+       tener disponibles. Yo lo ordeno, lo adapto al formato de pantalla y lo dejo cargado y revisado en su
+       tótem.</p>
+    <p><strong>Etapa 2 — operación.</strong> Desde la capacitación en adelante, el liceo administra su propio
+       contenido desde el panel: sube documentos arrastrando el archivo, publica avisos con fecha de inicio y
+       término automáticos, y edita los textos de cada pantalla. Sin intervención externa y sin costo asociado.</p>
+  </div>
+
+  <h3>Roles</h3>
+  <div class="tabla">
+    <table>
+      <thead><tr><th>Rol</th><th>Puede</th><th>No puede</th></tr></thead>
+      <tbody>
+        <tr><td><b>Profesor</b></td><td>Subir documentos y proponer avisos. Quedan marcados como pendientes.</td>
+            <td>Publicar directamente a la pantalla.</td></tr>
+        <tr><td><b>Encargado UTP</b></td><td>Revisar lo pendiente, aprobar, publicar y volver a una versión
+            anterior.</td><td>Administrar cuentas de usuario.</td></tr>
+        <tr><td><b>Informática</b></td><td>Crear y dar de baja usuarios, administrar el equipo y aplicar
+            actualizaciones.</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="nota">
+    <b>Por qué hay aprobación</b>
+    <p>Es una pantalla pública en el acceso del establecimiento: la ve todo el que llega. El paso de aprobación
+       evita que un borrador a medio terminar o un documento con datos de un estudiante quede expuesto. Son dos
+       clics más y ahorra el problema.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">04</span> Seguridad</h2>
+  <ul class="col">
+    <li>Ingreso al panel con usuario y clave; las claves se almacenan cifradas, nunca en texto plano.</li>
+    <li>La sesión expira sola. Cada acción queda registrada con nombre y hora en la bitácora del equipo.</li>
+    <li>Solo se aceptan archivos PDF, con validación del contenido del archivo y tope de tamaño.</li>
+    <li>El kiosco no tiene teclado ni formularios: el visitante no puede escribir ni navegar fuera de la
+        aplicación. No se recoge ningún dato personal del público.</li>
+    <li>El panel opera dentro de la red del establecimiento. No queda expuesto a internet.</li>
+  </ul>
+  <div class="nota ojo">
+    <b>Un punto a dejar por escrito</b>
+    <p>Al no haber salida a internet, no es posible emitir un certificado de seguridad, por lo que el panel
+       funciona sobre HTTP dentro de la red interna. Esto significa que la clave viaja sin cifrar por la red del
+       liceo. Para una red interna el riesgo es bajo, pero corresponde que cada área de informática lo conozca y
+       que las claves no se reutilicen de otros sistemas.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">05</span> Equipamiento a adquirir</h2>
+  <p class="bajo-h2">Por unidad. Se requieren cuatro conjuntos completos.</p>
+  <div class="tabla">
+    <table>
+      <thead><tr><th>Componente</th><th>Especificación mínima</th><th>Por qué</th></tr></thead>
+      <tbody>
+        <tr><td><b>Tótem exterior</b></td>
+          <td>43" en formato vertical, grado de protección IP65, brillo 2.500 a 3.500 nits, vidrio templado
+              antivandálico con tratamiento antirreflejo, climatización integrada con calefactor y extracción
+              filtrada, puerta de servicio con llave, sensor de luz ambiente.</td>
+          <td>Un monitor común no se ve bajo sol directo y no resiste lluvia, polvo ni heladas.</td></tr>
+        <tr><td><b>Táctil</b></td>
+          <td>Capacitivo proyectado (PCAP), 10 puntos, operable a través del vidrio, con guante y con la
+              superficie mojada.</td>
+          <td>Es un liceo agrícola: se va a tocar con guantes de trabajo y con lluvia.</td></tr>
+        <tr><td><b>Computador</b></td>
+          <td>Mini-PC sin ventilador, procesador Intel N100 o superior, 8 GB de RAM, SSD de 256 GB, rango de
+              operación de −10 a 50 °C, montaje VESA.</td>
+          <td>Sin ventilador no entra polvo. El rango de temperatura es obligatorio en gabinete exterior.</td></tr>
+        <tr><td><b>Respaldo de energía</b></td>
+          <td>UPS de 600 a 800 VA, con al menos 20 minutos de autonomía.</td>
+          <td>Permite apagado limpio y evita que los cortes dañen el disco.</td></tr>
+        <tr><td><b>Conectividad</b></td>
+          <td>Punto de red cableado del establecimiento. Alternativamente, router 4G industrial con antena
+              externa y plan de datos básico.</td>
+          <td>El cableado es preferible. El 4G se usa donde la red del liceo no llegue, o para el canal de
+              soporte.</td></tr>
+        <tr><td><b>Anclaje</b></td>
+          <td>Base de hormigón con pernos de anclaje, según la especificación del fabricante del gabinete.</td>
+          <td>Es una estructura expuesta al viento y al público.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="nota ojo">
+    <b>Antes de comprar</b>
+    <p>Conviene que yo revise la cotización antes de que se emita la orden de compra. Hay detalles que no
+       siempre vienen en la ficha del proveedor y que después no tienen arreglo: que el táctil funcione a través
+       del vidrio y no solo sobre él, que el gabinete traiga calefactor y no únicamente ventilación, y que la
+       pantalla venga preparada para montaje vertical y no solo girada.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">06</span> Requerimientos por establecimiento</h2>
+  <p class="bajo-h2">Debe estar resuelto antes de la fecha de instalación de cada liceo.</p>
+  <ol class="req">
+    <li><span class="c">01</span><div><b>Base de hormigón terminada y fraguada</b>
+      <span>Con los pernos de anclaje según la plantilla del fabricante del gabinete.</span></div></li>
+    <li><span class="c">02</span><div><b>Circuito eléctrico dedicado</b>
+      <span>Con protección diferencial, termomagnético y puesta a tierra certificada, llegando al
+      emplazamiento.</span></div></li>
+    <li><span class="c">03</span><div><b>Cobertura de red en el punto de instalación</b>
+      <span>Punto de red cableado, o cobertura wifi efectiva verificada en el lugar exacto. No basta con que
+      haya wifi en el edificio central.</span></div></li>
+    <li><span class="c">04</span><div><b>Dirección IP fija reservada para el tótem</b>
+      <span>Y comunicación entre equipos habilitada en esa red. Muchos routers traen el aislamiento de
+      clientes activado; con eso el profesor no alcanza el panel aunque esté en la misma red.</span></div></li>
+    <li><span class="c">05</span><div><b>Una contraparte de informática designada</b>
+      <span>Con nombre y contacto, para coordinar la configuración de red y recibir la administración del
+      equipo.</span></div></li>
+    <li><span class="c">06</span><div><b>El encargado que aprobará y publicará</b>
+      <span>Habitualmente UTP o Inspectoría. Debe participar de la capacitación.</span></div></li>
+  </ol>
+  <div class="nota riesgo">
+    <b>Alternativa si algún establecimiento no puede cumplir los puntos 03 o 04</b>
+    <p>El tótem puede levantar su propia red inalámbrica. Aparece una red del equipo, el profesor se conecta
+       desde su computador o teléfono y publica. No requiere nada de la red del liceo. Conviene definirlo por
+       establecimiento durante el levantamiento y no al momento de la instalación.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">07</span> Plan de implementación</h2>
+  <p class="bajo-h2">Doce semanas hasta los cuatro operativos, contadas desde la aprobación.</p>
+
+  <div class="gantt">
+    <div class="gantt-int">
+      <div class="g-fila g-cab">
+        <div class="g-et">Fase</div>
+        <span>S1</span><span>S2</span><span>S3</span><span>S4</span><span>S5</span><span>S6</span>
+        <span>S7</span><span>S8</span><span>S9</span><span>S10</span><span>S11</span><span>S12</span>
+        <span>S13</span><span>S14</span><span>S15</span><span>S16</span>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Definiciones y levantamiento<small>por establecimiento</small></div>
+        <div class="g-barra g-junto" style="grid-column:2/4">Conjunto</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Adquisición del equipamiento<small>camino crítico</small></div>
+        <div class="g-barra g-inst" style="grid-column:3/11">Institución</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Preparación del software<small>kiosco, respaldo, soporte</small></div>
+        <div class="g-barra g-pedro" style="grid-column:3/7">Pedro</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Personalización ×4<small>plano del predio e identidad</small></div>
+        <div class="g-barra g-pedro" style="grid-column:5/9">Pedro</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Entrega del contenido<small>por los liceos</small></div>
+        <div class="g-barra g-inst" style="grid-column:4/9">Liceos</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Carga y revisión ×4</div>
+        <div class="g-barra g-pedro" style="grid-column:8/10">Pedro</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Obra civil y eléctrica ×4</div>
+        <div class="g-barra g-inst" style="grid-column:7/11">Institución</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Coordinación con informática<small>red, IP, accesos</small></div>
+        <div class="g-barra g-junto" style="grid-column:9/11">Conjunto</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Integración y prueba en banco<small>72 h por unidad</small></div>
+        <div class="g-barra g-pedro" style="grid-column:10/11">Pedro</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Instalación y capacitación ×4</div>
+        <div class="g-barra g-pedro" style="grid-column:11/13">Pedro</div>
+      </div>
+      <div class="g-fila">
+        <div class="g-et">Marcha blanca acompañada</div>
+        <div class="g-barra g-pedro" style="grid-column:13/17">Pedro</div>
+      </div>
+    </div>
+  </div>
+  <div class="leyenda">
+    <span><i style="background:var(--accent)"></i> A mi cargo</span>
+    <span><i style="background:var(--gold)"></i> A cargo de la institución y los liceos</span>
+    <span><i style="background:var(--agua)"></i> Trabajo conjunto</span>
+  </div>
+
+  <h3>Qué ocurre en cada fase</h3>
+  <div class="tabla">
+    <table>
+      <thead><tr><th>Fase</th><th>Detalle</th><th>Duración</th></tr></thead>
+      <tbody>
+        <tr><td><b>Definiciones</b></td><td>Visita o levantamiento remoto de los cuatro emplazamientos, revisión
+          de la cotización del equipamiento, definición de contrapartes y de la estructura de contenido.</td>
+          <td class="mono">2 sem</td></tr>
+        <tr><td><b>Software</b></td><td>Empaquetado para operación sin internet, arranque en modo kiosco,
+          watchdog, respaldo automático, canal de soporte y guion de instalación reproducible en los cuatro
+          equipos.</td><td class="mono">4 sem</td></tr>
+        <tr><td><b>Personalización</b></td><td>Por cada liceo: dibujo del plano de su predio con sus puntos de
+          interés, identidad, estructura de pantallas y categorías de documentos.</td><td class="mono">4 sem</td></tr>
+        <tr><td><b>Carga</b></td><td>Ordenar, adaptar y cargar el material entregado por los cuatro
+          establecimientos, con una ronda de revisión y corrección por liceo.</td><td class="mono">2 sem</td></tr>
+        <tr><td><b>Banco</b></td><td>Armado de las cuatro unidades en taller, instalación del software y prueba
+          continua de 72 horas antes de salir a terreno.</td><td class="mono">1 sem</td></tr>
+        <tr><td><b>Instalación</b></td><td>Montaje, puesta en marcha y capacitación en cada establecimiento.
+          Un día por liceo más traslados.</td><td class="mono">2 sem</td></tr>
+        <tr><td><b>Marcha blanca</b></td><td>Seguimiento del funcionamiento, ajustes de contenido y soporte a
+          los encargados mientras toman el ritmo.</td><td class="mono">4 sem</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">08</span> Condiciones que fijan el plazo</h2>
+  <p class="bajo-h2">Si alguna de estas se corre, la fecha de puesta en marcha se corre con ella.</p>
+  <ol class="req">
+    <li><span class="c">01</span><div><b>Recepción del equipamiento en la semana 10</b>
+      <span>Es el camino crítico. Un tótem de exterior de 43" puede tardar entre seis y doce semanas según si
+      se importa o se arma con un integrador nacional. Conviene cotizar de inmediato.</span></div></li>
+    <li><span class="c">02</span><div><b>Contenido completo de los cuatro liceos en la semana 8</b>
+      <span>Esta es, por experiencia, la que más se atrasa. Propongo fijar una fecha de cierre: lo que llegue
+      después entra en la primera actualización que haga el propio liceo, ya con el tótem
+      funcionando.</span></div></li>
+    <li><span class="c">03</span><div><b>Obra civil y eléctrica terminada en la semana 10</b>
+      <span>En los cuatro emplazamientos. No es posible instalar sobre una base sin fraguar.</span></div></li>
+    <li><span class="c">04</span><div><b>Contrapartes designadas en la semana 2</b>
+      <span>Informática y el encargado de publicación de cada liceo. Cuatro establecimientos son cuatro
+      coordinaciones distintas y conviene empezarlas temprano.</span></div></li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">09</span> Ventana de instalación recomendada</h2>
+  <div class="col">
+    <p>Con aprobación en la primera semana de octubre, la instalación en terreno cae en la semana del 14 de
+       diciembre, que coincide con el cierre del año escolar: los liceos están en evaluaciones finales, la obra
+       civil interfiere con el funcionamiento y el personal que hay que capacitar no está disponible.</p>
+    <p><strong>Recomiendo desplazar la instalación a enero.</strong> El desarrollo, la compra y la carga de
+       contenido se hacen entre octubre y diciembre; la obra civil y el montaje se ejecutan en enero con los
+       establecimientos sin clases, que es cuando resulta más simple intervenir; la marcha blanca ocurre en
+       febrero, y los cuatro tótems se lanzan en marzo de 2027 junto con el inicio del año escolar, que es
+       además cuando tienen público.</p>
+    <p>Esto no alarga el trabajo: lo ubica en la ventana que menos interfiere y que da mejor resultado.</p>
+  </div>
+  <div class="nota">
+    <b>Si necesitan algo operativo dentro de 2026</b>
+    <p>Propongo dejar <strong>un tótem piloto funcionando en diciembre</strong> en el Liceo Agrícola Marta
+       Martínez Cruz, que ya tiene su contenido desarrollado, y replicar en los otros tres en enero. Sirve para
+       mostrar el resultado antes de fin de año y, sobre todo, para detectar en terreno lo que siempre aparece
+       en la primera instalación y corregirlo antes de las otras tres.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">10</span> Capacitación y entrega</h2>
+  <div class="col">
+    <p>En cada establecimiento, una sesión de noventa minutos el día de la instalación, con el encargado de
+       informática, el encargado de publicación y los profesores que vayan a subir material. Se trabaja sobre
+       el tótem ya instalado, no sobre diapositivas.</p>
+    <p>Se entrega además: un manual breve de dos páginas para pegar en la sala de profesores, las credenciales
+       de los usuarios creados, la documentación técnica del equipo para informática, y un aviso con el código
+       de acceso al panel.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">11</span> Fuera de alcance</h2>
+  <ul class="col">
+    <li>Adquisición, importación y transporte del equipamiento.</li>
+    <li>Obra civil, instalación eléctrica y trabajos de corriente débil.</li>
+    <li>Producción de contenido: redacción, fotografía profesional y levantamiento en terreno. Se puede cotizar
+        por separado si lo requieren.</li>
+    <li>Planes de datos móviles y su renovación.</li>
+    <li>Reposición de equipamiento por vandalismo, robo o eventos climáticos. Corresponde cubrirlo con seguro.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">12</span> Lo que necesito para cerrar el cronograma</h2>
+  <ol class="req">
+    <li><span class="c">01</span><div><b>Los cuatro establecimientos</b>
+      <span>Nombre y ubicación de cada uno. Cada plano de predio se dibuja a medida y eso forma parte del
+      cronograma.</span></div></li>
+    <li><span class="c">02</span><div><b>Fecha estimada de compra y recepción del equipamiento</b>
+      <span>Es lo que permite fijar una fecha real de puesta en marcha.</span></div></li>
+    <li><span class="c">03</span><div><b>Contraparte de informática y encargado de publicación por liceo</b>
+      <span>Con nombre y contacto.</span></div></li>
+    <li><span class="c">04</span><div><b>Fecha objetivo, si la tienen definida</b>
+      <span>Para confirmar si vamos a la ventana de enero o al piloto de diciembre.</span></div></li>
+  </ol>
+</section>
+
+<footer class="pie">
+  Pedro Fernández M. · Propuesta técnica v1.0 · 29 de septiembre de 2026<br>
+  Documento preparado para la implementación de cuatro tótems de aulas abiertas interactivas.
+</footer>
+
+</div>
