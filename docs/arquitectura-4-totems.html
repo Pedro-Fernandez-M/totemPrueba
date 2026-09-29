@@ -116,31 +116,6 @@ tr:last-child td{border-bottom:0}
 td.mono{font-family:"IBM Plex Mono",monospace;font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
 td b{font-weight:700}
 
-/* ---------- carta gantt ---------- */
-.gantt{margin:22px 0 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);
-  overflow-x:auto;padding:18px 0 8px}
-.gantt-int{min-width:820px}
-.g-fila{display:grid;grid-template-columns:270px repeat(16,1fr);align-items:center;
-  border-bottom:1px solid var(--line);min-height:44px}
-.g-fila:last-child{border-bottom:0}
-.g-cab{border-bottom:1px solid var(--line-2);min-height:34px}
-.g-cab .g-et{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--ink-3)}
-.g-cab span{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-3);text-align:center}
-.g-et{padding:8px 16px;font-size:14px;line-height:1.3}
-.g-et small{display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-3);
-  letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
-.g-barra{height:22px;border-radius:5px;margin:0 3px;display:flex;align-items:center;padding:0 9px;
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:#fff;white-space:nowrap;overflow:hidden}
-.g-pedro{background:var(--accent)}
-.g-inst{background:var(--gold)}
-.g-junto{background:var(--agua)}
-:root[data-theme="dark"] .g-barra, :root:not([data-theme="light"]) .g-barra{color:#0E1310}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .g-barra{color:#fff}}
-.leyenda{display:flex;flex-wrap:wrap;gap:8px 20px;margin:14px 0 30px;font-size:13.5px;color:var(--ink-2)}
-.leyenda span{display:flex;align-items:center;gap:7px}
-.leyenda i{width:14px;height:10px;border-radius:3px;display:block}
-
 /* ---------- listas de requisitos ---------- */
 .req{list-style:none;padding:0;margin:16px 0 24px;max-width:72ch}
 .req li{display:flex;gap:14px;padding:12px 0;border-top:1px solid var(--line);margin:0}
@@ -164,15 +139,14 @@ td b{font-weight:700}
 <div class="hoja">
 
 <header class="portada">
-  <div class="rotulo">Propuesta técnica · Aulas abiertas interactivas</div>
-  <h1>Arquitectura e implementación de cuatro tótems interactivos</h1>
-  <p class="sub">Detalle de la solución a instalar, especificación del equipamiento a adquirir,
-     requerimientos por establecimiento y cronograma de puesta en marcha.</p>
+  <div class="rotulo">Aulas abiertas interactivas · Cuatro tótems</div>
+  <h1>Arquitectura de la solución a instalar</h1>
+  <p class="sub">Detalle técnico de lo que se instala en cada uno de los cuatro tótems, equipamiento
+     requerido, condiciones de sitio por establecimiento y secuencia de trabajo.</p>
   <dl class="ficha">
-    <div><dt>Para</dt><dd>[Nombre · Institución]</dd></div>
-    <div><dt>De</dt><dd>Pedro Fernández M.</dd></div>
+    <div><dt>Preparado por</dt><dd>Pedro Fernández M.</dd></div>
     <div><dt>Fecha</dt><dd>29 de septiembre de 2026</dd></div>
-    <div><dt>Versión</dt><dd class="mono">1.0</dd></div>
+    <div><dt>Unidades</dt><dd>4 tótems · 4 establecimientos</dd></div>
   </dl>
 </header>
 
@@ -188,27 +162,13 @@ td b{font-weight:700}
     <p>En la puesta en marcha, cada liceo entrega su material y yo lo dejo cargado y revisado.
        Desde la capacitación en adelante, el establecimiento actualiza sus propios documentos, avisos y
        textos sin requerir intervención externa.</p>
-    <p>El trabajo toma <strong>doce semanas desde la aprobación</strong>. El camino crítico es la
-       adquisición del equipamiento.</p>
+    <p>La información que necesito recibir y el tiempo que toma cada parte del trabajo, contado desde esa
+       entrega, están en el punto 06.</p>
   </div>
 </section>
 
 <section>
-  <h2><span class="n">01</span> Alcance</h2>
-  <p class="bajo-h2">Qué entrego y qué queda del lado de la institución.</p>
-  <div class="col">
-    <p><strong>Incluido:</strong> el software del tótem y su panel de administración, la personalización
-       del contenido y del plano del predio de cada uno de los cuatro establecimientos, la carga inicial
-       del material que entreguen, la instalación y configuración del software en los cuatro equipos,
-       la capacitación del personal de cada liceo y cuatro semanas de marcha blanca acompañada.</p>
-    <p><strong>A cargo de la institución:</strong> la adquisición del equipamiento según la especificación
-       del punto 05, la obra civil y eléctrica de cada emplazamiento según el punto 06, y la entrega del
-       contenido de cada establecimiento dentro del plazo del cronograma.</p>
-  </div>
-</section>
-
-<section>
-  <h2><span class="n">02</span> Arquitectura</h2>
+  <h2><span class="n">01</span> Arquitectura</h2>
   <p class="bajo-h2">Cuatro instalaciones independientes que comparten el mismo programa y no comparten nada más.</p>
 
   <div class="figura">
@@ -304,13 +264,13 @@ td b{font-weight:700}
       </g>
 
       <text class="dg-s" x="2" y="540">Si una unidad falla, las otras tres no se enteran. No hay servidor central que pueda dejar a los cuatro fuera de servicio.</text>
-      <text class="dg-s" x="2" y="562">El único enlace hacia fuera es un canal saliente y opcional, usado solo para soporte (punto 02.4).</text>
+      <text class="dg-s" x="2" y="562">El único enlace hacia fuera es un canal saliente y opcional, usado solo para soporte (punto 01.4).</text>
     </svg>
   </div>
   <p class="pie-fig">Figura 1 — Anatomía de una unidad y relación entre las cuatro. El panel se alcanza por la
      dirección IP fija del tótem dentro de la red del establecimiento; el tráfico no sale del edificio.</p>
 
-  <h3><span class="n">02.1</span> Por qué independientes y no un servidor central</h3>
+  <h3><span class="n">01.1</span> Por qué independientes y no un servidor central</h3>
   <div class="col">
     <p>Un servidor central se justifica cuando hay contenido común que se publica una vez y llega a muchas
        pantallas. Aquí no ocurre: cada liceo tiene su propia historia, su propio predio, sus propias
@@ -321,7 +281,7 @@ td b{font-weight:700}
        y cada encargado de informática administra su equipo con las herramientas y políticas que ya usa.</p>
   </div>
 
-  <h3><span class="n">02.2</span> Capas del sistema</h3>
+  <h3><span class="n">01.2</span> Capas del sistema</h3>
   <div class="tabla">
     <table>
       <thead><tr><th>Capa</th><th>Qué hace</th></tr></thead>
@@ -336,12 +296,12 @@ td b{font-weight:700}
           liceo. Maneja el ingreso con clave, los roles, la subida de documentos, el versionado con historial
           y restauración, y una bitácora de quién hizo qué.</td></tr>
         <tr><td><b>Soporte</b></td><td>Canal saliente opcional que reporta versión, tiempo encendido y estado,
-          y permite intervención remota para actualizaciones del programa. Ver punto 02.4.</td></tr>
+          y permite intervención remota para actualizaciones del programa. Ver punto 01.4.</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3><span class="n">02.3</span> Comportamiento ante fallas</h3>
+  <h3><span class="n">01.3</span> Comportamiento ante fallas</h3>
   <div class="tabla">
     <table>
       <thead><tr><th>Situación</th><th>Qué pasa</th></tr></thead>
@@ -357,7 +317,7 @@ td b{font-weight:700}
     </table>
   </div>
 
-  <h3><span class="n">02.4</span> Soporte remoto</h3>
+  <h3><span class="n">01.4</span> Soporte remoto</h3>
   <div class="col">
     <p>El contenido es local y no requiere nada mío. El programa sí: cuando haya una corrección o una mejora,
        hay que actualizar cuatro equipos en cuatro establecimientos distintos.</p>
@@ -372,7 +332,7 @@ td b{font-weight:700}
 </section>
 
 <section>
-  <h2><span class="n">03</span> Gestión de contenido</h2>
+  <h2><span class="n">02</span> Gestión de contenido</h2>
   <p class="bajo-h2">Dos etapas: carga inicial de mi parte, administración propia después.</p>
   <div class="col">
     <p><strong>Etapa 1 — puesta en marcha.</strong> Cada establecimiento entrega su material: historia,
@@ -408,7 +368,7 @@ td b{font-weight:700}
 </section>
 
 <section>
-  <h2><span class="n">04</span> Seguridad</h2>
+  <h2><span class="n">03</span> Seguridad</h2>
   <ul class="col">
     <li>Ingreso al panel con usuario y clave; las claves se almacenan cifradas, nunca en texto plano.</li>
     <li>La sesión expira sola. Cada acción queda registrada con nombre y hora en la bitácora del equipo.</li>
@@ -427,7 +387,7 @@ td b{font-weight:700}
 </section>
 
 <section>
-  <h2><span class="n">05</span> Equipamiento a adquirir</h2>
+  <h2><span class="n">04</span> Equipamiento</h2>
   <p class="bajo-h2">Por unidad. Se requieren cuatro conjuntos completos.</p>
   <div class="tabla">
     <table>
@@ -470,7 +430,7 @@ td b{font-weight:700}
 </section>
 
 <section>
-  <h2><span class="n">06</span> Requerimientos por establecimiento</h2>
+  <h2><span class="n">05</span> Condiciones de sitio</h2>
   <p class="bajo-h2">Debe estar resuelto antes de la fecha de instalación de cada liceo.</p>
   <ol class="req">
     <li><span class="c">01</span><div><b>Base de hormigón terminada y fraguada</b>
@@ -491,7 +451,7 @@ td b{font-weight:700}
       <span>Habitualmente UTP o Inspectoría. Debe participar de la capacitación.</span></div></li>
   </ol>
   <div class="nota riesgo">
-    <b>Alternativa si algún establecimiento no puede cumplir los puntos 03 o 04</b>
+    <b>Alternativa si algún establecimiento no puede cumplir los requisitos 03 o 04</b>
     <p>El tótem puede levantar su propia red inalámbrica. Aparece una red del equipo, el profesor se conecta
        desde su computador o teléfono y publica. No requiere nada de la red del liceo. Conviene definirlo por
        establecimiento durante el levantamiento y no al momento de la instalación.</p>
@@ -499,138 +459,84 @@ td b{font-weight:700}
 </section>
 
 <section>
-  <h2><span class="n">07</span> Plan de implementación</h2>
-  <p class="bajo-h2">Doce semanas hasta los cuatro operativos, contadas desde la aprobación.</p>
+  <h2><span class="n">06</span> Información requerida y tiempos</h2>
+  <p class="bajo-h2">Qué necesito recibir para poder trabajar, y cuánto toma cada parte una vez que lo tengo.</p>
 
-  <div class="gantt">
-    <div class="gantt-int">
-      <div class="g-fila g-cab">
-        <div class="g-et">Fase</div>
-        <span>S1</span><span>S2</span><span>S3</span><span>S4</span><span>S5</span><span>S6</span>
-        <span>S7</span><span>S8</span><span>S9</span><span>S10</span><span>S11</span><span>S12</span>
-        <span>S13</span><span>S14</span><span>S15</span><span>S16</span>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Definiciones y levantamiento<small>por establecimiento</small></div>
-        <div class="g-barra g-junto" style="grid-column:2/4">Conjunto</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Adquisición del equipamiento<small>camino crítico</small></div>
-        <div class="g-barra g-inst" style="grid-column:3/11">Institución</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Preparación del software<small>kiosco, respaldo, soporte</small></div>
-        <div class="g-barra g-pedro" style="grid-column:3/7">Pedro</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Personalización ×4<small>plano del predio e identidad</small></div>
-        <div class="g-barra g-pedro" style="grid-column:5/9">Pedro</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Entrega del contenido<small>por los liceos</small></div>
-        <div class="g-barra g-inst" style="grid-column:4/9">Liceos</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Carga y revisión ×4</div>
-        <div class="g-barra g-pedro" style="grid-column:8/10">Pedro</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Obra civil y eléctrica ×4</div>
-        <div class="g-barra g-inst" style="grid-column:7/11">Institución</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Coordinación con informática<small>red, IP, accesos</small></div>
-        <div class="g-barra g-junto" style="grid-column:9/11">Conjunto</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Integración y prueba en banco<small>72 h por unidad</small></div>
-        <div class="g-barra g-pedro" style="grid-column:10/11">Pedro</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Instalación y capacitación ×4</div>
-        <div class="g-barra g-pedro" style="grid-column:11/13">Pedro</div>
-      </div>
-      <div class="g-fila">
-        <div class="g-et">Marcha blanca acompañada</div>
-        <div class="g-barra g-pedro" style="grid-column:13/17">Pedro</div>
-      </div>
-    </div>
-  </div>
-  <div class="leyenda">
-    <span><i style="background:var(--accent)"></i> A mi cargo</span>
-    <span><i style="background:var(--gold)"></i> A cargo de la institución y los liceos</span>
-    <span><i style="background:var(--agua)"></i> Trabajo conjunto</span>
-  </div>
+  <h3>Lo que necesito recibir</h3>
+  <ol class="req">
+    <li><span class="c">01</span><div><b>Los cuatro establecimientos</b>
+      <span>Nombre, ubicación y el punto exacto donde irá instalado cada tótem.</span></div></li>
+    <li><span class="c">02</span><div><b>Referencia del predio de cada liceo</b>
+      <span>Croquis, plano o imagen satelital, indicando los lugares que quieran destacar en pantalla.
+      El plano de cada establecimiento se dibuja a medida y esto es lo que lo hace posible.</span></div></li>
+    <li><span class="c">03</span><div><b>El contenido de cada establecimiento</b>
+      <span>Historia, descripción de las especialidades, textos, fotografías y los documentos en PDF que
+      quieran dejar disponibles en el tótem.</span></div></li>
+    <li><span class="c">04</span><div><b>Contrapartes por liceo</b>
+      <span>El encargado de informática y quien aprobará y publicará el contenido, con nombre y
+      contacto.</span></div></li>
+    <li><span class="c">05</span><div><b>Ficha técnica del equipamiento adquirido</b>
+      <span>Modelo del tótem y del computador, para dejar preparada la instalación antes de tener los
+      equipos en mano.</span></div></li>
+  </ol>
 
-  <h3>Qué ocurre en cada fase</h3>
+  <h3>Cuánto toma cada parte</h3>
   <div class="tabla">
     <table>
-      <thead><tr><th>Fase</th><th>Detalle</th><th>Duración</th></tr></thead>
+      <thead><tr><th>Trabajo</th><th>Tiempo</th><th>Requiere</th></tr></thead>
       <tbody>
-        <tr><td><b>Definiciones</b></td><td>Visita o levantamiento remoto de los cuatro emplazamientos, revisión
-          de la cotización del equipamiento, definición de contrapartes y de la estructura de contenido.</td>
-          <td class="mono">2 sem</td></tr>
-        <tr><td><b>Software</b></td><td>Empaquetado para operación sin internet, arranque en modo kiosco,
-          watchdog, respaldo automático, canal de soporte y guion de instalación reproducible en los cuatro
-          equipos.</td><td class="mono">4 sem</td></tr>
-        <tr><td><b>Personalización</b></td><td>Por cada liceo: dibujo del plano de su predio con sus puntos de
-          interés, identidad, estructura de pantallas y categorías de documentos.</td><td class="mono">4 sem</td></tr>
-        <tr><td><b>Carga</b></td><td>Ordenar, adaptar y cargar el material entregado por los cuatro
-          establecimientos, con una ronda de revisión y corrección por liceo.</td><td class="mono">2 sem</td></tr>
-        <tr><td><b>Banco</b></td><td>Armado de las cuatro unidades en taller, instalación del software y prueba
-          continua de 72 horas antes de salir a terreno.</td><td class="mono">1 sem</td></tr>
-        <tr><td><b>Instalación</b></td><td>Montaje, puesta en marcha y capacitación en cada establecimiento.
-          Un día por liceo más traslados.</td><td class="mono">2 sem</td></tr>
-        <tr><td><b>Marcha blanca</b></td><td>Seguimiento del funcionamiento, ajustes de contenido y soporte a
-          los encargados mientras toman el ritmo.</td><td class="mono">4 sem</td></tr>
+        <tr><td><b>Preparación del software</b><br>Empaquetado para operar sin internet, arranque en modo
+            kiosco, watchdog, respaldo automático y canal de soporte, replicable en las cuatro unidades.</td>
+          <td class="mono">2 semanas</td><td>Puede partir de inmediato</td></tr>
+        <tr><td><b>Personalización de cada establecimiento</b><br>Dibujo del plano del predio con sus puntos
+            de interés, identidad y estructura de pantallas.</td>
+          <td class="mono">1 semana<br>por liceo</td><td>Puntos 01 y 02</td></tr>
+        <tr><td><b>Carga y revisión del contenido</b><br>Ordenar y adaptar el material a formato de pantalla,
+            cargarlo y hacer una ronda de revisión con el liceo.</td>
+          <td class="mono">3 a 4 días<br>por liceo</td><td>Punto 03</td></tr>
+        <tr><td><b>Armado y prueba en taller</b><br>Instalación del software en los cuatro equipos y prueba
+            continua de 72 horas antes de salir a terreno.</td>
+          <td class="mono">1 semana<br>las cuatro</td><td>Equipamiento recibido</td></tr>
+        <tr><td><b>Instalación y capacitación</b><br>Montaje, puesta en marcha y capacitación en cada
+            establecimiento.</td>
+          <td class="mono">1 día por liceo<br>más traslados</td><td>Condiciones de sitio resueltas (punto 05)</td></tr>
+        <tr><td><b>Acompañamiento posterior</b><br>Seguimiento, ajustes y soporte a los encargados mientras
+            toman el ritmo. No es dedicación completa.</td>
+          <td class="mono">3 semanas</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
-</section>
 
-<section>
-  <h2><span class="n">08</span> Condiciones que fijan el plazo</h2>
-  <p class="bajo-h2">Si alguna de estas se corre, la fecha de puesta en marcha se corre con ella.</p>
-  <ol class="req">
-    <li><span class="c">01</span><div><b>Recepción del equipamiento en la semana 10</b>
-      <span>Es el camino crítico. Un tótem de exterior de 43" puede tardar entre seis y doce semanas según si
-      se importa o se arma con un integrador nacional. Conviene cotizar de inmediato.</span></div></li>
-    <li><span class="c">02</span><div><b>Contenido completo de los cuatro liceos en la semana 8</b>
-      <span>Esta es, por experiencia, la que más se atrasa. Propongo fijar una fecha de cierre: lo que llegue
-      después entra en la primera actualización que haga el propio liceo, ya con el tótem
-      funcionando.</span></div></li>
-    <li><span class="c">03</span><div><b>Obra civil y eléctrica terminada en la semana 10</b>
-      <span>En los cuatro emplazamientos. No es posible instalar sobre una base sin fraguar.</span></div></li>
-    <li><span class="c">04</span><div><b>Contrapartes designadas en la semana 2</b>
-      <span>Informática y el encargado de publicación de cada liceo. Cuatro establecimientos son cuatro
-      coordinaciones distintas y conviene empezarlas temprano.</span></div></li>
-  </ol>
-</section>
-
-<section>
-  <h2><span class="n">09</span> Ventana de instalación recomendada</h2>
-  <div class="col">
-    <p>Con aprobación en la primera semana de octubre, la instalación en terreno cae en la semana del 14 de
-       diciembre, que coincide con el cierre del año escolar: los liceos están en evaluaciones finales, la obra
-       civil interfiere con el funcionamiento y el personal que hay que capacitar no está disponible.</p>
-    <p><strong>Recomiendo desplazar la instalación a enero.</strong> El desarrollo, la compra y la carga de
-       contenido se hacen entre octubre y diciembre; la obra civil y el montaje se ejecutan en enero con los
-       establecimientos sin clases, que es cuando resulta más simple intervenir; la marcha blanca ocurre en
-       febrero, y los cuatro tótems se lanzan en marzo de 2027 junto con el inicio del año escolar, que es
-       además cuando tienen público.</p>
-    <p>Esto no alarga el trabajo: lo ubica en la ventana que menos interfiere y que da mejor resultado.</p>
-  </div>
   <div class="nota">
-    <b>Si necesitan algo operativo dentro de 2026</b>
-    <p>Propongo dejar <strong>un tótem piloto funcionando en diciembre</strong> en el Liceo Agrícola Marta
-       Martínez Cruz, que ya tiene su contenido desarrollado, y replicar en los otros tres en enero. Sirve para
-       mostrar el resultado antes de fin de año y, sobre todo, para detectar en terreno lo que siempre aparece
-       en la primera instalación y corregirlo antes de las otras tres.</p>
+    <b>En total</b>
+    <p>Desde que recibo la información completa de los cuatro establecimientos, el trabajo de software y
+       contenido toma <strong>seis semanas</strong>, con las tareas traslapadas entre sí.</p>
+    <p>Desde que el equipamiento está recibido y los sitios listos, el armado, la instalación y la
+       capacitación de las cuatro unidades toman <strong>tres semanas</strong>.</p>
+    <p>Si el equipamiento llega mientras todavía estoy en el desarrollo, ambos bloques se traslapan y el
+       total queda en torno a <strong>ocho semanas</strong>. Las fechas de calendario dependen de cuándo se
+       entregue la información y cuándo llegue el equipamiento.</p>
+  </div>
+
+  <div class="nota ojo">
+    <b>De qué depende que estos tiempos se cumplan</b>
+    <p>El conteo parte cuando el material de un establecimiento llega completo. Si llega parcial, la
+       personalización y la carga de ese liceo quedan detenidas hasta recibir el resto, y por experiencia
+       eso es lo que más alarga este tipo de trabajo.</p>
+    <p>Una alternativa que lo evita: fijar una fecha de corte de recepción. Lo que no haya llegado para
+       entonces entra después como una actualización que el propio liceo publica desde el panel, ya con el
+       tótem funcionando. Así la instalación no queda esperando a un documento.</p>
+  </div>
+
+  <div class="nota">
+    <b>Si el Liceo Marta Martínez Cruz es uno de los cuatro</b>
+    <p>Su personalización y su contenido ya están desarrollados, por lo que se descuenta una semana de
+       personalización y su carga correspondiente.</p>
   </div>
 </section>
 
 <section>
-  <h2><span class="n">10</span> Capacitación y entrega</h2>
+  <h2><span class="n">07</span> Capacitación y entrega</h2>
   <div class="col">
     <p>En cada establecimiento, una sesión de noventa minutos el día de la instalación, con el encargado de
        informática, el encargado de publicación y los profesores que vayan a subir material. Se trabaja sobre
@@ -641,36 +547,9 @@ td b{font-weight:700}
   </div>
 </section>
 
-<section>
-  <h2><span class="n">11</span> Fuera de alcance</h2>
-  <ul class="col">
-    <li>Adquisición, importación y transporte del equipamiento.</li>
-    <li>Obra civil, instalación eléctrica y trabajos de corriente débil.</li>
-    <li>Producción de contenido: redacción, fotografía profesional y levantamiento en terreno. Se puede cotizar
-        por separado si lo requieren.</li>
-    <li>Planes de datos móviles y su renovación.</li>
-    <li>Reposición de equipamiento por vandalismo, robo o eventos climáticos. Corresponde cubrirlo con seguro.</li>
-  </ul>
-</section>
-
-<section>
-  <h2><span class="n">12</span> Lo que necesito para cerrar el cronograma</h2>
-  <ol class="req">
-    <li><span class="c">01</span><div><b>Los cuatro establecimientos</b>
-      <span>Nombre y ubicación de cada uno. Cada plano de predio se dibuja a medida y eso forma parte del
-      cronograma.</span></div></li>
-    <li><span class="c">02</span><div><b>Fecha estimada de compra y recepción del equipamiento</b>
-      <span>Es lo que permite fijar una fecha real de puesta en marcha.</span></div></li>
-    <li><span class="c">03</span><div><b>Contraparte de informática y encargado de publicación por liceo</b>
-      <span>Con nombre y contacto.</span></div></li>
-    <li><span class="c">04</span><div><b>Fecha objetivo, si la tienen definida</b>
-      <span>Para confirmar si vamos a la ventana de enero o al piloto de diciembre.</span></div></li>
-  </ol>
-</section>
-
 <footer class="pie">
-  Pedro Fernández M. · Propuesta técnica v1.0 · 29 de septiembre de 2026<br>
-  Documento preparado para la implementación de cuatro tótems de aulas abiertas interactivas.
+  Pedro Fernández M. · 29 de septiembre de 2026<br>
+  Detalle técnico de los cuatro tótems para aulas abiertas interactivas.
 </footer>
 
 </div>
