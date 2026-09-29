@@ -5,3 +5,5 @@ Thumbs.db
 servidor/datos/
 servidor/datos/usuarios.json
 servidor/datos/bitacora.log
+
+.vercel

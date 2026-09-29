@@ -733,7 +733,10 @@ button{font-family:inherit}
       if(d && d.version && d.version !== D.version){
         D = d; guardar(d); origen = "Archivo en disco"; pintarTodo();
         log("BOOT  Contenido de disco cargado · <u>v" + d.version + "</u>");
-      } else { origen = "Archivo en disco"; }
+      } else {
+        origen = "Archivo en disco";
+        $("tOrigen").textContent = origen;   // la version coincide: no repinto todo, solo el estado
+      }
     })
     .catch(function(){ log("BOOT  Sin archivo en disco — se usa la copia embebida"); });
 
